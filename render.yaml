@@ -1,0 +1,9 @@
+services:
+  - type: "static"
+    name: "Convite-Festa"
+    env: "static"
+    repo: "https://github.com/<seu-usuario>/<seu-repo>.git"
+    branch: "main"
+    buildCommand: ""
+    publishPath: "."
+    plan: "free"

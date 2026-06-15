@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Igo & Fernanda — Renovação de votos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/enhancements.css" />
+  <link rel="icon" type="image/png" href="images/logo-festa.png" />
+</head>
+<body>
+  <div id="petals-container" aria-hidden="true"></div>
+
+  <nav id="main-nav" aria-label="Menu principal">
+    <div class="nav-inner container-wide">
+      <a href="#inicio" class="nav-brand">
+        <div class="brand-slot compact" id="navBrandSlot"></div>
+        <span id="navBrandText">I &amp; F</span>
+      </a>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#nossa-historia">Nossa História</a></li>
+        <li><a href="#cerimonia">Cerimônia</a></li>
+        <li><a href="#localizacao">Localização</a></li>
+        <li><a href="#presentes">Presentes</a></li>
+        <li><a href="#galeria">Galeria</a></li>
+        <li><a href="#mensagens">Mensagens</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <button id="audioStopBtn" class="audio-stop-btn" aria-label="Parar som" title="Parar som">🔊</button>
+
+  <section id="inicio" class="hero">
+    <div class="hero-overlay" id="heroOverlay"></div>
+    <div class="hero-glow"></div>
+
+    <div class="hero-content animate-fade-in">
+      <div class="brand-slot hero-brand-slot" id="heroBrandSlot"></div>
+      <p class="hero-pre" id="heroPre">Convidamos você para nossa renovação de votos em comemoração aos nossos 10 anos de casamento</p>
+      <h1 class="hero-names" id="heroCoupleNames">Igo <span class="heart-amp">&amp;</span> Fernanda</h1>
+      <p class="hero-date" id="heroDateLabel">01 de Agosto de 2026 às 17h</p>
+      <p class="hero-place" id="heroLocationLabel">Salão de Festas - Condomínio Residencial Tapajós - Av. Torquato Tapajós - 6437 - Tarumã</p>
+
+      <div class="countdown" id="countdown">
+        <div class="countdown-item"><span id="days">00</span><small>dias</small></div>
+        <div class="countdown-item"><span id="hours">00</span><small>horas</small></div>
+        <div class="countdown-item countdown-seconds"><span id="seconds">00</span><small>seg</small></div>
+        <div class="countdown-item"><span id="minutes">00</span><small>min</small></div>
+      </div>
+
+      <div class="hero-actions">
+        <button class="btn btn-secondary" id="openGuestLookupBtn" type="button"><i class="fas fa-circle-check"></i> Confirmar presença</button>
+        <button class="btn btn-secondary" id="openUploadModalBtn" type="button"><i class="fas fa-photo-film"></i> Compartilhe fotos e vídeos</button>
+      </div>
+
+      <div class="hero-note">
+        <i class="fas fa-leaf"></i>
+        <span id="heroNote">Layout renovado em verde oliva, com portal administrativo privado, confirmação por modal e galeria colaborativa.</span>
+      </div>
+    </div>
+
+    <div class="hero-frame top-left"></div>
+    <div class="hero-frame top-right"></div>
+    <div class="hero-frame bottom-left"></div>
+    <div class="hero-frame bottom-right"></div>
+  </section>
+
+  <audio id="siteMusic" loop preload="metadata"></audio>
+
+  <div class="floral-divider" aria-hidden="true">
+    <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+      <path d="M0,30 Q150,0 300,30 Q450,60 600,30 Q750,0 900,30 Q1050,60 1200,30" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.55"/>
+      <circle cx="600" cy="30" r="4" fill="currentColor" opacity="0.7"/>
+      <circle cx="300" cy="30" r="3" fill="currentColor" opacity="0.5"/>
+      <circle cx="900" cy="30" r="3" fill="currentColor" opacity="0.5"/>
+    </svg>
+  </div>
+
+  <main>
+    <section id="nossa-historia" class="section section-light">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-pre" id="storyPre">Um amor para toda a vida</p>
+          <h2 class="section-title" id="storyTitle">Nossa História</h2>
+          <p class="section-desc" id="storyIntro">Uma linha do tempo para contar um pouco da nossa jornada.</p>
+        </header>
+
+        <div class="timeline" id="timelineContainer"></div>
+
+        <div class="couple-cards">
+          <article class="couple-card animate-fade-in">
+            <div class="couple-avatar"><img id="fernandaPhoto" src="images/fernanda.jpg" alt="Foto de Fernanda" /></div>
+            <h3 id="fernandaNameLabel">Fernanda</h3>
+            <p class="couple-role" id="fernandaRoleLabel">Esposa</p>
+            <p id="fernandaBioLabel">Mãe amorosa, apaixonada pela família, por viagens e pelo cheiro de café pela manhã.</p>
+          </article>
+
+          <div class="couple-heart"><i class="fas fa-heart"></i></div>
+
+          <article class="couple-card animate-fade-in">
+            <div class="couple-avatar"><img id="igoPhoto" src="images/igo.jpeg" alt="Foto de Igo" /></div>
+            <h3 id="igoNameLabel">Igo</h3>
+            <p class="couple-role" id="igoRoleLabel">Marido</p>
+            <p id="igoBioLabel">Grande pai, parceiro dedicado e aventureiro. Encontrou em Fernanda a companheira ideal para compartilhar sonhos e conquistas.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="cerimonia" class="section section-dark">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-pre" id="ceremonyPre">Detalhes do grande dia</p>
+          <h2 class="section-title" id="ceremonyTitle">Cerimônia &amp; Festa</h2>
+        </header>
+
+        <div class="ceremony-grid">
+          <article class="ceremony-card animate-fade-in">
+            <div class="ceremony-icon"><i class="fas fa-rings-wedding"></i></div>
+            <h3>Renovação de votos</h3>
+            <p class="ceremony-place">Celebração especial</p>
+            <p class="ceremony-address" id="ceremonyAddress">Salão de Festas - Condomínio Residencial Tapajós</p>
+            <p class="ceremony-time" id="ceremonyTime"><i class="fas fa-clock"></i> 17h00</p>
+          </article>
+
+          <article class="ceremony-card animate-fade-in">
+            <div class="ceremony-icon"><i class="fas fa-champagne-glasses"></i></div>
+            <h3>Recepção &amp; Festa</h3>
+            <p class="ceremony-place">Comemoração com família e amigos</p>
+            <p class="ceremony-address" id="ceremonyFullAddress">Av. Torquato Tapajós - 6437 - Tarumã - Manaus/AM</p>
+            <p class="ceremony-time"><i class="fas fa-music"></i> Jantar, celebração e muitos registros especiais</p>
+          </article>
+
+          <article class="ceremony-card animate-fade-in">
+            <div class="ceremony-icon"><i class="fas fa-shirt"></i></div>
+            <h3>Dress code</h3>
+            <p class="ceremony-place" id="dressCodeLabel">Elegante / social</p>
+            <p class="ceremony-address" id="dressCodeHintLabel">Cores sugeridas: tons suaves, verdes e neutros</p>
+            <p class="ceremony-note">Reserve seu look favorito e venha viver esse dia conosco.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="localizacao" class="section section-light">
+      <div class="container location-layout">
+        <div>
+          <header class="section-header align-left">
+            <p class="section-pre" id="locationPre">Como chegar</p>
+            <h2 class="section-title" id="locationTitle">Localização</h2>
+          </header>
+
+          <div class="location-card glass-card">
+            <div class="location-block">
+              <h3><i class="fas fa-map-location-dot"></i> Endereço do evento</h3>
+              <p><strong id="locationName">Salão de Festas - Condomínio Residencial Tapajós</strong></p>
+              <p id="locationAddress">Av. Torquato Tapajós - 6437 - Tarumã - Manaus/AM</p>
+              <a href="https://maps.app.goo.gl/hVNNUPjzZ5iNvbLW6" target="_blank" rel="noopener noreferrer" class="btn-map" id="mapsButtonLink">
+                <i class="fas fa-map-marker-alt"></i> Abrir no Google Maps
+              </a>
+            </div>
+
+            <div class="location-block">
+              <h3><i class="fas fa-car-side"></i> Estacionamento</h3>
+              <p>Estacionamento dentro do condomínio para maior comodidade dos convidados.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="location-map glass-card animate-fade-in">
+          <iframe title="Mapa do evento" id="mapFrame" src="https://www.google.com/maps?q=Condom%C3%ADnio%20Residencial%20Tapaj%C3%B3s%20Manaus&output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section id="presentes" class="section section-olive">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-pre" id="giftsPre">Sua presença é nosso maior presente</p>
+          <h2 class="section-title" id="giftsTitle">Lista de Presentes</h2>
+          <p class="section-desc" id="giftsDescription">Criamos uma lista especial para a nossa 2ª lua de mel. Escolha um item para presentear via Mercado Pago ou Pix.</p>
+        </header>
+
+        <div class="gift-hero-card glass-card">
+          <div class="gift-hero-copy">
+            <span class="gift-badge">Presente</span>
+            <h3>Lista de Presente</h3>
+            <p>Selecionamos experiências e mimos especiais para tornar a nossa viagem ainda mais inesquecível.</p>
+            <button class="btn btn-primary" id="openGiftModalBtn" type="button"><i class="fas fa-gift"></i> Escolher presente</button>
+          </div>
+          <div class="gift-hero-side">
+            <div class="gift-mini-list" id="giftHighlights"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="galeria" class="section section-dark gallery-section">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-pre" id="galleryPre">Momentos especiais</p>
+          <h2 class="section-title" id="galleryTitle">Galeria da Festa</h2>
+          <p class="section-desc" id="galleryDescription">Depois da festa, os convidados podem compartilhar fotos e vídeos diretamente pelo site.</p>
+        </header>
+
+        <div class="gallery-toolbar">
+          <button class="btn btn-primary" id="openUploadModalBtnSecondary" type="button"><i class="fas fa-cloud-arrow-up"></i> Compartilhe fotos e vídeos</button>
+          <span class="gallery-counter" id="galleryCounter">0 arquivos compartilhados</span>
+        </div>
+
+        <div class="gallery-grid" id="galleryGrid"></div>
+      </div>
+    </section>
+
+    <section id="mensagens" class="section section-light">
+      <div class="container">
+        <header class="section-header">
+          <p class="section-pre" id="messagesPre">Deixe um recado</p>
+          <h2 class="section-title" id="messagesTitle">Mensagens Especiais</h2>
+          <p class="section-desc" id="messagesDescription">Escreva uma mensagem carinhosa para Igo &amp; Fernanda. Cada recado ficará guardado com muito amor.</p>
+        </header>
+
+        <div class="messages-layout">
+          <form id="messageForm" class="message-form glass-card" novalidate>
+            <div class="form-group">
+              <label for="senderName">Seu nome</label>
+              <input type="text" id="senderName" name="nome" placeholder="Como você se chama?" required maxlength="80" />
+            </div>
+            <div class="form-group">
+              <label for="messageText">Sua mensagem</label>
+              <textarea id="messageText" name="mensagem" rows="5" placeholder="Escreva uma mensagem carinhosa para os noivos..." required maxlength="500"></textarea>
+              <span class="char-count" id="charCount">0 / 500</span>
+            </div>
+            <button type="submit" class="btn btn-primary btn-full" id="submitBtn"><i class="fas fa-paper-plane"></i> Enviar mensagem</button>
+            <div class="form-success" id="formSuccess" hidden>Mensagem enviada com carinho. Obrigado por fazer parte desse momento.</div>
+          </form>
+
+          <div class="messages-list glass-card" id="messagesList">
+            <div class="empty-state">
+              <i class="fas fa-heart"></i>
+              <p>Nenhuma mensagem enviada ainda.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div class="footer-inner">
+      <div class="brand-slot footer-brand-slot" id="footerBrandSlot"></div>
+      <p class="footer-names" id="footerNames">Igo <span>❤</span> Fernanda</p>
+      <p class="footer-date" id="footerDate">01 de Agosto de 2026</p>
+      <div class="footer-ornament">~ ❧ ~</div>
+      <p class="footer-quote" id="footerQuote">Vocês fazem parte da nossa história.</p>
+      <button class="admin-link" id="openAdminLoginBtn" type="button"><i class="fas fa-lock"></i> Portal do administrador</button>
+    </div>
+  </footer>
+
+  <button id="backToTop" class="back-to-top" aria-label="Voltar ao topo" title="Voltar ao topo">
+    <i class="fas fa-chevron-up"></i>
+  </button>
+
+  <div class="modal" id="guestModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-dialog glass-card modal-sm">
+      <button class="modal-close" type="button" data-close-modal aria-label="Fechar"><i class="fas fa-xmark"></i></button>
+      <p class="section-pre">Confirmar presença</p>
+      <h2>Digite o nome do convidado</h2>
+      <form id="guestModalForm" class="lookup-form modal-form">
+        <label for="guestModalCode">Nome do convidado</label>
+        <input id="guestModalCode" type="text" maxlength="80" placeholder="Ex.: Paulo, Ricardo ou Roberta" />
+        <button class="btn btn-primary" type="submit"><i class="fas fa-circle-check"></i> Localizar convite</button>
+      </form>
+      <div id="guestModalFeedback" class="lookup-result compact-result">
+        <div class="empty-state">
+          <i class="fas fa-heart-circle-check"></i>
+          <p>Digite o seu primeiro nome para localizar seu convite.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="ticketModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-ticket></div>
+    <div class="modal-dialog modal-lg">
+      <button class="modal-close dark" type="button" data-close-ticket aria-label="Fechar"><i class="fas fa-xmark"></i></button>
+      <div class="ticket-card printable-card" id="printableCard">
+        <div class="ticket-top-brand printable-brand">
+          <div class="brand-slot ticket-brand-slot" id="ticketBrandSlot"></div>
+          <div>
+            <p class="ticket-monogram" id="ticketMonogramLabel">I &amp; F</p>
+            <p class="ticket-subtitle">Renovação de votos</p>
+          </div>
+        </div>
+
+        <div class="ticket-header">
+          <h3 class="ticket-couple" id="ticketCoupleName">Igo &amp; Fernanda</h3>
+          <p class="ticket-datetime" id="ticketDateTimeLabel">01 de Agosto de 2026 às 17h</p>
+          <p class="ticket-local" id="ticketLocationLabel">Salão de Festas - Condomínio Residencial Tapajós - Manaus/AM</p>
+        </div>
+
+        <div class="ticket-meta">
+          <div><span class="meta-label">Nome do convidado</span><strong id="cardGuestName">—</strong></div>
+          <div><span class="meta-label">Convidados cadastrados</span><strong id="cardInviteCode">—</strong></div>
+          <div id="cardTableNumberRow" style="display: none;"><span class="meta-label">Número da mesa</span><strong id="cardTableNumber">—</strong></div>
+          <div><span class="meta-label">Total de pessoas</span><strong id="cardGuestCount">—</strong></div>
+        </div>
+
+        <div class="ticket-body">
+          <div class="ticket-qr-block">
+            <div id="ticketQrCode" class="ticket-qrcode"></div>
+            <p class="qr-caption">QRCode de confirmação</p>
+          </div>
+          <div class="ticket-passwords" id="cardPasswords"></div>
+        </div>
+
+        <div class="ticket-footer">
+          <p id="ticketFooterText">Apresente este convite na portaria de entrada.</p>
+          <p class="status-badge success">Presença confirmada</p>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-soft" id="downloadPdfBtn" type="button"><i class="fas fa-file-pdf"></i> Baixar PDF</button>
+        <button class="btn btn-primary" id="closeTicketBtn" type="button"><i class="fas fa-check"></i> Fechar cartão</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="giftModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-gift></div>
+    <div class="modal-dialog modal-xl glass-card">
+      <button class="modal-close" type="button" data-close-gift aria-label="Fechar"><i class="fas fa-xmark"></i></button>
+      <p class="section-pre">Lista de presentes</p>
+      <h2>2ª Lua de Mel</h2>
+      <p class="section-desc">Escolha uma experiência para presentear o casal. Ao selecionar um item, você verá as opções de pagamento por cartão via Mercado Pago e por Pix.</p>
+      <div class="gift-modal-layout">
+        <div class="gift-options" id="giftOptions"></div>
+        <aside class="gift-payment-panel" id="giftPaymentPanel">
+          <div class="empty-state compact">
+            <i class="fas fa-gift"></i>
+            <p>Selecione um presente para visualizar os detalhes de pagamento.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="uploadModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-upload></div>
+    <div class="modal-dialog glass-card modal-md">
+      <button class="modal-close" type="button" data-close-upload aria-label="Fechar"><i class="fas fa-xmark"></i></button>
+      <p class="section-pre">Galeria colaborativa</p>
+      <h2>Compartilhe fotos e vídeos</h2>
+      <p class="section-desc">Selecione os arquivos que deseja enviar para a galeria da festa. Fotos e vídeos ficarão disponíveis no site para todos os convidados.</p>
+      <form id="uploadForm" class="upload-form">
+        <div class="form-group">
+          <label for="uploaderName">Seu nome</label>
+          <input type="text" id="uploaderName" maxlength="80" placeholder="Ex.: Família Silva" />
+        </div>
+        <div class="form-group">
+          <label for="galleryFiles">Arquivos</label>
+          <input type="file" id="galleryFiles" multiple accept="image/*,video/*" />
+          <small>Você pode selecionar múltiplos arquivos de uma vez.</small>
+        </div>
+        <button class="btn btn-primary btn-full" type="submit" id="uploadSubmitBtn"><i class="fas fa-cloud-arrow-up"></i> Enviar para a galeria</button>
+      </form>
+      <div class="upload-status" id="uploadStatus"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="adminLoginModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-admin-login></div>
+    <div class="modal-dialog glass-card modal-sm">
+      <button class="modal-close" type="button" data-close-admin-login aria-label="Fechar"><i class="fas fa-xmark"></i></button>
+      <p class="section-pre">Portal privado</p>
+      <h2>Acesso do administrador</h2>
+      <form id="adminLoginForm" class="lookup-form modal-form">
+        <label for="adminPassword">Senha do administrador</label>
+        <input id="adminPassword" type="password" placeholder="Digite a senha" autocomplete="current-password" />
+        <button class="btn btn-primary" type="submit"><i class="fas fa-lock-open"></i> Entrar no painel</button>
+      </form>
+      <div id="adminLoginFeedback" class="inline-feedback"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="adminPanelModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-admin-panel></div>
+    <div class="modal-dialog modal-xxl admin-dialog">
+      <button class="modal-close dark" type="button" data-close-admin-panel aria-label="Fechar"><i class="fas fa-xmark"></i></button>
+      <div class="admin-panel-shell glass-card">
+        <div class="admin-header">
+          <div>
+            <p class="section-pre">Portal do administrador</p>
+            <h2>Painel completo do site</h2>
+            <p class="section-desc">Edite logo, cores, fundo, textos, imagens, música, animação, presentes e a lista de convidados sem mudar o modelo principal do site.</p>
+          </div>
+          <div class="admin-toolbar-top">
+            <button class="btn btn-soft" type="button" id="adminRefreshBtn"><i class="fas fa-rotate"></i> Atualizar</button>
+            <button class="btn btn-primary" type="button" id="adminSaveBtn"><i class="fas fa-floppy-disk"></i> Salvar alterações</button>
+          </div>
+        </div>
+
+        <div class="stats-grid" id="adminStatsGrid">
+          <div class="stat-card"><span class="stat-label">Convites ativos</span><strong id="statActiveInvites">0</strong></div>
+          <div class="stat-card"><span class="stat-label">Total de senhas</span><strong id="statTotalPasswords">0</strong></div>
+          <div class="stat-card"><span class="stat-label">Confirmados</span><strong id="statConfirmed">0</strong></div>
+          <div class="stat-card"><span class="stat-label">Recusados</span><strong id="statDeclined">0</strong></div>
+          <div class="stat-card"><span class="stat-label">Pessoas confirmadas</span><strong id="statTotalPeople">0</strong></div>
+          <div class="stat-card"><span class="stat-label">Total incluído nos convites</span><strong id="statTotalIncluded">0</strong></div>
+        </div>
+
+        <div class="confirmed-guests-list" id="confirmedGuestsList" style="margin-top:12px">
+          <h4>Convidados confirmados</h4>
+          <div id="confirmedGuestsHost" class="stack-list"></div>
+        </div>
+
+        <div class="admin-workspace">
+          <aside class="admin-sidebar" aria-label="Seções do painel do administrador">
+            <button class="admin-nav-item active" type="button" data-admin-tab="visual"><i class="fas fa-palette"></i><span>Visual</span><small>Logo, letras e cores</small></button>
+            <button class="admin-nav-item" type="button" data-admin-tab="textos"><i class="fas fa-pen-to-square"></i><span>Textos</span><small>Evento, local e senha</small></button>
+            <button class="admin-nav-item" type="button" data-admin-tab="som"><i class="fas fa-volume-high"></i><span>Som</span><small>Música e volume</small></button>
+            <button class="admin-nav-item" type="button" data-admin-tab="imagens"><i class="fas fa-images"></i><span>Imagens</span><small>Casal e história</small></button>
+            <button class="admin-nav-item" type="button" data-admin-tab="presentes"><i class="fas fa-gift"></i><span>Presentes</span><small>Lista e pagamentos</small></button>
+            <button class="admin-nav-item" type="button" data-admin-tab="mensagens"><i class="fas fa-envelope"></i><span>Mensagens</span><small>Comentários e recados</small></button>
+            <button class="admin-nav-item" type="button" data-admin-tab="senhas"><i class="fas fa-key"></i><span>Senhas</span><small>Convites e convidados</small></button>
+          </aside>
+
+          <div class="admin-content">
+          <section class="glass-card admin-section active" data-admin-panel="visual">
+            <div class="admin-section-head">
+              <h3>Identidade visual, logo e fundo</h3>
+              <p>Envie um logo pronto, use uma imagem ou monte um monograma sofisticado com iniciais e templates.</p>
+            </div>
+
+            <div class="admin-form-grid two-columns">
+              <label>Modo do logo
+                <select id="cfgLogoMode">
+                  <option value="image">Logo por imagem</option>
+                  <option value="monogram">Logo por iniciais</option>
+                </select>
+              </label>
+              <label>URL do logo / imagem
+                <div class="input-with-action">
+                  <input type="text" id="cfgLogoUrl" placeholder="/uploads/assets/logo.png ou https://..." />
+                  <label class="mini-upload-btn">
+                    <i class="fas fa-upload"></i>
+                    <input type="file" data-upload-input data-upload-target="cfgLogoUrl" data-upload-slot="logo" accept="image/*" hidden />
+                  </label>
+                </div>
+              </label>
+              <label>Iniciais do monograma
+                <input type="text" id="cfgMonogramInitials" maxlength="4" placeholder="IF" />
+              </label>
+              <label>Subtítulo do logo
+                <input type="text" id="cfgLogoSubtitle" maxlength="60" placeholder="01 . 08 . 2026" />
+              </label>
+              <label>Cor principal do logo
+                <input type="color" id="cfgLogoPrimaryColor" />
+              </label>
+              <label>Cor de destaque do logo
+                <input type="color" id="cfgLogoAccentColor" />
+              </label>
+              <label>Cor de fundo do logo
+                <input type="color" id="cfgLogoBackgroundColor" />
+              </label>
+              <label>Imagem de fundo principal
+                <div class="input-with-action">
+                  <input type="text" id="cfgHeroBackgroundUrl" placeholder="https://..." />
+                  <label class="mini-upload-btn">
+                    <i class="fas fa-image"></i>
+                    <input type="file" data-upload-input data-upload-target="cfgHeroBackgroundUrl" data-upload-slot="hero-background" accept="image/*" hidden />
+                  </label>
+                </div>
+              </label>
+            </div>
+
+            <div class="admin-subsection">
+              <div class="admin-section-head small-gap">
+                <h3>Templates prontos de letras</h3>
+                <p>Selecione um estilo para montar automaticamente o logo por iniciais.</p>
+              </div>
+              <div class="template-grid" id="templateSelectorGrid">
+                <label class="template-card" data-template-card="luxury-script">
+                  <input type="radio" name="logoTemplate" value="luxury-script" />
+                  <div class="template-preview luxury-script" data-template-preview>IF</div>
+                  <strong>Luxo com script</strong>
+                  <span>Inicial serifada com letra fluida em destaque.</span>
+                </label>
+                <label class="template-card" data-template-card="round-seal">
+                  <input type="radio" name="logoTemplate" value="round-seal" />
+                  <div class="template-preview round-seal" data-template-preview>IF</div>
+                  <strong>Selo circular</strong>
+                  <span>Ideal para brasão, etiqueta e convite impresso.</span>
+                </label>
+                <label class="template-card" data-template-card="crest-classic">
+                  <input type="radio" name="logoTemplate" value="crest-classic" />
+                  <div class="template-preview crest-classic" data-template-preview>IF</div>
+                  <strong>Brasão clássico</strong>
+                  <span>Com aparência elegante e assinatura de casamento.</span>
+                </label>
+                <label class="template-card" data-template-card="modern-line">
+                  <input type="radio" name="logoTemplate" value="modern-line" />
+                  <div class="template-preview modern-line" data-template-preview>IF</div>
+                  <strong>Linha moderna</strong>
+                  <span>Mais clean, atual e sofisticado.</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="admin-subsection">
+              <div class="admin-section-head small-gap">
+                <h3>Cores do site</h3>
+                <p>Altere rapidamente a paleta principal e o gradiente do topo.</p>
+              </div>
+              <div class="admin-form-grid color-grid">
+                <label>Plano de fundo<input type="color" id="cfgThemeBg" /></label>
+                <label>Texto<input type="color" id="cfgThemeText" /></label>
+                <label>Texto suave<input type="color" id="cfgThemeTextSoft" /></label>
+                <label>Cor destaque<input type="color" id="cfgThemeAccent" /></label>
+                <label>Destaque escuro<input type="color" id="cfgThemeAccentDark" /></label>
+                <label>Ouro suave<input type="color" id="cfgThemeGold" /></label>
+                <label>Hero início<input type="color" id="cfgHeroGradientStart" /></label>
+                <label>Hero meio<input type="color" id="cfgHeroGradientMiddle" /></label>
+                <label>Hero fim<input type="color" id="cfgHeroGradientEnd" /></label>
+              </div>
+            </div>
+          </section>
+
+          <section class="glass-card admin-section" data-admin-panel="textos">
+            <div class="admin-section-head">
+              <h3>Textos, local e segurança</h3>
+              <p>Edite os conteúdos principais, endereço, rodapé do convite e senha do administrador.</p>
+            </div>
+
+            <div class="admin-form-grid two-columns">
+              <label>Texto principal
+                <input type="text" id="cfgHeroPre" maxlength="220" />
+              </label>
+              <label>Frase de apoio do topo
+                <input type="text" id="cfgHeroNote" maxlength="220" />
+              </label>
+              <label>Nomes do casal
+                <input type="text" id="cfgCoupleNames" maxlength="120" />
+              </label>
+              <label>Data e hora (ISO)
+                <input type="datetime-local" id="cfgEventDateIso" />
+              </label>
+              <label>Data exibida
+                <input type="text" id="cfgDateDisplay" maxlength="120" />
+              </label>
+              <label>Nome do local
+                <input type="text" id="cfgLocationName" maxlength="140" />
+              </label>
+              <label>Endereço completo
+                <input type="text" id="cfgLocationAddress" maxlength="220" />
+              </label>
+              <label>Link do Google Maps
+                <input type="url" id="cfgMapsUrl" />
+              </label>
+              <label>URL do mapa embed
+                <input type="url" id="cfgMapEmbedUrl" />
+              </label>
+              <label>Dress code
+                <input type="text" id="cfgDressCode" maxlength="100" />
+              </label>
+              <label>Dica do dress code
+                <input type="text" id="cfgDressCodeHint" maxlength="140" />
+              </label>
+              <label>Rodapé do convite impresso
+                <input type="text" id="cfgFooterText" maxlength="180" />
+              </label>
+              <label>Frase do rodapé
+                <input type="text" id="cfgFooterQuote" maxlength="180" />
+              </label>
+              <label>Senha do administrador
+                <input type="text" id="cfgAdminPassword" maxlength="80" />
+              </label>
+              <label>Link do convite HTML
+                <div class="input-with-action">
+                  <input type="text" id="cfgInviteHtmlLink" readonly />
+                  <button class="mini-upload-btn" id="openInviteHtmlBtn" type="button" title="Abrir convite em nova aba">
+                    <i class="fas fa-up-right-from-square"></i>
+                  </button>
+                </div>
+              </label>
+            </div>
+
+          </section>
+
+          <section class="glass-card admin-section" data-admin-panel="som">
+            <div class="admin-section-head">
+              <h3>Som e animação</h3>
+              <p>Ative a música do site, teste o áudio e personalize a animação visual.</p>
+            </div>
+            <div class="admin-subsection">
+              <div class="admin-section-head small-gap">
+                <h3>Música do site</h3>
+                <p>Escolha um dos 3 modelos de trilha calma de casamento ou envie um áudio próprio.</p>
+              </div>
+              <div class="switch-list">
+                <label class="switch-row"><input type="checkbox" id="cfgMusicEnabled" /> <span>Ativar música</span></label>
+                <label class="switch-row"><input type="checkbox" id="cfgMusicAutoplay" /> <span>Tentar tocar automaticamente após interação</span></label>
+              </div>
+              <div class="admin-form-grid two-columns">
+                <label>Modo da trilha
+                  <select id="cfgMusicMode">
+                    <option value="preset">Modelos prontos</option>
+                    <option value="file">Arquivo / URL</option>
+                  </select>
+                </label>
+                <label>Volume
+                  <input type="range" id="cfgMusicVolume" min="0" max="1" step="0.01" />
+                </label>
+                <label>Título da música
+                  <input type="text" id="cfgMusicTitle" maxlength="80" />
+                </label>
+                <label>Subtítulo da música
+                  <input type="text" id="cfgMusicSubtitle" maxlength="120" />
+                </label>
+                <label>URL do áudio
+                  <div class="input-with-action">
+                    <input type="text" id="cfgMusicUrl" placeholder="/uploads/assets/audio.mp3 ou https://..." />
+                    <label class="mini-upload-btn">
+                      <i class="fas fa-music"></i>
+                      <input type="file" data-upload-input data-upload-target="cfgMusicUrl" data-upload-slot="site-music" accept="audio/*" hidden />
+                    </label>
+                  </div>
+                </label>
+              </div>
+              <div class="preset-grid" id="musicPresetGrid">
+                <button class="preset-card" type="button" data-music-preset="instrumental-romantico">
+                  <strong>1. Instrumental romântico</strong>
+                  <span>Piano suave e atmosfera elegante para abertura do site.</span>
+                </button>
+                <button class="preset-card" type="button" data-music-preset="piano-calmo">
+                  <strong>2. Piano calmo</strong>
+                  <span>Clima delicado, intimista e moderno.</span>
+                </button>
+                <button class="preset-card" type="button" data-music-preset="serenata-suave">
+                  <strong>3. Serenata suave</strong>
+                  <span>Leve, acolhedora e perfeita para um site de casamento.</span>
+                </button>
+                <button class="preset-card" type="button" data-music-preset="calmaria-dourada">
+                  <strong>4. Calmaria dourada</strong>
+                  <span>Faixa extra para fundo calmo e sofisticado.</span>
+                </button>
+                <button class="preset-card" type="button" data-music-preset="brisa-do-jardim">
+                  <strong>5. Brisa do jardim</strong>
+                  <span>Trilha delicada para navegação suave no site.</span>
+                </button>
+                <button class="preset-card" type="button" data-music-preset="luz-do-entardecer">
+                  <strong>6. Luz do entardecer</strong>
+                  <span>Opção ambiente para um clima romântico e tranquilo.</span>
+                </button>
+              </div>
+              <div class="admin-sound-actions">
+                <button class="btn btn-soft" type="button" id="adminPreviewMusicBtn"><i class="fas fa-play"></i> Testar som</button>
+                <button class="btn btn-soft" type="button" id="adminStopMusicBtn"><i class="fas fa-stop"></i> Parar som</button>
+                <span class="inline-hint" id="musicStatusHint">Modelos prontos usam áudio gerado pelo navegador. Para uma música real, envie um arquivo.</span>
+              </div>
+            </div>
+
+            <div class="admin-subsection">
+              <div class="admin-section-head small-gap">
+                <h3>Animação do site inteiro</h3>
+                <p>Mantenha a chuva leve caindo em todo o site, com opção de trocar símbolo e intensidade.</p>
+              </div>
+              <div class="admin-form-grid two-columns">
+                <label class="switch-row"><input type="checkbox" id="cfgAnimationEnabled" /> <span>Ativar animação</span></label>
+                <label>Símbolo da animação
+                  <select id="cfgAnimationSymbol">
+                    <option value="❦">❦ Folhas delicadas</option>
+                    <option value="❤">❤ Corações</option>
+                    <option value="✦">✦ Faíscas</option>
+                    <option value="•">• Chuva minimalista</option>
+                  </select>
+                </label>
+                <label>Densidade da animação
+                  <input type="range" id="cfgAnimationDensity" min="8" max="42" step="1" />
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="glass-card admin-section" data-admin-panel="imagens">
+            <div class="admin-section-head">
+              <h3>Imagens do casal e da história</h3>
+              <p>Atualize rapidamente fotos do topo, do casal e das etapas da timeline.</p>
+            </div>
+            <div class="admin-form-grid two-columns">
+              <label>Foto da Fernanda
+                <div class="input-with-action">
+                  <input type="text" id="cfgFernandaImageUrl" />
+                  <label class="mini-upload-btn">
+                    <i class="fas fa-camera"></i>
+                    <input type="file" data-upload-input data-upload-target="cfgFernandaImageUrl" data-upload-slot="fernanda-photo" accept="image/*" hidden />
+                  </label>
+                </div>
+              </label>
+              <label>Foto do Igo
+                <div class="input-with-action">
+                  <input type="text" id="cfgIgoImageUrl" />
+                  <label class="mini-upload-btn">
+                    <i class="fas fa-camera"></i>
+                    <input type="file" data-upload-input data-upload-target="cfgIgoImageUrl" data-upload-slot="igo-photo" accept="image/*" hidden />
+                  </label>
+                </div>
+              </label>
+              <label>Nome da Fernanda
+                <input type="text" id="cfgFernandaName" maxlength="60" />
+              </label>
+              <label>Cargo / papel da Fernanda
+                <input type="text" id="cfgFernandaRole" maxlength="60" />
+              </label>
+              <label>Bio da Fernanda
+                <textarea id="cfgFernandaBio" rows="4"></textarea>
+              </label>
+              <label>Nome do Igo
+                <input type="text" id="cfgIgoName" maxlength="60" />
+              </label>
+              <label>Cargo / papel do Igo
+                <input type="text" id="cfgIgoRole" maxlength="60" />
+              </label>
+              <label>Bio do Igo
+                <textarea id="cfgIgoBio" rows="4"></textarea>
+              </label>
+            </div>
+
+            <div class="admin-subsection">
+              <div class="admin-section-head small-gap">
+                <h3>Galeria da Festa</h3>
+                <p>Edite o texto e a descrição dos Momentos especiais.</p>
+              </div>
+              <div class="admin-form-grid two-columns">
+                <label>Texto pequeno
+                  <input type="text" id="cfgGalleryPre" maxlength="60" placeholder="Momentos especiais" />
+                </label>
+                <label>Título da galeria
+                  <input type="text" id="cfgGalleryTitle" maxlength="60" placeholder="Galeria da Festa" />
+                </label>
+                <label class="full-span">Descrição
+                  <textarea id="cfgGalleryDescription" rows="3" placeholder="Depois da festa, os convidados podem compartilhar fotos e vídeos diretamente pelo site."></textarea>
+                </label>
+              </div>
+              <div class="admin-form-grid two-columns">
+                <label>Adicionar fotos
+                  <input type="file" id="cfgGalleryFiles" multiple accept="image/*" />
+                </label>
+                <label>Legenda do uploader
+                  <input type="text" id="cfgGalleryUploader" maxlength="60" placeholder="Administrador" />
+                </label>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center;margin-top:8px">
+                <button class="btn btn-soft" type="button" id="cfgGalleryUploadBtn"><i class="fas fa-upload"></i> Enviar fotos</button>
+                <button class="btn btn-primary" type="button" id="cfgGalleryDownloadSelectedBtn"><i class="fas fa-check-square"></i> Baixar selecionados (ZIP)</button>
+                <button class="btn btn-primary" type="button" id="cfgGalleryDownloadBtn"><i class="fas fa-download"></i> Baixar tudo (ZIP)</button>
+              </div>
+              <div class="gallery-admin-preview" id="galleryAdminPreview"></div>
+            </div>
+
+            <div class="admin-subsection">
+              <div class="admin-section-head small-gap">
+                <h3>Timeline</h3>
+                <p>Edite textos e imagens de cada etapa da história.</p>
+              </div>
+              <div id="storyAdminList" class="stack-list"></div>
+            </div>
+          </section>
+
+          <section class="glass-card admin-section" data-admin-panel="presentes">
+            <div class="admin-section-head with-toolbar">
+              <div>
+                <h3>Lista de presentes com imagem</h3>
+                <p>Cada presente exibe: Título, Valor e Descrição. Convidados podem pagar com cartão ou Pix.</p>
+              </div>
+              <div class="toolbar">
+                <button class="btn btn-soft" id="addGiftBtn" type="button"><i class="fas fa-plus"></i> Novo presente</button>
+              </div>
+            </div>
+            <div class="admin-section-head small-gap">
+              <h3>Configuração de Pagamentos</h3>
+              <p>Adicione as informações de pagamento que serão exibidas para os convidados. Cada presente usa um link de cartão diferente; o Pix é único.</p>
+            </div>
+            <div class="admin-form-grid two-columns">
+              <label>Chave Pix
+                <input type="text" id="cfgPixKey" maxlength="160" />
+              </label>
+            </div>
+            <div id="giftAdminList" class="stack-list"></div>
+          </section>
+
+          <section class="glass-card admin-section" data-admin-panel="mensagens">
+            <div class="admin-section-head with-toolbar">
+              <div>
+                <h3>Mensagens Especiais</h3>
+                <p>Reveja, edite ou exclua comentários deixados pelos convidados.</p>
+              </div>
+              <div class="toolbar">
+                <button class="btn btn-primary" type="button" id="saveMessagesBtn"><i class="fas fa-floppy-disk"></i> Salvar mensagens</button>
+              </div>
+            </div>
+            <div class="admin-subsection">
+              <div class="admin-form-grid full-span">
+                <div id="messagesAdminList" class="stack-list"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="glass-card admin-section admin-invites" data-admin-panel="senhas">
+            <div class="admin-section-head with-toolbar">
+              <div>
+                <h3>Lista de convidados</h3>
+                <p>Gerencie convites por nome, acompanhe confirmações e veja os convidados cadastrados.</p>
+              </div>
+              <div class="toolbar">
+                <button class="btn btn-soft" id="generateInvitesBtn" type="button"><i class="fas fa-wand-magic-sparkles"></i> Gerar painel</button>
+                <button class="btn btn-soft" id="addRowsBtn" type="button"><i class="fas fa-plus"></i> Adicionar 20 linhas</button>
+                <button class="btn btn-soft danger" id="resetDataBtn" type="button"><i class="fas fa-trash"></i> Limpar painel</button>
+              </div>
+            </div>
+
+            <div class="table-wrap">
+              <table class="invite-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Código interno</th>
+                    <th>Nome do convidado</th>
+                    <th>Quantidade de Convidados</th>
+                    <th>Contato</th>
+                    <th>Mesa</th>
+                    <th>Convidados cadastrados</th>
+                    <th>Senhas</th>
+                    <th>Confirmação</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="inviteTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    (function(){
+      try {
+        const h = (location.hash || '').toLowerCase();
+        if (!h) return;
+        // abrir modal de presentes
+        if (h === '#open-gift' || h === '#presentes') {
+          if (typeof openModal === 'function') {
+            openModal('giftModal');
+            // manter a seção presente no hash para navegação
+            history.replaceState(null, '', location.pathname + location.search + '#presentes');
+          } else {
+            const el = document.getElementById('presentes'); if (el) el.scrollIntoView({behavior:'smooth'});
+          }
+        }
+        // abrir modal de confirmar presença
+        if (h === '#open-confirm' || h === '#confirmar') {
+          if (typeof openModal === 'function') {
+            openModal('guestModal');
+            history.replaceState(null, '', location.pathname + location.search + '#inicio');
+          }
+        }
+      } catch (e) {
+        // silencioso
+      }
+    })();
+  </script>
+</body>
+</html>
