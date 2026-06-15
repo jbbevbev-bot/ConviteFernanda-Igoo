@@ -1,9 +1,9 @@
 services:
-  - type: "static"
+  - type: "web"
     name: "Convite-Festa"
-    env: "static"
-    repo: "https://github.com/<seu-usuario>/<seu-repo>.git"
+    env: "python"
+    repo: "https://github.com/jbbevbev-bot/ConviteFernanda-Igo.git"
     branch: "main"
     buildCommand: ""
-    publishPath: "."
+    startCommand: "python server.py"
     plan: "free"

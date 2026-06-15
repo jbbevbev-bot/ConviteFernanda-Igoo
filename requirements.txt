@@ -1,0 +1,2 @@
+# Dependências do projeto
+# Deixe vazio se não houver pacotes externos.

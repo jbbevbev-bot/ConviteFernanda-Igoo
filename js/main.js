@@ -1859,7 +1859,26 @@ function wireAdminActions() {
 }
 
 async function loadPublicData() {
-  const data = await fetchJson('/api/site-data');
+  let data = null;
+  try {
+    data = await fetchJson('/api/site-data');
+  } catch (err) {
+    console.warn('Falha em /api/site-data, carregando _data estático como fallback:', err);
+    async function loadJson(path) {
+      try {
+        const resp = await fetch(path);
+        if (!resp.ok) return null;
+        return await resp.json();
+      } catch (e) {
+        return null;
+      }
+    }
+    const cfg = await loadJson('/_data/config.json') || {};
+    const msgs = await loadJson('/_data/messages.json') || [];
+    const gal = await loadJson('/_data/gallery.json') || [];
+    // invites não são necessários para a maior parte do público; manter estado local
+    data = { config: cfg, messages: msgs, gallery: gal, invites: [] };
+  }
   state.config = clone(data.config);
   state.gallery = clone(data.gallery || []);
   state.messages = clone(data.messages || []);

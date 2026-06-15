@@ -34,6 +34,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 import io
 import zipfile
+import mimetypes
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / '_data'
@@ -59,6 +60,11 @@ def safe_int(value, default=1):
 
 def utc_now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+# Garantir tipos MIME essenciais (algumas plataformas podem não mapear corretamente)
+mimetypes.add_type('text/css', '.css')
+mimetypes.add_type('text/javascript', '.js')
+mimetypes.add_type('application/javascript', '.js')
 
 
 def slugify_filename(name: str) -> str:
@@ -903,8 +909,9 @@ class InviteHandler(SimpleHTTPRequestHandler):
 if __name__ == '__main__':
     ensure_storage()
     os.chdir(BASE_DIR)
-    with ThreadingHTTPServer(('127.0.0.1', PORT), InviteHandler) as httpd:
-        print(f'Servidor rodando em http://localhost:{PORT}')
+    # Bind em 0.0.0.0 para permitir acesso externo em ambientes de produção
+    with ThreadingHTTPServer(('0.0.0.0', PORT), InviteHandler) as httpd:
+        print(f'Servidor rodando em http://0.0.0.0:{PORT}')
         print('Portal do administrador com senha habilitado')
         print('Editor visual com uploads de logo, fundo, imagens e áudio')
         print('Galeria colaborativa de fotos e vídeos habilitada')
