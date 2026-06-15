@@ -38,7 +38,12 @@ import mimetypes
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / '_data'
-UPLOADS_DIR = BASE_DIR / 'uploads'
+# Diretório de uploads — pode ser sobrescrito por env var `UPLOADS_DIR`
+_uploads_env = os.environ.get('UPLOADS_DIR', '')
+if _uploads_env:
+    UPLOADS_DIR = Path(_uploads_env)
+else:
+    UPLOADS_DIR = BASE_DIR / 'uploads'
 ASSETS_DIR = UPLOADS_DIR / 'assets'
 PORT = int(os.environ.get('PORT', '8000'))
 MAX_UPLOAD_SIZE = 30 * 1024 * 1024
@@ -912,6 +917,7 @@ if __name__ == '__main__':
     # Bind em 0.0.0.0 para permitir acesso externo em ambientes de produção
     with ThreadingHTTPServer(('0.0.0.0', PORT), InviteHandler) as httpd:
         print(f'Servidor rodando em http://0.0.0.0:{PORT}')
+        print(f'Uploads directory: {UPLOADS_DIR}')
         print('Portal do administrador com senha habilitado')
         print('Editor visual com uploads de logo, fundo, imagens e áudio')
         print('Galeria colaborativa de fotos e vídeos habilitada')

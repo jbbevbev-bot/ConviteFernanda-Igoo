@@ -32,6 +32,12 @@ Deploy recomendado no Render (Web Service Python)
 
 Notas sobre armazenamento (importante):
 - Arquivos enviados à galeria são gravados em `uploads/` no sistema de arquivos do serviço. O armazenamento de arquivos no Render é efêmero por padrão: arquivos podem ser perdidos após um novo deploy. Para persistência, use um bucket S3 (ou serviço similar) ou habilite Persistent Disk (recurso pago do Render).
+ - Arquivos enviados à galeria são gravados em `uploads/` no sistema de arquivos do serviço. O armazenamento de arquivos no Render é efêmero por padrão: arquivos podem ser perdidos após um novo deploy. Para persistência, use um bucket S3 (ou serviço similar) ou habilite Persistent Disk (recurso pago do Render).
+
+Persistent Disk (Render) — como usar
+- Crie um Persistent Disk no painel do Render e monte em `/home/render/uploads`.
+- No serviço (Environment → Environment Variables) adicione: `UPLOADS_DIR=/home/render/uploads`.
+- O `server.py` já respeita `UPLOADS_DIR` e gravará uploads nesse caminho quando definido.
 
 Deploy como site estático (opcional)
 
