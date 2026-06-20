@@ -1089,9 +1089,24 @@ async function downloadTicketPdf() {
 
 function wirePublicActions() {
   q('#openGuestLookupBtn')?.addEventListener('click', () => openModal('guestModal'));
-  q('#openGiftModalBtn')?.addEventListener('click', () => openModal('giftModal'));
-  // hero main button now opens the gift list (Lista de Presente)
-  q('#openUploadModalBtn')?.addEventListener('click', () => openModal('giftModal'));
+  q('#openGiftModalBtn')?.addEventListener('click', (e) => {
+    const target = q('#presentes') || q('#gifts') || q('#giftHighlights');
+    if (target) {
+      try { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { target.scrollIntoView(); }
+      return;
+    }
+    openModal('giftModal');
+  });
+  // hero main button now scrolls to the gifts hero copy (badge 'Presente')
+  q('#openUploadModalBtn')?.addEventListener('click', (e) => {
+    const target = q('#giftsTitle') || q('#presentes .gift-hero-copy') || q('#presentes .gift-badge') || q('#presentes') || q('#giftHighlights');
+    if (target) {
+      try { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (err) { target.scrollIntoView(); }
+      try { history.replaceState(null, '', location.pathname + location.search + '#presentes'); } catch (e) {}
+      return;
+    }
+    openModal('giftModal');
+  });
   // keep secondary upload button opening the upload modal
   qa('#openUploadModalBtnSecondary').forEach(button => button.addEventListener('click', () => openModal('uploadModal')));
   q('#openAdminLoginBtn')?.addEventListener('click', () => openModal('adminLoginModal'));
