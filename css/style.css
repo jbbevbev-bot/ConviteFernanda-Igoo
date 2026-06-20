@@ -1244,11 +1244,12 @@ textarea { resize: vertical; }
 }
 .messages-list .message-item { margin-bottom: 12px; }
 
-/* Gift modal: center and show only left column (single view) */
 #giftModal .modal-dialog { max-width: 920px; width: min(920px, 86vw); }
-#giftModal .gift-payment-panel { display: none; }
-#giftModal .gift-options { margin: 0 auto; max-width: 720px; }
-#giftModal .gift-single-thumb { width:120px; height:90px; }
+/* Modal isolated view: center single gift and show payment panel below */
+#giftModal .gift-modal-layout { display:flex; flex-direction:column; align-items:center; gap:1rem; }
+#giftModal .gift-options { width: 100%; max-width: 720px; margin: 0 auto; }
+#giftModal .gift-single-thumb { width:140px; height:110px; }
+#giftModal .gift-payment-panel { width: 100%; max-width: 720px; margin: 0 auto; }
 .payment-details {
   margin-top: 1.2rem;
   padding: 1rem;

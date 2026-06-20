@@ -484,9 +484,16 @@ function renderGiftOptions(gifts) {
     `;
     const back = q('#giftBackBtn');
     if (back) back.addEventListener('click', () => {
+      // fechar modal e voltar para a seção de presentes na página principal
+      closeModal('giftModal');
+      // limpar estado isolado
       state.giftModalIsolated = false;
-      renderGiftOptions(state.config.gifts);
-      renderGiftPayment();
+      state.selectedGiftIndex = null;
+      // navegar para a seção de presentes
+      const target = q('#presentes');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // atualizar hash para #presentes
+      try { history.replaceState(null, '', location.pathname + location.search + '#presentes'); } catch (e) {}
     });
   } else {
     host.innerHTML = gifts.map((gift, index) => `
