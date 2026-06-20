@@ -122,19 +122,52 @@ function showToast(message, type = 'pending') {
 function openModal(id) {
   const modal = document.getElementById(id);
   if (!modal) return;
+  // save previously focused element to restore focus on close
+  state._previousActiveElement = document.activeElement;
+
+  // mark main content inert (if supported) so assistive tech and focus skip it
+  const main = document.querySelector('main');
+  if (main) {
+    if ('inert' in main) main.inert = true;
+    else main.setAttribute('aria-hidden', 'true');
+  }
+
   modal.classList.add('show');
   modal.setAttribute('aria-hidden', 'false');
   document.body.classList.add('modal-open');
+
+  // focus dialog for keyboard users
+  const dialog = modal.querySelector('.modal-dialog');
+  if (dialog) {
+    dialog.setAttribute('tabindex', '-1');
+    try { dialog.focus(); } catch (e) {}
+  }
 }
 
 function closeModal(id) {
   const modal = document.getElementById(id);
   if (!modal) return;
+  // restore focus to previously focused element before hiding the modal
+  try {
+    const prev = state._previousActiveElement || document.body;
+    if (prev && typeof prev.focus === 'function') prev.focus();
+  } catch (e) {}
+
   modal.classList.remove('show');
   modal.setAttribute('aria-hidden', 'true');
+
+  // unmark main content inert/aria-hidden
+  const main = document.querySelector('main');
+  if (main) {
+    if ('inert' in main) main.inert = false;
+    else main.removeAttribute('aria-hidden');
+  }
+
   if (!document.querySelector('.modal.show')) {
     document.body.classList.remove('modal-open');
   }
+  // cleanup
+  delete state._previousActiveElement;
 }
 
 function setupModals() {
