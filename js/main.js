@@ -403,17 +403,22 @@ function applyMedia() {
   }
   if (media.enabled && media.autoplay && !window.__musicAutoplayArmed) {
     window.__musicAutoplayArmed = true;
-    const startAfterInteraction = async () => {
-      document.removeEventListener('pointerdown', startAfterInteraction);
-      document.removeEventListener('keydown', startAfterInteraction);
-      try {
-        await playSiteMusic();
-      } catch (error) {
-        q('#musicToggleBtn i')?.classList.replace('fa-pause', 'fa-play');
-      }
-    };
-    document.addEventListener('pointerdown', startAfterInteraction, { once: true });
-    document.addEventListener('keydown', startAfterInteraction, { once: true });
+    // try to play immediately; if browser blocks autoplay, fallback to start on first interaction
+    playSiteMusic().then(() => {
+      // played successfully
+    }).catch(() => {
+      const startAfterInteraction = async () => {
+        document.removeEventListener('pointerdown', startAfterInteraction);
+        document.removeEventListener('keydown', startAfterInteraction);
+        try {
+          await playSiteMusic();
+        } catch (error) {
+          q('#musicToggleBtn i')?.classList.replace('fa-pause', 'fa-play');
+        }
+      };
+      document.addEventListener('pointerdown', startAfterInteraction, { once: true });
+      document.addEventListener('keydown', startAfterInteraction, { once: true });
+    });
   }
 }
 
@@ -1085,7 +1090,10 @@ async function downloadTicketPdf() {
 function wirePublicActions() {
   q('#openGuestLookupBtn')?.addEventListener('click', () => openModal('guestModal'));
   q('#openGiftModalBtn')?.addEventListener('click', () => openModal('giftModal'));
-  qa('#openUploadModalBtn, #openUploadModalBtnSecondary').forEach(button => button.addEventListener('click', () => openModal('uploadModal')));
+  // hero main button now opens the gift list (Lista de Presente)
+  q('#openUploadModalBtn')?.addEventListener('click', () => openModal('giftModal'));
+  // keep secondary upload button opening the upload modal
+  qa('#openUploadModalBtnSecondary').forEach(button => button.addEventListener('click', () => openModal('uploadModal')));
   q('#openAdminLoginBtn')?.addEventListener('click', () => openModal('adminLoginModal'));
   q('#musicToggleBtn')?.addEventListener('click', async () => {
     const audio = q('#siteMusic');
