@@ -431,17 +431,32 @@ function applyConfig() {
   applyMedia();
   createPetals();
   startCountdown(event.eventDateIso);
+  // aplicar textos fixos customizados, se houver
+  applyFixedTexts();
 }
 
 function renderGiftHighlights(gifts) {
   const host = q('#giftHighlights');
   if (!host) return;
-  host.innerHTML = gifts.slice(0, 5).map(gift => `
-    <div class="gift-mini-item">
+  host.innerHTML = gifts.slice(0, 5).map((gift, index) => `
+    <div class="gift-mini-item" data-gift-index="${index}">
       <strong>${escapeHtml(gift.title)}</strong>
       <span>${currency(gift.price)}</span>
     </div>
   `).join('');
+
+  // abrir o modal do presente ao clicar no item resumido
+  host.querySelectorAll('.gift-mini-item').forEach(el => {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', () => {
+      const idx = Number(el.dataset.giftIndex || 0);
+      state.selectedGiftIndex = idx;
+      // garantir que o modal mostre o presente selecionado
+      renderGiftOptions(state.config.gifts);
+      renderGiftPayment();
+      openModal('giftModal');
+    });
+  });
 }
 
 
@@ -743,8 +758,13 @@ function buildLookupResult(row) {
       </div>
       <div class="result-meta">
         <div class="meta-box"><span>Nome localizado</span><strong>${escapeHtml(row.name || 'Convidado')}</strong></div>
-        <div class="meta-box"><span>Quantidade de Convidados</span><input type="number" class="lookup-count-input" data-attending-count min="1" max="30" value="${escapeHtml(String(row.attendingCount || totalPeopleOnInvite(row)))}" ${isConfirmed ? 'disabled' : ''} /></div>
-        <div class="meta-box"><span>Contato</span>${isConfirmed ? `<strong>${escapeHtml(row.contact || 'Não informado')}</strong>` : `<input type="text" class="lookup-contact-input" data-contact-input placeholder="Telefone / contato" value="${escapeHtml(row.contact || '')}" />`}</div>
+        <div class="meta-box"><span>Quantidade de Convidados</span>
+          <div class="qty-control">
+            <button type="button" class="qty-btn qty-decrease" ${isConfirmed ? 'disabled' : ''}>−</button>
+            <input type="number" class="lookup-count-input" data-attending-count min="1" max="30" value="${escapeHtml(String(row.attendingCount || totalPeopleOnInvite(row)))}" ${isConfirmed ? 'disabled' : ''} />
+            <button type="button" class="qty-btn qty-increase" ${isConfirmed ? 'disabled' : ''}>+</button>
+          </div>
+        </div>
         <div class="meta-box"><span>Status</span><strong>${row.confirmation === 'confirmado' ? 'Presença confirmada' : row.confirmation === 'recusado' ? 'Ausência informada' : 'Aguardando resposta'}</strong></div>
       </div>
       <label class="lookup-guests-label">
@@ -756,7 +776,7 @@ function buildLookupResult(row) {
       ${isConfirmed ? `<div class="lookup-contact-note">Se precisar alterar convidados ou cancelar, entre em contato com Igo ou Fernanda.</div>` : ''}
       <div>${buildStatusPill(row.confirmation)}</div>
       <div class="result-actions">
-        <button class="btn btn-primary" type="button" data-result-action="confirm" ${isConfirmed ? 'disabled' : ''}><i class="fas fa-circle-check"></i> Salvar e confirmar presença</button>
+      <button class="btn btn-primary" type="button" data-result-action="confirm" ${isConfirmed ? 'disabled' : ''}><i class="fas fa-circle-check"></i> Confirmar presença</button>
         <button class="btn btn-soft" type="button" data-result-action="decline" ${isConfirmed ? 'disabled' : ''}><i class="fas fa-heart-crack"></i> Não poderei ir</button>
         ${canOpen ? '<button class="btn btn-soft" type="button" data-result-action="open-ticket"><i class="fas fa-id-card"></i> Abrir convite</button>' : ''}
       </div>
@@ -784,6 +804,25 @@ function setupGuestNameInputs(card) {
   countInput.oninput = () => {
     setupGuestNameInputs(card);
   };
+  // botões de aumentar/diminuir quantidade
+  const decBtn = card.querySelector('.qty-decrease');
+  const incBtn = card.querySelector('.qty-increase');
+  if (decBtn) {
+    decBtn.onclick = () => {
+      if (countInput.disabled) return;
+      const v = Math.max(1, Number(countInput.value || 1) - 1);
+      countInput.value = v;
+      countInput.oninput && countInput.oninput();
+    };
+  }
+  if (incBtn) {
+    incBtn.onclick = () => {
+      if (countInput.disabled) return;
+      const v = Math.min(30, Number(countInput.value || 1) + 1);
+      countInput.value = v;
+      countInput.oninput && countInput.oninput();
+    };
+  }
   if (card.dataset && card.dataset.confirmed === '1') {
     countInput.disabled = true;
   }
@@ -1259,6 +1298,72 @@ function renderAdminConfig() {
   updateTemplatePreviews();
   renderStoryAdminList();
   renderGiftAdminList();
+  renderFixedTextsEditor();
+}
+
+function renderFixedTextsEditor() {
+  if (!state.config) return;
+  const host = q('#fixedTextsEditor');
+  if (!host) return;
+  // coletar chaves candidatas a textos fixos
+  const keysSet = new Set();
+  Object.keys(state.config.uiTexts || {}).forEach(k => keysSet.add(k));
+  Object.keys(state.config.event || {}).forEach(k => keysSet.add(k));
+  Object.keys(state.config.couple || {}).forEach(k => keysSet.add(k));
+  // adicionar chaves específicas úteis
+  ['giftsPre','giftsTitle','giftsDescription','galleryPre','galleryTitle','galleryDescription','messagesPre','messagesTitle','messagesDescription'].forEach(k => keysSet.add(k));
+  const keys = Array.from(keysSet).sort();
+  const fixed = state.config.fixedTexts || {};
+  host.innerHTML = keys.map(key => {
+    const entry = fixed[key] || {};
+    const textVal = entry.text ?? (state.config.uiTexts && state.config.uiTexts[key]) ?? (state.config.event && state.config.event[key]) ?? '';
+    const colorVal = entry.color || '';
+    const fontVal = entry.font || '';
+    return `
+      <label class="full-span fixed-text-row" data-fixed-row="${escapeHtml(key)}">
+        <strong>${escapeHtml(key)}</strong>
+        <textarea data-fixed-key="${escapeHtml(key)}" rows="2" placeholder="Texto">${escapeHtml(textVal)}</textarea>
+        <div class="fixed-text-controls">
+          <label>Cor <input type="color" data-fixed-key-color="${escapeHtml(key)}" value="${escapeHtml(colorVal)}" /></label>
+          <label>Fonte
+            <select data-fixed-key-font="${escapeHtml(key)}">
+              <option value="">(padrão)</option>
+              <option value="Arial, Helvetica, sans-serif">Arial</option>
+              <option value="Georgia, serif">Georgia</option>
+              <option value="'Times New Roman', Times, serif">Times New Roman</option>
+              <option value="'Pacifico', cursive">Pacifico</option>
+              <option value="'Playfair Display', serif">Playfair Display</option>
+            </select>
+          </label>
+        </div>
+      </label>
+    `;
+  }).join('');
+  // setar valores de fontes selecionadas após inserir HTML
+  keys.forEach(key => {
+    const entry = fixed[key] || {};
+    if (entry.font) {
+      const sel = host.querySelector(`[data-fixed-key-font="${key}"]`);
+      if (sel) sel.value = entry.font;
+    }
+  });
+}
+
+function applyFixedTexts() {
+  if (!state.config) return;
+  const fixed = state.config.fixedTexts || {};
+  Object.keys(fixed).forEach(key => {
+    const entry = fixed[key] || {};
+    // encontrar elemento por id ou por atributo data-fixed-text
+    const elById = document.getElementById(key);
+    const el = elById || document.querySelector(`[data-fixed-text="${CSS.escape(key)}"]`);
+    if (!el) return;
+    if (typeof entry.text === 'string') {
+      el.textContent = entry.text;
+    }
+    if (entry.color) el.style.color = entry.color;
+    if (entry.font) el.style.fontFamily = entry.font;
+  });
 }
 
 function updateTemplatePreviews() {
@@ -1364,8 +1469,14 @@ function renderInviteTable() {
       <td><input data-field="name" type="text" value="${escapeHtml(row.name)}" placeholder="Nome do convidado" /></td>
       <td><input data-field="guestCount" type="number" min="1" max="30" value="${Math.max(1, Number(row.guestCount || 1))}" /></td>
       <td><input data-field="contact" type="text" value="${escapeHtml(row.contact)}" placeholder="Telefone / contato" /></td>
+      <td><input data-field="guestLimit" type="number" min="0" max="30" value="${Number(row.guestLimit || 0)}" title="0 = sem limite" /></td>
       <td><input data-field="tableNumber" type="text" value="${escapeHtml(row.tableNumber || '')}" placeholder="Número da mesa" /></td>
-      <td><div class="registered-guest-block"><strong>${escapeHtml(row.registeredBy || row.name || '—')}</strong><small>${escapeHtml(guestNamesSummary(row))}</small></div></td>
+      <td>
+        <div class="registered-guest-block">
+          <input data-field="registeredBy" type="text" value="${escapeHtml(row.registeredBy || row.name || '')}" placeholder="Nome que registrou" />
+          <small>${escapeHtml(guestNamesSummary(row))}</small>
+        </div>
+      </td>
       <td>${renderPasswordsCell(row)}</td>
       <td>${buildStatusPill(row.confirmation)}</td>
       <td>
@@ -1435,6 +1546,19 @@ function syncConfigFromInputs() {
   state.config.couple.igoBio = q('#cfgIgoBio').value.trim();
   state.config.payment.pixKey = q('#cfgPixKey').value.trim();
   state.config.adminPassword = q('#cfgAdminPassword').value.trim();
+  // sincronizar textos fixos do editor
+  const fixed = {};
+  qa('[data-fixed-key]').forEach(input => {
+    const key = input.dataset.fixedKey;
+    if (!key) return;
+    const text = input.value.trim();
+    const colorEl = document.querySelector(`[data-fixed-key-color="${key}"]`);
+    const fontEl = document.querySelector(`[data-fixed-key-font="${key}"]`);
+    const color = colorEl ? colorEl.value : '';
+    const font = fontEl ? fontEl.value : '';
+    if (text || color || font) fixed[key] = { text, color, font };
+  });
+  state.config.fixedTexts = fixed;
 }
 
 async function loadAdminState() {
@@ -1806,6 +1930,14 @@ function wireAdminActions() {
     const field = event.target.dataset.field;
     if (field === 'guestCount') {
       row.guestCount = Math.max(1, Math.min(30, Number(event.target.value || 1)));
+    } else if (field === 'guestLimit') {
+      row.guestLimit = Math.max(0, Math.min(30, Number(event.target.value || 0)));
+      // opcional: garantir que guestCount não exceda o limite visível
+      if (row.guestLimit > 0 && Number(row.guestCount || 1) > row.guestLimit) {
+        row.guestCount = row.guestLimit;
+      }
+    } else if (field === 'registeredBy') {
+      row.registeredBy = event.target.value;
     } else if (field === 'name' || field === 'contact' || field === 'tableNumber') {
       row[field] = event.target.value;
       if (field === 'name' && !row.registeredBy) row.registeredBy = event.target.value;

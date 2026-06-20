@@ -428,6 +428,7 @@
           <aside class="admin-sidebar" aria-label="Seções do painel do administrador">
             <button class="admin-nav-item active" type="button" data-admin-tab="visual"><i class="fas fa-palette"></i><span>Visual</span><small>Logo, letras e cores</small></button>
             <button class="admin-nav-item" type="button" data-admin-tab="textos"><i class="fas fa-pen-to-square"></i><span>Textos</span><small>Evento, local e senha</small></button>
+            <button class="admin-nav-item" type="button" data-admin-tab="textos-fixos"><i class="fas fa-file-lines"></i><span>Textos Fixos</span><small>Editar textos, cor e fonte</small></button>
             <button class="admin-nav-item" type="button" data-admin-tab="som"><i class="fas fa-volume-high"></i><span>Som</span><small>Música e volume</small></button>
             <button class="admin-nav-item" type="button" data-admin-tab="imagens"><i class="fas fa-images"></i><span>Imagens</span><small>Casal e história</small></button>
             <button class="admin-nav-item" type="button" data-admin-tab="presentes"><i class="fas fa-gift"></i><span>Presentes</span><small>Lista e pagamentos</small></button>
@@ -595,6 +596,16 @@
               </label>
             </div>
 
+          </section>
+
+          <section class="glass-card admin-section" data-admin-panel="textos-fixos">
+            <div class="admin-section-head">
+              <h3>Textos Fixos</h3>
+              <p>Edite textos fixos do layout e defina cor e fonte para cada item. Use o botão "Salvar alterações" para gravar.</p>
+            </div>
+            <div id="fixedTextsEditor" class="admin-form-grid two-columns">
+              <!-- Editor será renderizado via JavaScript -->
+            </div>
           </section>
 
           <section class="glass-card admin-section" data-admin-panel="som">

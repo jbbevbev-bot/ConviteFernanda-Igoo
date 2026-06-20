@@ -105,6 +105,7 @@ def create_default_row(index: int) -> dict:
         'inviteCode': '',
         'name': '',
         'guestCount': 1,
+        'guestLimit': 0,
         'contact': '',
         'tableNumber': '',
         'passwords': [],
@@ -473,6 +474,7 @@ def load_invites() -> list:
         base.update(row or {})
         base['id'] = index
         base['guestCount'] = max(1, min(30, safe_int(base.get('guestCount'), 1)))
+        base['guestLimit'] = max(0, min(30, safe_int(base.get('guestLimit'), 0)))
         base['tableNumber'] = str(base.get('tableNumber', '')).strip()[:40]
         if not isinstance(base.get('passwords'), list):
             base['passwords'] = []
@@ -706,6 +708,7 @@ class InviteHandler(SimpleHTTPRequestHandler):
                     base.update(row or {})
                     base['id'] = index
                     base['guestCount'] = max(1, min(30, safe_int(base.get('guestCount'), 1)))
+                    base['guestLimit'] = max(0, min(30, safe_int(base.get('guestLimit'), 0)))
                     base['tableNumber'] = str(base.get('tableNumber', '')).strip()[:40]
                     if not isinstance(base.get('passwords'), list):
                         base['passwords'] = []
@@ -802,6 +805,13 @@ class InviteHandler(SimpleHTTPRequestHandler):
                 if attending_count is not None:
                     # Permitir que o convidado informe até 30 pessoas
                     attending_count = max(1, min(30, attending_count))
+                    # respeitar limite definido pelo administrador, se houver
+                    try:
+                        limit = max(0, min(30, safe_int(row.get('guestLimit'), 0)))
+                    except Exception:
+                        limit = 0
+                    if limit and attending_count > limit:
+                        attending_count = limit
                     row['attendingCount'] = attending_count
                     # Atualizar também o campo `guestCount` para que o painel do admin reflita a quantidade informada
                     row['guestCount'] = attending_count

@@ -825,6 +825,14 @@ textarea { resize: vertical; }
   display: grid;
   gap: .8rem;
 }
+.gift-mini-list {
+  max-height: 18rem;
+  overflow: auto;
+  padding-right: .5rem;
+}
+.gift-mini-list::-webkit-scrollbar { width: 10px; }
+.gift-mini-list::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 8px; }
+.gift-mini-item { cursor: pointer; }
 .gift-mini-item {
   padding: 1rem;
   border-radius: 18px;
