@@ -744,11 +744,9 @@ function startCountdown(dateIso) {
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
     q('#days').textContent = String(days).padStart(2, '0');
     q('#hours').textContent = String(hours).padStart(2, '0');
     q('#minutes').textContent = String(minutes).padStart(2, '0');
-    q('#seconds').textContent = String(secs).padStart(2, '0');
   };
   tick();
   if (window.__countdownTimer) clearInterval(window.__countdownTimer);
