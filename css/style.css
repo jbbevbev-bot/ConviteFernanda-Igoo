@@ -379,6 +379,39 @@ textarea { resize: vertical; }
 .btn-full { width: 100%; }
 .file-trigger { position: relative; overflow: hidden; }
 
+/* quantity controls for RSVP lookup */
+.qty-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.qty-control .lookup-count-input {
+  width: 4.2rem;
+  padding: .45rem .5rem;
+  text-align: center;
+  border-radius: 10px;
+  font-weight: 700;
+}
+.qty-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.05rem;
+  height: 2.05rem;
+  border-radius: 8px;
+  background: linear-gradient(180deg, var(--accent-soft), rgba(125,143,89,.12));
+  color: var(--accent-dark);
+  font-weight: 700;
+  font-size: 1.05rem;
+  box-shadow: 0 6px 12px rgba(49,64,44,.06);
+  transition: transform var(--transition), box-shadow var(--transition), opacity var(--transition);
+  border: 1px solid rgba(81,97,59,.12);
+}
+.qty-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 18px rgba(49,64,44,.08); }
+.qty-btn:active { transform: translateY(0); }
+.qty-btn[disabled] { opacity: .46; cursor: not-allowed; transform: none; box-shadow: none; }
+
+
 .floral-divider {
   color: rgba(125,143,89,.52);
   height: 54px;
@@ -1619,4 +1652,23 @@ textarea { resize: vertical; }
 .gift-single-thumb { width:160px; height:120px; object-fit:cover; border-radius:8px; }
 .gift-single-body { flex:1; }
 .gift-single-view #giftBackBtn { margin-bottom:10px; }
+/* isolated modal: show other gifts list and style back button next to title */
+.gift-other-list { display:flex; flex-direction:column; gap:8px; margin-top:8px; max-height:48vh; overflow:auto; padding-right:6px; }
+.gift-mini-row { padding:8px 10px; background: rgba(255,255,255,0.04); border-radius:8px; display:flex; align-items:center; gap:10px; }
+.payment-header { display:flex; align-items:center; gap:12px; justify-content:space-between; }
+.payment-header .payment-title { margin:0; font-size:1.05rem; }
+.btn-ghost { background: transparent; border: 1px solid rgba(81,97,59,.08); padding: .55rem .75rem; border-radius:8px; }
+.btn-sm { font-size:0.9rem; padding: .45rem .6rem; }
+
+/* Password list in admin: fixed height + scroll */
+.password-list { max-height:10rem; overflow-y:auto; padding-right:6px; display:flex; flex-direction:column; gap:6px; -webkit-overflow-scrolling: touch; }
+.admin-password-item { display:flex; gap:8px; align-items:center; }
+.admin-password-item input { width: 160px; }
+
+/* ensure password-list inside table cells scrolls vertically and doesn't get clipped */
+.invite-table td .password-list { max-height:12rem; overflow-y:auto; -webkit-overflow-scrolling: touch; }
+.password-actions { margin-top:6px; }
+
+/* when gift modal is in isolated mode, hide the left options column completely */
+.modal#giftModal.isolated .gift-options { display:none !important; }
 

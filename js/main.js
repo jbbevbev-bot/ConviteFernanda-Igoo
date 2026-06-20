@@ -491,6 +491,8 @@ function renderGiftHighlights(gifts) {
       renderGiftOptions(state.config.gifts);
       renderGiftPayment();
       openModal('giftModal');
+      // marcar modal como isolado para esconder a coluna de opções via CSS
+      const gm = q('#giftModal'); if (gm) gm.classList.add('isolated');
     });
   });
 }
@@ -501,34 +503,14 @@ function renderGiftOptions(gifts) {
   if (!host) return;
   // se estiver em modo isolado (abrir a partir da lista principal), renderizar apenas o presente selecionado
   if (state.giftModalIsolated && Number.isFinite(state.selectedGiftIndex) && gifts[state.selectedGiftIndex]) {
-    const gift = gifts[state.selectedGiftIndex];
-    host.innerHTML = `
-      <div class="gift-single-view">
-        <button class="btn btn-soft" type="button" id="giftBackBtn"><i class="fas fa-arrow-left"></i> Voltar</button>
-        <div class="gift-single-card">
-          ${gift.imageUrl ? `<img class="gift-single-thumb" src="${escapeHtml(gift.imageUrl)}" alt="${escapeHtml(gift.title)}" loading="lazy" />` : `<span class="gift-single-icon"><i class="fas ${escapeHtml(gift.icon || 'fa-gift')} fa-2x"></i></span>`}
-          <div class="gift-single-body">
-            <h3>${escapeHtml(gift.title)}</h3>
-            <p>${escapeHtml(gift.description)}</p>
-            <div class="gift-price">${currency(gift.price)}</div>
-          </div>
-        </div>
-      </div>
-    `;
-    const back = q('#giftBackBtn');
-    if (back) back.addEventListener('click', () => {
-      // fechar modal e voltar para a seção de presentes na página principal
-      closeModal('giftModal');
-      // limpar estado isolado
-      state.giftModalIsolated = false;
-      state.selectedGiftIndex = null;
-      // navegar para a seção de presentes
-      const target = q('#presentes');
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      // atualizar hash para #presentes
-      try { history.replaceState(null, '', location.pathname + location.search + '#presentes'); } catch (e) {}
-    });
+    // quando em modo isolado, não renderizamos o cartão pequeno superior
+    // pois o painel de pagamento (`#giftPaymentPanel`) já mostra a foto maior e a descrição
+    host.innerHTML = '';
+    // garantir que a área de opções também esteja escondida via CSS (fallback)
+    const gm = q('#giftModal'); if (gm) gm.classList.add('isolated');
   } else {
+    // remover marcação isolada caso exista
+    const gm = q('#giftModal'); if (gm) gm.classList.remove('isolated');
     host.innerHTML = gifts.map((gift, index) => `
       <button class="gift-option ${state.selectedGiftIndex === index ? 'active' : ''}" type="button" data-gift-index="${index}">
         ${gift.imageUrl ? `<img class="gift-option-thumb" src="${escapeHtml(gift.imageUrl)}" alt="" loading="lazy" />` : `<span class="gift-option-icon"><i class="fas ${escapeHtml(gift.icon || 'fa-gift')}'></i></span>`}
@@ -546,6 +528,9 @@ function renderGiftOptions(gifts) {
   qa('.gift-option').forEach(button => {
     button.addEventListener('click', () => {
       state.selectedGiftIndex = Number(button.dataset.giftIndex);
+      // ensure not isolated when selecting inside the modal options
+      state.giftModalIsolated = false;
+      const gm = q('#giftModal'); if (gm) gm.classList.remove('isolated');
       renderGiftOptions(state.config.gifts);
       renderGiftPayment();
     });
@@ -574,7 +559,10 @@ function renderGiftPayment() {
         ${gift.imageUrl ? `<img class="payment-gift-image" src="${escapeHtml(gift.imageUrl)}" alt="${escapeHtml(gift.title)}" />` : `<div class="payment-gift-image-fallback"><div class="brand-slot-large" id="paymentCardBrandSlot"></div></div>`}
       </div>
       <span class="gift-badge">Presente selecionado</span>
-      <h3>${escapeHtml(gift.title)}</h3>
+      <div class="payment-header">
+        <h3 class="payment-title">${escapeHtml(gift.title)}</h3>
+        <button class="btn btn-ghost btn-sm" type="button" id="giftBackBtn"><i class="fas fa-arrow-left"></i> Voltar</button>
+      </div>
       <p class="gift-description">${escapeHtml(gift.description)}</p>
       <div class="gift-price-highlight">${currency(gift.price)}</div>
       <div class="payment-actions">
@@ -607,6 +595,21 @@ function renderGiftPayment() {
     }
   });
   // payment details removed — QR rendering skipped (buttons handle actions)
+
+  // anexar listener do botão de voltar (fecha modal e retorna ao conteúdo principal)
+  const backBtn = q('#giftBackBtn');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      closeModal('giftModal');
+      state.giftModalIsolated = false;
+      state.selectedGiftIndex = null;
+      const target = q('#presentes');
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      try { history.replaceState(null, '', location.pathname + location.search + '#presentes'); } catch (e) {}
+      // remover marcação isolada do modal
+      const gm = q('#giftModal'); if (gm) gm.classList.remove('isolated');
+    });
+  }
 }
 
 function renderPixQr(gift) {
@@ -1548,6 +1551,7 @@ function renderInviteTable() {
         <div class="row-actions">
           <button class="icon-btn" type="button" data-action="regen-code" title="Regenerar código interno"><i class="fas fa-arrows-rotate"></i></button>
           <button class="icon-btn" type="button" data-action="regen-passwords" title="Regenerar senhas"><i class="fas fa-key"></i></button>
+          <button class="icon-btn" type="button" data-action="edit-invite" title="Editar convite"><i class="fas fa-pen-to-square"></i></button>
           <button class="icon-btn" type="button" data-action="view-card" title="Abrir convite"><i class="fas fa-id-card"></i></button>
         </div>
       </td>
@@ -1677,6 +1681,28 @@ function wireAdminActions() {
       qa('[data-admin-panel]').forEach(panel => panel.classList.toggle('active', panel.dataset.adminPanel === target));
     });
   });
+
+  // abrir/fechar e salvar edição de convite no modal de edição
+  qa('[data-close-edit-invite]').forEach(el => el.addEventListener('click', () => closeModal('editInviteModal')));
+  const editForm = q('#editInviteForm');
+  if (editForm) {
+    editForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const id = Number(state._editingInviteId);
+      if (!Number.isFinite(id)) return closeModal('editInviteModal');
+      const row = state.invites.find(r => r.id === id);
+      if (!row) return closeModal('editInviteModal');
+      row.name = q('#editInviteName').value.trim();
+      row.guestCount = Number(q('#editInviteGuestCount').value) || 1;
+      row.guestLimit = Number(q('#editInviteGuestLimit').value) || 0;
+      row.contact = q('#editInviteContact').value.trim();
+      row.tableNumber = q('#editInviteTable').value.trim();
+      const namesRaw = q('#editInviteGuestNames').value || '';
+      row.guestNames = namesRaw.split(/\r?\n/).map(s => s.trim()).filter(Boolean);
+      renderInviteTable();
+      closeModal('editInviteModal');
+    });
+  }
 
   q('#cfgMonogramInitials')?.addEventListener('input', updateTemplatePreviews);
   qa('input[name="logoTemplate"]').forEach(input => {
@@ -2036,6 +2062,18 @@ function wireAdminActions() {
       row.confirmation = row.confirmation === 'pendente' ? 'confirmado' : row.confirmation;
       if (!row.registeredBy) row.registeredBy = row.name;
       openTicket(row);
+      return;
+    }
+    if (action === 'edit-invite') {
+      // abrir modal de edição com os dados do convite
+      state._editingInviteId = row.id;
+      q('#editInviteName').value = row.name || '';
+      q('#editInviteGuestCount').value = Number(row.guestCount || totalPeopleOnInvite(row));
+      q('#editInviteGuestLimit').value = Number(row.guestLimit || 0);
+      q('#editInviteContact').value = row.contact || '';
+      q('#editInviteTable').value = row.tableNumber || '';
+      q('#editInviteGuestNames').value = Array.isArray(row.guestNames) ? row.guestNames.join('\n') : (row.guestNames || '');
+      openModal('editInviteModal');
       return;
     }
     if (passAction === 'delete') {

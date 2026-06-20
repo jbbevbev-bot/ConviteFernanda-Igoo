@@ -394,6 +394,27 @@
     </div>
   </div>
 
+  <div class="modal" id="editInviteModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-edit-invite></div>
+    <div class="modal-dialog glass-card modal-md">
+      <button class="modal-close" type="button" data-close-edit-invite aria-label="Fechar"><i class="fas fa-xmark"></i></button>
+      <p class="section-pre">Editar convite</p>
+      <h2>Editar dados do convite</h2>
+      <form id="editInviteForm" class="modal-form">
+        <label>Nome do convidado<input type="text" id="editInviteName" maxlength="120" /></label>
+        <label>Quantidade de convidados (total)<input type="number" id="editInviteGuestCount" min="1" max="30" /></label>
+        <label>Limite de acompanhantes (0 = sem limite)<input type="number" id="editInviteGuestLimit" min="0" max="30" /></label>
+        <label>Contato<input type="text" id="editInviteContact" maxlength="80" /></label>
+        <label>Nomes dos acompanhantes (uma linha por nome)<textarea id="editInviteGuestNames" rows="4"></textarea></label>
+        <label>Número da mesa<input type="text" id="editInviteTable" maxlength="20" /></label>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-primary" type="submit">Salvar alterações</button>
+          <button class="btn btn-soft" type="button" data-close-edit-invite>Cancelar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <div class="modal" id="adminPanelModal" aria-hidden="true">
     <div class="modal-backdrop" data-close-admin-panel></div>
     <div class="modal-dialog modal-xxl admin-dialog">
@@ -850,6 +871,7 @@
                     <th>Nome do convidado</th>
                     <th>Quantidade de Convidados</th>
                     <th>Contato</th>
+                    <th>Limite</th>
                     <th>Mesa</th>
                     <th>Convidados cadastrados</th>
                     <th>Senhas</th>
