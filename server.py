@@ -34,10 +34,16 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 import io
 import zipfile
+import mimetypes
 
 BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / '_data'
-UPLOADS_DIR = BASE_DIR / 'uploads'
+# Diretório de uploads — pode ser sobrescrito por env var `UPLOADS_DIR`
+_uploads_env = os.environ.get('UPLOADS_DIR', '')
+if _uploads_env:
+    UPLOADS_DIR = Path(_uploads_env)
+else:
+    UPLOADS_DIR = BASE_DIR / 'uploads'
 ASSETS_DIR = UPLOADS_DIR / 'assets'
 PORT = int(os.environ.get('PORT', '8000'))
 MAX_UPLOAD_SIZE = 30 * 1024 * 1024
@@ -59,6 +65,11 @@ def safe_int(value, default=1):
 
 def utc_now_iso() -> str:
     return datetime.now(timezone.utc).isoformat()
+
+# Garantir tipos MIME essenciais (algumas plataformas podem não mapear corretamente)
+mimetypes.add_type('text/css', '.css')
+mimetypes.add_type('text/javascript', '.js')
+mimetypes.add_type('application/javascript', '.js')
 
 
 def slugify_filename(name: str) -> str:
@@ -94,8 +105,6 @@ def create_default_row(index: int) -> dict:
         'inviteCode': '',
         'name': '',
         'guestCount': 1,
-        # 0 means unlimited; otherwise limits how many people the guest may register
-        'guestLimit': 0,
         'contact': '',
         'tableNumber': '',
         'passwords': [],
@@ -391,33 +400,6 @@ def default_config() -> dict:
             'messagesTitle': 'Mensagens Especiais',
             'messagesDescription': 'Escreva uma mensagem carinhosa para Igo & Fernanda. Cada recado ficará guardado com muito amor.',
         },
-        'uiTexts': {
-            'navStory': 'Nossa História',
-            'navCeremony': 'Cerimônia',
-            'navLocation': 'Localização',
-            'navGifts': 'Presentes',
-            'navGallery': 'Galeria',
-            'navMessages': 'Mensagens',
-            'confirmPresenceButton': 'Confirmar presença',
-            'shareMediaButton': 'Compartilhe fotos e vídeos',
-            'chooseGiftButton': 'Escolher presente',
-            'giftCardBadge': 'Presente',
-            'giftCardTitle': 'Lista de Presente',
-            'giftCardDescription': 'Selecionamos experiências e mimos especiais para tornar a nossa viagem ainda mais inesquecível.',
-            'guestModalPre': 'Confirmar presença',
-            'guestModalTitle': 'Digite o nome do convidado',
-            'guestModalInputLabel': 'Nome do convidado',
-            'guestModalButton': 'Localizar convite',
-            'giftModalPre': 'Lista de presentes',
-            'giftModalTitle': '2ª Lua de Mel',
-            'giftModalDescription': 'Escolha um presente da lista e visualize os detalhes em um painel lateral responsivo. Ao selecionar um item, você verá a opção de pagamento por cartão e também o Pix livre com cópia rápida da chave ou exibição do número.',
-            'adminPortalButton': 'Portal do administrador',
-            'ticketSubtitle': 'Renovação de votos',
-            'ticketQrCaption': 'QRCode de confirmação',
-            'ticketWhatsappButton': 'Enviar WhatsApp',
-            'ticketDownloadButton': 'Baixar PDF',
-            'ticketCloseButton': 'Fechar cartão',
-        },
         'couple': {
             'fernandaName': 'Fernanda',
             'fernandaRole': 'Esposa',
@@ -491,7 +473,6 @@ def load_invites() -> list:
         base.update(row or {})
         base['id'] = index
         base['guestCount'] = max(1, min(30, safe_int(base.get('guestCount'), 1)))
-        base['guestLimit'] = max(0, min(30, safe_int(base.get('guestLimit'), 0)))
         base['tableNumber'] = str(base.get('tableNumber', '')).strip()[:40]
         if not isinstance(base.get('passwords'), list):
             base['passwords'] = []
@@ -725,7 +706,6 @@ class InviteHandler(SimpleHTTPRequestHandler):
                     base.update(row or {})
                     base['id'] = index
                     base['guestCount'] = max(1, min(30, safe_int(base.get('guestCount'), 1)))
-                    base['guestLimit'] = max(0, min(30, safe_int(base.get('guestLimit'), 0)))
                     base['tableNumber'] = str(base.get('tableNumber', '')).strip()[:40]
                     if not isinstance(base.get('passwords'), list):
                         base['passwords'] = []
@@ -822,20 +802,9 @@ class InviteHandler(SimpleHTTPRequestHandler):
                 if attending_count is not None:
                     # Permitir que o convidado informe até 30 pessoas
                     attending_count = max(1, min(30, attending_count))
-                    # verificar limite personalizado do convite (0 = ilimitado)
-                    limit = int(row.get('guestLimit', 0) or 0)
-                    if limit > 0 and attending_count > limit:
-                        self._send_error('O número de convidados informado excede o limite deste convite.', HTTPStatus.BAD_REQUEST)
-                        return
                     row['attendingCount'] = attending_count
                     # Atualizar também o campo `guestCount` para que o painel do admin reflita a quantidade informada
                     row['guestCount'] = attending_count
-                else:
-                    # se não informou attending_count, validar guestNames contra o limite
-                    limit = int(row.get('guestLimit', 0) or 0)
-                    if limit > 0 and (1 + len(guest_names)) > limit:
-                        self._send_error('O número de acompanhantes informado excede o limite deste convite.', HTTPStatus.BAD_REQUEST)
-                        return
                 # Garantir que convites confirmados possuam um `inviteCode` para poderem ser abertos posteriormente
                 if response == 'confirmado' and not row.get('inviteCode'):
                     try:
@@ -945,8 +914,10 @@ class InviteHandler(SimpleHTTPRequestHandler):
 if __name__ == '__main__':
     ensure_storage()
     os.chdir(BASE_DIR)
-    with ThreadingHTTPServer(('127.0.0.1', PORT), InviteHandler) as httpd:
-        print(f'Servidor rodando em http://localhost:{PORT}')
+    # Bind em 0.0.0.0 para permitir acesso externo em ambientes de produção
+    with ThreadingHTTPServer(('0.0.0.0', PORT), InviteHandler) as httpd:
+        print(f'Servidor rodando em http://0.0.0.0:{PORT}')
+        print(f'Uploads directory: {UPLOADS_DIR}')
         print('Portal do administrador com senha habilitado')
         print('Editor visual com uploads de logo, fundo, imagens e áudio')
         print('Galeria colaborativa de fotos e vídeos habilitada')

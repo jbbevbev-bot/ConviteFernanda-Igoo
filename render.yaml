@@ -1,0 +1,9 @@
+services:
+  - type: "web"
+    name: "Convite-Festa"
+    env: "python"
+    repo: "https://github.com/jbbevbev-bot/ConviteFernanda-Igo.git"
+    branch: "main"
+    buildCommand: ""
+    startCommand: "python server.py"
+    plan: "free"

@@ -1,3 +1,2 @@
-# Este projeto usa apenas a biblioteca padrão do Python.
-# Deixe este arquivo vazio ou adicione pacotes necessários, por exemplo:
-# gunicorn==20.1.0
+# Dependências do projeto
+# Deixe vazio se não houver pacotes externos.

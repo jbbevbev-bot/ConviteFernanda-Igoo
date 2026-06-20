@@ -195,9 +195,7 @@
             <span class="gift-badge">Presente</span>
             <h3>Lista de Presente</h3>
             <p>Selecionamos experiências e mimos especiais para tornar a nossa viagem ainda mais inesquecível.</p>
-              <div style="display:flex;gap:.6rem;align-items:center">
-                <button class="btn btn-primary" id="openGiftModalBtn" type="button"><i class="fas fa-gift"></i> Escolher presente</button>
-              </div>
+            <button class="btn btn-primary" id="openGiftModalBtn" type="button"><i class="fas fa-gift"></i> Escolher presente</button>
           </div>
           <div class="gift-hero-side">
             <div class="gift-mini-list" id="giftHighlights"></div>
@@ -283,7 +281,6 @@
         <input id="guestModalCode" type="text" maxlength="80" placeholder="Ex.: Paulo, Ricardo ou Roberta" />
         <button class="btn btn-primary" type="submit"><i class="fas fa-circle-check"></i> Localizar convite</button>
       </form>
-      <p class="inline-hint">Depois de confirmar, o convite abre na tela e uma mensagem pronta do WhatsApp é gerada para envio.</p>
       <div id="guestModalFeedback" class="lookup-result compact-result">
         <div class="empty-state">
           <i class="fas fa-heart-circle-check"></i>
@@ -333,7 +330,6 @@
         </div>
       </div>
       <div class="modal-actions">
-        <button class="btn btn-soft" id="sendWhatsappInviteBtn" type="button"><i class="fab fa-whatsapp"></i> Enviar WhatsApp</button>
         <button class="btn btn-soft" id="downloadPdfBtn" type="button"><i class="fas fa-file-pdf"></i> Baixar PDF</button>
         <button class="btn btn-primary" id="closeTicketBtn" type="button"><i class="fas fa-check"></i> Fechar cartão</button>
       </div>
@@ -345,13 +341,8 @@
     <div class="modal-dialog modal-xl glass-card">
       <button class="modal-close" type="button" data-close-gift aria-label="Fechar"><i class="fas fa-xmark"></i></button>
       <p class="section-pre">Lista de presentes</p>
-      <div style="display:flex;align-items:center;gap:.8rem;justify-content:space-between;flex-wrap:wrap">
-        <h2 style="margin:0">2ª Lua de Mel</h2>
-        <div style="display:flex;gap:.6rem;align-items:center">
-          <button class="btn btn-pix" id="payPixHeaderBtn" type="button" title="Pix livre rápido"><i class="fas fa-qrcode"></i> Pix livre</button>
-        </div>
-      </div>
-      <p class="section-desc">Escolha um presente da lista e visualize os detalhes em um painel lateral responsivo. Ao selecionar um item, você verá a opção de pagamento por cartão e também o Pix livre com cópia rápida da chave ou exibição do número.</p>
+      <h2>2ª Lua de Mel</h2>
+      <p class="section-desc">Escolha uma experiência para presentear o casal. Ao selecionar um item, você verá as opções de pagamento por cartão via Mercado Pago e por Pix.</p>
       <div class="gift-modal-layout">
         <div class="gift-options" id="giftOptions"></div>
         <aside class="gift-payment-panel" id="giftPaymentPanel">
@@ -604,14 +595,6 @@
               </label>
             </div>
 
-            <div class="admin-subsection">
-              <div class="admin-section-head small-gap">
-                <h3>Textos fixos do programa</h3>
-                <p>Altere os textos dos botões, cartões, avisos e títulos fixos do convite.</p>
-              </div>
-              <div id="fixedTextsAdminList" class="stack-list compact-stack"></div>
-            </div>
-
           </section>
 
           <section class="glass-card admin-section" data-admin-panel="som">
@@ -755,14 +738,6 @@
 
             <div class="admin-subsection">
               <div class="admin-section-head small-gap">
-                <h3>Painel de visualização de imagens</h3>
-                <p>Veja todos os arquivos visuais usados no programa e abra qualquer item para conferir.</p>
-              </div>
-              <div id="assetOverviewPanel" class="asset-overview-panel"></div>
-            </div>
-
-            <div class="admin-subsection">
-              <div class="admin-section-head small-gap">
                 <h3>Galeria da Festa</h3>
                 <p>Edite o texto e a descrição dos Momentos especiais.</p>
               </div>
@@ -849,8 +824,6 @@
               </div>
               <div class="toolbar">
                 <button class="btn btn-soft" id="generateInvitesBtn" type="button"><i class="fas fa-wand-magic-sparkles"></i> Gerar painel</button>
-                <button class="btn btn-soft" id="downloadPasswordsExcelBtn" type="button"><i class="fas fa-file-excel"></i> Baixar Excel</button>
-                <button class="btn btn-soft" id="printPasswordsListBtn" type="button"><i class="fas fa-print"></i> Imprimir lista</button>
                 <button class="btn btn-soft" id="addRowsBtn" type="button"><i class="fas fa-plus"></i> Adicionar 20 linhas</button>
                 <button class="btn btn-soft danger" id="resetDataBtn" type="button"><i class="fas fa-trash"></i> Limpar painel</button>
               </div>
@@ -864,11 +837,9 @@
                     <th>Código interno</th>
                     <th>Nome do convidado</th>
                     <th>Quantidade de Convidados</th>
-                    <th>Confirmados</th>
-                    <th>Limite</th>
                     <th>Contato</th>
                     <th>Mesa</th>
-                    <th>Dados do convite</th>
+                    <th>Convidados cadastrados</th>
                     <th>Senhas</th>
                     <th>Confirmação</th>
                     <th>Ações</th>
@@ -888,5 +859,32 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    (function(){
+      try {
+        const h = (location.hash || '').toLowerCase();
+        if (!h) return;
+        // abrir modal de presentes
+        if (h === '#open-gift' || h === '#presentes') {
+          if (typeof openModal === 'function') {
+            openModal('giftModal');
+            // manter a seção presente no hash para navegação
+            history.replaceState(null, '', location.pathname + location.search + '#presentes');
+          } else {
+            const el = document.getElementById('presentes'); if (el) el.scrollIntoView({behavior:'smooth'});
+          }
+        }
+        // abrir modal de confirmar presença
+        if (h === '#open-confirm' || h === '#confirmar') {
+          if (typeof openModal === 'function') {
+            openModal('guestModal');
+            history.replaceState(null, '', location.pathname + location.search + '#inicio');
+          }
+        }
+      } catch (e) {
+        // silencioso
+      }
+    })();
+  </script>
 </body>
 </html>

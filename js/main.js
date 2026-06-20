@@ -23,37 +23,8 @@ const state = {
   audioContext: null,
   generatedMusicTimer: null,
   generatedMusicGain: null,
-  lastGuestLookup: '',
-  currentTicketInvite: null
+  lastGuestLookup: ''
 };
-
-const FIXED_TEXT_BINDINGS = [
-  { key: 'navStory', label: 'Menu - Nossa História', selector: '#navLinks a[href="#nossa-historia"]' },
-  { key: 'navCeremony', label: 'Menu - Cerimônia', selector: '#navLinks a[href="#cerimonia"]' },
-  { key: 'navLocation', label: 'Menu - Localização', selector: '#navLinks a[href="#localizacao"]' },
-  { key: 'navGifts', label: 'Menu - Presentes', selector: '#navLinks a[href="#presentes"]' },
-  { key: 'navGallery', label: 'Menu - Galeria', selector: '#navLinks a[href="#galeria"]' },
-  { key: 'navMessages', label: 'Menu - Mensagens', selector: '#navLinks a[href="#mensagens"]' },
-  { key: 'confirmPresenceButton', label: 'Botão - Confirmar presença', selector: '#openGuestLookupBtn', icon: 'fa-circle-check' },
-  { key: 'shareMediaButton', label: 'Botão - Compartilhe fotos e vídeos', selector: '#openUploadModalBtn, #openUploadModalBtnSecondary', icon: 'fa-photo-film' },
-  { key: 'chooseGiftButton', label: 'Botão - Escolher presente', selector: '#openGiftModalBtn', icon: 'fa-gift' },
-  { key: 'giftCardBadge', label: 'Etiqueta do bloco de presente', selector: '.gift-badge' },
-  { key: 'giftCardTitle', label: 'Título do bloco de presente', selector: '.gift-hero-copy h3' },
-  { key: 'giftCardDescription', label: 'Descrição do bloco de presente', selector: '.gift-hero-copy p' },
-  { key: 'guestModalPre', label: 'Modal presença - texto pequeno', selector: '#guestModal .section-pre' },
-  { key: 'guestModalTitle', label: 'Modal presença - título', selector: '#guestModal h2' },
-  { key: 'guestModalInputLabel', label: 'Modal presença - rótulo do campo', selector: 'label[for="guestModalCode"]' },
-  { key: 'guestModalButton', label: 'Modal presença - botão localizar', selector: '#guestModalForm button', icon: 'fa-circle-check' },
-  { key: 'giftModalPre', label: 'Modal presente - texto pequeno', selector: '#giftModal .section-pre' },
-  { key: 'giftModalTitle', label: 'Modal presente - título', selector: '#giftModal h2' },
-  { key: 'giftModalDescription', label: 'Modal presente - descrição', selector: '#giftModal .section-desc' },
-  { key: 'adminPortalButton', label: 'Rodapé - Portal administrador', selector: '#openAdminLoginBtn', icon: 'fa-lock' },
-  { key: 'ticketSubtitle', label: 'Convite - subtítulo', selector: '.ticket-subtitle' },
-  { key: 'ticketQrCaption', label: 'Convite - legenda QRCode', selector: '.qr-caption' },
-  { key: 'ticketWhatsappButton', label: 'Convite - botão WhatsApp', selector: '#sendWhatsappInviteBtn', icon: 'fa-brands fa-whatsapp' },
-  { key: 'ticketDownloadButton', label: 'Convite - botão PDF', selector: '#downloadPdfBtn', icon: 'fa-file-pdf' },
-  { key: 'ticketCloseButton', label: 'Convite - botão fechar', selector: '#closeTicketBtn', icon: 'fa-check' }
-];
 
 const q = selector => document.querySelector(selector);
 const qa = selector => Array.from(document.querySelectorAll(selector));
@@ -94,11 +65,6 @@ function currency(value) {
   return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value || 0));
 }
 
-function numericOrFallback(value, fallback = 0) {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) ? parsed : fallback;
-}
-
 function formatDate(value) {
   if (!value) return '';
   const date = new Date(value);
@@ -115,42 +81,6 @@ function currentInviteHtmlUrl() {
     url.pathname = url.pathname.endsWith('/') ? `${url.pathname}index.html` : `${url.pathname}/index.html`;
   }
   return url.toString();
-}
-
-function normalizeWhatsAppPhone(value) {
-  const digits = String(value || '').replace(/\D+/g, '');
-  if (!digits) return '';
-  if (digits.startsWith('55')) return digits;
-  if (digits.length >= 10 && digits.length <= 11) return `55${digits}`;
-  return digits;
-}
-
-function buildWhatsAppInviteUrl(row) {
-  const inviteUrl = currentInviteHtmlUrl();
-  const guest = row.registeredBy || row.name || 'Convidado';
-  const total = Number(row.attendingCount || totalPeopleOnInvite(row));
-  const message = [
-    `Olá, ${guest}!`,
-    `Seu convite para ${state.config?.event?.coupleNames || 'o evento'} foi gerado com sucesso.`,
-    `Data: ${state.config?.event?.dateDisplay || ''}`,
-    `Total de pessoas confirmadas: ${total}`,
-    `Link do convite: ${inviteUrl}`,
-    row.inviteCode ? `Código interno: ${row.inviteCode}` : ''
-  ].filter(Boolean).join('\n');
-  const phone = normalizeWhatsAppPhone(row.contact);
-  const base = phone ? `https://wa.me/${phone}` : 'https://wa.me/';
-  return `${base}?text=${encodeURIComponent(message)}`;
-}
-
-function offerWhatsAppInvite(row) {
-  if (!row || row.confirmation !== 'confirmado') return;
-  const url = buildWhatsAppInviteUrl(row);
-  const opened = window.open(url, '_blank', 'noopener,noreferrer');
-  if (opened) {
-    showToast('Mensagem do WhatsApp pronta para enviar.', 'confirmed');
-  } else {
-    showToast('Convite gerado. Libere pop-ups para abrir o WhatsApp automaticamente.', 'pending');
-  }
 }
 
 function normalizeGuestNamesInput(value) {
@@ -284,123 +214,6 @@ function setValue(selector, value) {
 function setChecked(selector, value) {
   const el = q(selector);
   if (el) el.checked = Boolean(value);
-}
-
-function textWithIcon(icon, text) {
-  if (!icon) return escapeHtml(text);
-  const family = icon.includes('fa-brands') || icon.includes('fab ') ? '' : 'fas ';
-  return `<i class="${family}${icon}"></i> ${escapeHtml(text)}`;
-}
-
-function applyFixedTexts() {
-  const texts = state.config?.uiTexts || {};
-  FIXED_TEXT_BINDINGS.forEach(item => {
-    const value = texts[item.key];
-    if (!value) return;
-    qa(item.selector).forEach(el => {
-      if (item.icon) {
-        el.innerHTML = textWithIcon(item.icon, value);
-      } else {
-        el.textContent = value;
-      }
-    });
-  });
-}
-
-function renderFixedTextsAdminList() {
-  const host = q('#fixedTextsAdminList');
-  if (!host) return;
-  const texts = state.config.uiTexts || {};
-  host.innerHTML = FIXED_TEXT_BINDINGS.map(item => {
-    const currentText = texts[item.key] || q(item.selector)?.textContent?.trim() || '';
-    return `
-      <article class="stack-item fixed-text-item">
-        <strong>${escapeHtml(item.label)}</strong>
-        <textarea rows="2" data-fixed-text-key="${escapeHtml(item.key)}">${escapeHtml(currentText)}</textarea>
-      </article>`;
-  }).join('');
-}
-
-function enhanceColorInputs() {
-  qa('.color-grid input[type="color"], #cfgLogoPrimaryColor, #cfgLogoAccentColor, #cfgLogoBackgroundColor').forEach(input => {
-    if (input.dataset.colorEnhanced) return;
-    input.dataset.colorEnhanced = '1';
-    const label = input.closest('label');
-    if (!label) return;
-    label.classList.add('color-field');
-    const value = document.createElement('span');
-    value.className = 'color-value';
-    value.dataset.colorValueFor = input.id;
-    input.insertAdjacentElement('afterend', value);
-    const update = () => { value.textContent = input.value || '#000000'; };
-    input.addEventListener('input', update);
-    update();
-  });
-}
-
-function refreshColorValues() {
-  qa('[data-color-value-for]').forEach(valueEl => {
-    const input = q(`#${valueEl.dataset.colorValueFor}`);
-    if (input) valueEl.textContent = input.value || '#000000';
-  });
-}
-
-function collectAssetOverviewItems() {
-  if (!state.config) return [];
-  const items = [];
-  const push = (label, url, type = 'image', target = {}) => {
-    if (!url) return;
-    items.push({ label, url, type, ...target });
-  };
-  push('Logo do evento', state.config.branding?.logoUrl, 'image', { fieldPath: 'branding.logoUrl', uploadSlot: 'logo' });
-  push('Fundo principal', state.config.branding?.heroBackgroundUrl, 'image', { fieldPath: 'branding.heroBackgroundUrl', uploadSlot: 'hero-background' });
-  push('Foto da Fernanda', state.config.couple?.fernandaImageUrl, 'image', { fieldPath: 'couple.fernandaImageUrl', uploadSlot: 'fernanda-photo' });
-  push('Foto do Igo', state.config.couple?.igoImageUrl, 'image', { fieldPath: 'couple.igoImageUrl', uploadSlot: 'igo-photo' });
-  (state.config.story?.items || []).forEach((item, index) => push(`História ${index + 1}: ${item.title || 'Etapa'}`, item.imageUrl, 'image', { storyIndex: index, uploadSlot: `story-${index + 1}` }));
-  (state.config.gifts || []).forEach((gift, index) => push(`Presente ${index + 1}: ${gift.title || 'Item'}`, gift.imageUrl, 'image', { giftIndex: index, uploadSlot: `gift-${index + 1}` }));
-  (state.gallery || []).forEach((item, index) => push(`Galeria ${index + 1}: ${item.uploader || 'Arquivo'}`, item.url, item.type || 'image', { galleryId: item.id, filename: item.filename }));
-  return items;
-}
-
-function setConfigPath(path, value) {
-  const parts = String(path || '').split('.');
-  let target = state.config;
-  while (parts.length > 1) {
-    target = target?.[parts.shift()];
-  }
-  if (target && parts[0]) target[parts[0]] = value;
-}
-
-function renderAssetOverviewPanel() {
-  const host = q('#assetOverviewPanel');
-  if (!host) return;
-  const items = collectAssetOverviewItems();
-  if (!items.length) {
-    host.innerHTML = '<div class="empty-state compact"><i class="fas fa-image"></i><p>Nenhuma imagem cadastrada.</p></div>';
-    return;
-  }
-  host.innerHTML = items.map(item => `
-    <article class="asset-preview-card" data-asset-card>
-      ${item.type === 'video'
-        ? `<video controls preload="metadata" src="${escapeHtml(item.url)}"></video>`
-        : `<img src="${escapeHtml(item.url)}" alt="${escapeHtml(item.label)}" loading="lazy" />`}
-      <div>
-        <strong>${escapeHtml(item.label)}</strong>
-        <a href="${escapeHtml(item.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.url)}</a>
-        <div class="asset-actions">
-          <a class="icon-btn" href="${escapeHtml(item.url)}" download title="Baixar arquivo"><i class="fas fa-download"></i></a>
-          ${item.galleryId ? `<button class="icon-btn" type="button" data-gallery-action="delete" data-gallery-id="${escapeHtml(item.galleryId)}" title="Excluir da galeria"><i class="fas fa-trash"></i></button>` : ''}
-          ${item.galleryId ? '' : `
-            <label class="icon-btn" title="Trocar imagem">
-              <i class="fas fa-upload"></i>
-              <input type="file" data-upload-input data-asset-field-path="${escapeHtml(item.fieldPath || '')}" data-upload-target-story="${item.storyIndex ?? ''}" data-upload-target-gift="${item.giftIndex ?? ''}" data-upload-slot="${escapeHtml(item.uploadSlot || 'asset')}" accept="image/*" hidden />
-            </label>
-            <button class="icon-btn" type="button" data-asset-action="clear" data-asset-field-path="${escapeHtml(item.fieldPath || '')}" data-asset-story-index="${item.storyIndex ?? ''}" data-asset-gift-index="${item.giftIndex ?? ''}" title="Remover imagem do item"><i class="fas fa-xmark"></i></button>
-          `}
-        </div>
-      </div>
-    </article>
-  `).join('');
 }
 
 function applyTheme() {
@@ -611,7 +424,6 @@ function applyConfig() {
   setText('#messagesDescription', event.messagesDescription);
   setText('#footerQuote', event.footerQuote);
   setText('#dressCodeHintLabel', event.dressCodeHint);
-  applyFixedTexts();
   renderCouple();
   renderTimeline();
   renderGiftHighlights(gifts);
@@ -639,13 +451,13 @@ function renderGiftOptions(gifts) {
   host.innerHTML = gifts.map((gift, index) => `
     <button class="gift-option ${state.selectedGiftIndex === index ? 'active' : ''}" type="button" data-gift-index="${index}">
       ${gift.imageUrl ? `<img class="gift-option-thumb" src="${escapeHtml(gift.imageUrl)}" alt="" loading="lazy" />` : `<span class="gift-option-icon"><i class="fas ${escapeHtml(gift.icon || 'fa-gift')}"></i></span>`}
-      <div class="gift-top">
-        <h4>${escapeHtml(gift.title)}</h4>
-        <div class="gift-option-meta">
-          <span class="gift-price">${currency(gift.price)}</span>
+      <div class="gift-option-header">
+        <div>
+          <h4>${escapeHtml(gift.title)}</h4>
+          <p>${escapeHtml(gift.description)}</p>
         </div>
+        <span class="gift-price">${currency(gift.price)}</span>
       </div>
-      <p class="gift-description-list">${escapeHtml(gift.description || '')}</p>
     </button>
   `).join('');
 
@@ -668,7 +480,7 @@ function renderGiftPayment() {
     panel.innerHTML = `
       <div class="empty-state compact">
         <i class="fas fa-gift"></i>
-        <p>Selecione um presente para abrir o painel, ver o item e escolher a forma de pagamento.</p>
+        <p>Selecione um presente para visualizar os detalhes de pagamento.</p>
       </div>`;
     return;
   }
@@ -681,48 +493,22 @@ function renderGiftPayment() {
       </div>
       <span class="gift-badge">Presente selecionado</span>
       <h3>${escapeHtml(gift.title)}</h3>
-      <p class="gift-description">${escapeHtml(gift.description || 'Escolha a forma de pagamento para presentear o casal.')}</p>
+      <p class="gift-description">${escapeHtml(gift.description)}</p>
       <div class="gift-price-highlight">${currency(gift.price)}</div>
-      <div class="payment-actions payment-actions-single">
+      <div class="payment-actions">
         <button class="btn btn-primary btn-full ${cardLink ? '' : 'disabled'}" type="button" id="payWithCardBtn" ${cardLink ? '' : 'disabled'}>
           <i class="fas fa-credit-card"></i> Pagar com Cartão
         </button>
+        <button class="btn btn-pix btn-full" type="button" id="payWithPixBtn">
+          <i class="fas fa-barcode"></i> Pagar com PIX
+        </button>
       </div>
-      <div class="pix-free-box">
-        <div class="pix-inline-actions">
-          <button class="btn btn-pix btn-full" type="button" id="copyPixKeyBtn"><i class="fas fa-copy"></i> Copiar chave Pix</button>
-        </div>
-        <div class="pix-free-key" id="pixFreeKeyBox" hidden>
-          <code id="pixFreeKeyValue">${escapeHtml(payment.pixKey || '')}</code>
-        </div>
-      </div>
+      <!-- payment details removed: Pix key, card link and QR preview are intentionally hidden; buttons above handle actions -->
     </div>
   `;
   if (!gift.imageUrl) {
     renderBrandSlot(q('#paymentCardBrandSlot'));
   }
-  const revealPixBox = () => {
-    const box = q('#pixFreeKeyBox');
-    if (!box) return;
-    box.hidden = false;
-    box.classList.add('show');
-  };
-  const copyPixKey = async () => {
-    if (!(payment.pixKey || '').trim()) {
-      revealPixBox();
-      showToast('Chave Pix não cadastrada.', 'declined');
-      return false;
-    }
-    try {
-      await navigator.clipboard.writeText(payment.pixKey.trim());
-      showToast('Chave Pix copiada.', 'confirmed');
-      return true;
-    } catch (error) {
-      revealPixBox();
-      showToast('Não foi possível copiar automaticamente. A chave Pix foi exibida.', 'pending');
-      return false;
-    }
-  };
   q('#payWithCardBtn')?.addEventListener('click', () => {
     if (!cardLink) {
       showToast('Cadastre o link do cartão para este presente.', 'declined');
@@ -730,27 +516,15 @@ function renderGiftPayment() {
     }
     window.open(cardLink, '_blank', 'noopener,noreferrer');
   });
-  q('#copyPixKeyBtn')?.addEventListener('click', async () => {
-    await copyPixKey();
+  q('#payWithPixBtn')?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(payment.pixKey || '');
+      showToast('Chave Pix atual copiada com sucesso.', 'confirmed');
+    } catch (error) {
+      showToast('Não foi possível copiar automaticamente a chave Pix.', 'declined');
+    }
   });
-}
-
-// Copiar chave Pix global (usado pelo botão rápido do painel principal)
-async function copyGlobalPixKey() {
-  const payment = state.config?.payment || {};
-  const key = (payment.pixKey || '').trim();
-  if (!key) {
-    showToast('Chave Pix não cadastrada.', 'declined');
-    return false;
-  }
-  try {
-    await navigator.clipboard.writeText(key);
-    showToast('Pix copiado com sucesso.', 'confirmed');
-    return true;
-  } catch (error) {
-    showToast('Não foi possível copiar automaticamente. Verifique a chave Pix.', 'pending');
-    return false;
-  }
+  // payment details removed — QR rendering skipped (buttons handle actions)
 }
 
 function renderPixQr(gift) {
@@ -953,9 +727,6 @@ function buildLookupResult(row) {
   const isConfirmed = row.confirmation === 'confirmado';
   const canOpen = isConfirmed;
   const guestNamesValue = Array.isArray(row.guestNames) ? row.guestNames.join('\n') : '';
-  const initialCount = isConfirmed
-    ? Math.max(0, numericOrFallback(row.attendingCount ?? totalPeopleOnInvite(row), totalPeopleOnInvite(row)))
-    : Math.max(0, numericOrFallback(row.attendingCount, 0));
   // codificar JSON do convite em base64 para evitar problemas de parsing/escape no HTML
   let encoded = '';
   try {
@@ -972,7 +743,7 @@ function buildLookupResult(row) {
       </div>
       <div class="result-meta">
         <div class="meta-box"><span>Nome localizado</span><strong>${escapeHtml(row.name || 'Convidado')}</strong></div>
-        <div class="meta-box"><span>Inclua a quantidade de convidados e acompanhantes</span><input type="number" class="lookup-count-input" data-attending-count min="0" max="30" value="${escapeHtml(String(initialCount))}" ${isConfirmed ? 'disabled' : ''} /></div>
+        <div class="meta-box"><span>Quantidade de Convidados</span><input type="number" class="lookup-count-input" data-attending-count min="1" max="30" value="${escapeHtml(String(row.attendingCount || totalPeopleOnInvite(row)))}" ${isConfirmed ? 'disabled' : ''} /></div>
         <div class="meta-box"><span>Contato</span>${isConfirmed ? `<strong>${escapeHtml(row.contact || 'Não informado')}</strong>` : `<input type="text" class="lookup-contact-input" data-contact-input placeholder="Telefone / contato" value="${escapeHtml(row.contact || '')}" />`}</div>
         <div class="meta-box"><span>Status</span><strong>${row.confirmation === 'confirmado' ? 'Presença confirmada' : row.confirmation === 'recusado' ? 'Ausência informada' : 'Aguardando resposta'}</strong></div>
       </div>
@@ -999,28 +770,17 @@ function setupGuestNameInputs(card) {
   const namesContainer = card.querySelector('[data-guest-names-list]');
   const textarea = card.querySelector('[data-guest-names]');
   if (!countInput || !namesContainer) return;
-  const count = Math.max(0, Math.min(30, Number(countInput.value || 0)));
-  const existing = Array.from(card.querySelectorAll('[data-guest-name-input]')).map(el => el.value.trim());
-  if (!count) {
-    namesContainer.innerHTML = '<div class="inline-hint">Comece selecionando a quantidade. O campo abre em 0 para facilitar o preenchimento.</div>';
-    if (textarea) textarea.style.display = 'none';
-    countInput.oninput = () => {
-      setupGuestNameInputs(card);
-    };
-    if (card.dataset && card.dataset.confirmed === '1') {
-      countInput.disabled = true;
-    }
-    return;
-  }
+  const count = Math.max(1, Math.min(30, Number(countInput.value || 1)));
+  const existing = Array.from(card.querySelectorAll('[data-guest-name-input]')).map(el => el.value.trim()).filter(Boolean);
   let html = '';
   for (let i = 0; i < count; i += 1) {
-    const fallbackName = i === 0 ? (card.querySelector('h3')?.textContent || '') : '';
-    const value = escapeHtml((existing[i] || '').trim() || fallbackName);
+    const value = escapeHtml(existing[i] || (i === 0 ? (card.querySelector('h3')?.textContent || '') : ''));
     const disabled = card.dataset && card.dataset.confirmed === '1' ? 'disabled' : '';
     html += `<label class="mini-name-input"><span>Nome ${i + 1}</span><input type="text" data-guest-name-input data-guest-name-index="${i}" value="${value}" maxlength="80" ${disabled} /></label>`;
   }
   namesContainer.innerHTML = html;
-  if (textarea) textarea.style.display = 'none';
+  textarea.style.display = 'none';
+  // substituir handler para evitar múltiplas ligações
   countInput.oninput = () => {
     setupGuestNameInputs(card);
   };
@@ -1074,12 +834,7 @@ async function respondRsvp(code, response, card) {
   } else {
     guestNames = normalizeGuestNamesInput(card?.querySelector('[data-guest-names]')?.value || '');
   }
-  const attendingCount = Number(card?.querySelector('[data-attending-count]')?.value || 0);
-  if (response === 'confirmado' && attendingCount < 1) {
-    showToast('Informe pelo menos 1 pessoa para confirmar a presença.', 'declined');
-    card?.querySelector('[data-attending-count]')?.focus();
-    return;
-  }
+  const attendingCount = Number(card?.querySelector('[data-attending-count]')?.value || (guestNames.length + 1));
   const result = await fetchJson('/api/rsvp', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1133,7 +888,6 @@ async function respondRsvp(code, response, card) {
   }
   if (result.invite.confirmation === 'confirmado') {
     openTicket(result.invite);
-    setTimeout(() => offerWhatsAppInvite(result.invite), 350);
   }
   // se recusado, mostrar mensagem de agradecimento temporária no feedback do modal
   if (response === 'recusado') {
@@ -1157,7 +911,6 @@ async function respondRsvp(code, response, card) {
 
 function openTicket(row) {
   if (!state.config) return;
-  state.currentTicketInvite = clone(row);
   q('#cardGuestName').textContent = row.registeredBy || row.name || 'Convidado';
   // colocar nomes um por linha no convite
   const names = Array.isArray(row.guestNames) && row.guestNames.length ? row.guestNames : [];
@@ -1224,36 +977,7 @@ async function downloadTicketPdf() {
 
 function wirePublicActions() {
   q('#openGuestLookupBtn')?.addEventListener('click', () => openModal('guestModal'));
-  q('#openGiftModalBtn')?.addEventListener('click', () => {
-    if (state.config?.gifts?.length && state.selectedGiftIndex === null) {
-      state.selectedGiftIndex = 0;
-      renderGiftOptions(state.config.gifts);
-    }
-    openModal('giftModal');
-  });
-  q('#payPixHeaderBtn')?.addEventListener('click', async () => {
-    // Abrir modal de presentes e selecionar o primeiro presente caso nenhum esteja selecionado
-    openModal('giftModal');
-    if (state.config && (!Number.isFinite(state.selectedGiftIndex) || state.selectedGiftIndex === null)) {
-      state.selectedGiftIndex = 0;
-      renderGiftOptions(state.config.gifts);
-    }
-    // Re-render e revelar caixa do Pix dentro do painel do presente
-    setTimeout(async () => {
-      renderGiftPayment();
-      // copiar chave global e revelar a caixa do Pix
-      await copyGlobalPixKey();
-      const pixBox = q('#pixFreeKeyBox');
-      if (pixBox) {
-        pixBox.hidden = false;
-        pixBox.classList.add('show');
-        pixBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      const panel = q('#giftPaymentPanel');
-      if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 220);
-    return true;
-  });
+  q('#openGiftModalBtn')?.addEventListener('click', () => openModal('giftModal'));
   qa('#openUploadModalBtn, #openUploadModalBtnSecondary').forEach(button => button.addEventListener('click', () => openModal('uploadModal')));
   q('#openAdminLoginBtn')?.addEventListener('click', () => openModal('adminLoginModal'));
   q('#musicToggleBtn')?.addEventListener('click', async () => {
@@ -1350,9 +1074,6 @@ function wirePublicActions() {
 
   q('#closeTicketBtn')?.addEventListener('click', () => closeModal('ticketModal'));
   q('#downloadPdfBtn')?.addEventListener('click', downloadTicketPdf);
-  q('#sendWhatsappInviteBtn')?.addEventListener('click', () => {
-    if (state.currentTicketInvite) offerWhatsAppInvite(state.currentTicketInvite);
-  });
 
   q('#messageText')?.addEventListener('input', event => {
     q('#charCount').textContent = `${event.target.value.length} / 500`;
@@ -1424,8 +1145,6 @@ function createDefaultRow(index) {
     inviteCode: '',
     name: '',
     guestCount: 1,
-    // 0 = ilimitado
-    guestLimit: 0,
     contact: '',
     tableNumber: '',
     passwords: [],
@@ -1473,159 +1192,6 @@ function createPasswords(quantity) {
     used.add(code);
     return { label: `Senha ${String(index + 1).padStart(2, '0')}`, code };
   });
-}
-
-function normalizePasswordLabels(row) {
-  row.passwords = (row.passwords || []).map((item, index) => ({
-    ...item,
-    label: `Senha ${String(index + 1).padStart(2, '0')}`,
-    code: String(item?.code || '').trim().slice(0, 10)
-  }));
-}
-
-function getInviteReportRows() {
-  return state.invites
-    .filter(row => isRowActive(row))
-    .map(row => ({
-      id: row.id,
-      inviteCode: row.inviteCode || '',
-      guestName: row.name || '',
-      guestCount: Number(row.attendingCount ?? row.guestCount ?? 0),
-      contact: row.contact || '',
-      tableNumber: row.tableNumber || '',
-      registeredBy: row.registeredBy || row.name || '',
-      guestNames: Array.isArray(row.guestNames) ? row.guestNames.join(', ') : '',
-      passwords: (row.passwords || []).map(item => `${item.label}: ${item.code}`).join(' | '),
-      status: row.confirmation || 'pendente',
-      confirmedAt: row.confirmationAt || '',
-      declinedAt: row.declinedAt || ''
-    }));
-}
-
-function exportPasswordsExcel() {
-  const rows = getInviteReportRows();
-  if (!rows.length) {
-    showToast('Não há dados suficientes para exportar.', 'declined');
-    return;
-  }
-  const table = `
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Código interno</th>
-          <th>Nome do convidado</th>
-          <th>Quantidade</th>
-          <th>Contato</th>
-          <th>Mesa</th>
-          <th>Confirmado por</th>
-          <th>Acompanhantes</th>
-          <th>Senhas</th>
-          <th>Status</th>
-          <th>Confirmado em</th>
-          <th>Recusado em</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${rows.map(row => `
-          <tr>
-            <td>${escapeHtml(String(row.id))}</td>
-            <td>${escapeHtml(row.inviteCode)}</td>
-            <td>${escapeHtml(row.guestName)}</td>
-            <td>${escapeHtml(String(row.guestCount))}</td>
-            <td>${escapeHtml(row.contact)}</td>
-            <td>${escapeHtml(row.tableNumber)}</td>
-            <td>${escapeHtml(row.registeredBy)}</td>
-            <td>${escapeHtml(row.guestNames)}</td>
-            <td>${escapeHtml(row.passwords)}</td>
-            <td>${escapeHtml(row.status)}</td>
-            <td>${escapeHtml(formatDate(row.confirmedAt))}</td>
-            <td>${escapeHtml(formatDate(row.declinedAt))}</td>
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>`;
-  const workbook = `\ufeff<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="UTF-8"><style>table{border-collapse:collapse;font-family:Arial,sans-serif;font-size:12px}th,td{border:1px solid #c8d0bb;padding:8px;text-align:left}th{background:#e6ecd9}</style></head><body>${table}</body></html>`;
-  const blob = new Blob([workbook], { type: 'application/vnd.ms-excel;charset=utf-8;' });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = 'lista-completa-de-senhas.xls';
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-  showToast('Arquivo Excel gerado com sucesso.', 'confirmed');
-}
-
-function printPasswordsList() {
-  const rows = getInviteReportRows();
-  if (!rows.length) {
-    showToast('Não há dados suficientes para imprimir.', 'declined');
-    return;
-  }
-  const printWindow = window.open('', '_blank', 'noopener,noreferrer,width=1200,height=900');
-  if (!printWindow) {
-    showToast('Não foi possível abrir a janela de impressão.', 'declined');
-    return;
-  }
-  const html = `<!DOCTYPE html>
-  <html lang="pt-BR">
-    <head>
-      <meta charset="UTF-8" />
-      <title>Lista completa de senhas</title>
-      <style>
-        body{font-family:Arial,sans-serif;margin:24px;color:#24311d}
-        h1{margin:0 0 8px;font-size:24px}
-        p{margin:0 0 18px;color:#5e6d58}
-        table{width:100%;border-collapse:collapse;font-size:12px}
-        th,td{border:1px solid #d8dfcc;padding:8px;vertical-align:top;text-align:left}
-        th{background:#eef3e5;text-transform:uppercase;letter-spacing:.04em;font-size:11px}
-        @media print { body{margin:12px} }
-      </style>
-    </head>
-    <body>
-      <h1>Lista completa de senhas</h1>
-      <p>Relatório completo dos convites, confirmações e senhas geradas.</p>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Código interno</th>
-            <th>Nome do convidado</th>
-            <th>Quantidade</th>
-            <th>Contato</th>
-            <th>Mesa</th>
-            <th>Confirmado por</th>
-            <th>Acompanhantes</th>
-            <th>Senhas</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${rows.map(row => `
-            <tr>
-              <td>${escapeHtml(String(row.id))}</td>
-              <td>${escapeHtml(row.inviteCode)}</td>
-              <td>${escapeHtml(row.guestName)}</td>
-              <td>${escapeHtml(String(row.guestCount))}</td>
-              <td>${escapeHtml(row.contact)}</td>
-              <td>${escapeHtml(row.tableNumber)}</td>
-              <td>${escapeHtml(row.registeredBy)}</td>
-              <td>${escapeHtml(row.guestNames)}</td>
-              <td>${escapeHtml(row.passwords)}</td>
-              <td>${escapeHtml(row.status)}</td>
-            </tr>
-          `).join('')}
-        </tbody>
-      </table>
-    </body>
-  </html>`;
-  printWindow.document.open();
-  printWindow.document.write(html);
-  printWindow.document.close();
-  printWindow.focus();
-  setTimeout(() => printWindow.print(), 250);
 }
 
 function renderAdminConfig() {
@@ -1686,15 +1252,11 @@ function renderAdminConfig() {
   setValue('#cfgGalleryTitle', event.galleryTitle);
   setValue('#cfgGalleryDescription', event.galleryDescription);
   setValue('#cfgGalleryUploader', 'Administrador');
-  renderFixedTextsAdminList();
-  renderAssetOverviewPanel();
   renderGalleryAdminPreview();
   renderMessagesAdminList();
   setValue('#cfgPixKey', payment.pixKey);
   setValue('#cfgInviteHtmlLink', currentInviteHtmlUrl());
   updateTemplatePreviews();
-  enhanceColorInputs();
-  refreshColorValues();
   renderStoryAdminList();
   renderGiftAdminList();
 }
@@ -1783,25 +1345,13 @@ function renderConfirmedGuestsList(confirmedRows) {
 }
 
 function renderPasswordsCell(row) {
-  // remover opção de "Adicionar senha" no painel conforme solicitado
-  const actions = `${row.passwords?.length ? `<div class="password-actions"><button class="btn btn-soft" type="button" data-password-action="clear" data-row-id="${row.id}">Limpar senhas</button></div>` : ''}`;
-  if (!row.passwords?.length) return `<div class="password-list empty"><span>Gere o painel para criar as senhas.</span></div>`;
+  if (!row.passwords?.length) return '<div class="password-list empty"><span>Gere o painel para criar as senhas.</span></div>';
   const items = row.passwords.map((item, idx) => `
     <div class="admin-password-item">
-      <input type="text" data-pass-input data-row-id="${row.id}" data-pass-index="${idx}" value="${escapeHtml(item.code)}" maxlength="10" title="Você pode editar a senha mesmo com o convidado confirmado" />
+      <input type="text" data-pass-input data-row-id="${row.id}" data-pass-index="${idx}" value="${escapeHtml(item.code)}" maxlength="10" />
       <button type="button" class="icon-btn" data-password-action="delete" data-row-id="${row.id}" data-pass-index="${idx}" title="Excluir senha"><i class="fas fa-trash"></i></button>
     </div>`).join('');
-  return `<div class="password-list">${items}</div>${actions}`;
-}
-
-function renderStatusSelect(row) {
-  const status = row.confirmation || 'pendente';
-  return `
-    <select data-field="confirmation" title="Altere o status mesmo depois da confirmação">
-      <option value="pendente" ${status === 'pendente' ? 'selected' : ''}>Aguardando</option>
-      <option value="confirmado" ${status === 'confirmado' ? 'selected' : ''}>Confirmado</option>
-      <option value="recusado" ${status === 'recusado' ? 'selected' : ''}>Não vai</option>
-    </select>`;
+  return `<div class="password-list">${items}</div><div class="password-actions"><button class="btn btn-soft" type="button" data-password-action="clear" data-row-id="${row.id}">Limpar senhas</button></div>`;
 }
 
 function renderInviteTable() {
@@ -1810,27 +1360,19 @@ function renderInviteTable() {
   tbody.innerHTML = state.invites.map(row => `
     <tr data-row-id="${row.id}">
       <td><strong>${String(row.id).padStart(2, '0')}</strong></td>
-      <td><input data-field="inviteCode" class="invite-code-input" type="text" value="${escapeHtml(row.inviteCode || '')}" placeholder="Gerar código" /></td>
-      <td><input data-field="name" class="guest-name-field" type="text" value="${escapeHtml(row.name)}" placeholder="Nome do convidado" /></td>
+      <td>${row.inviteCode ? `<span class="code-pill"><i class="fas fa-hashtag"></i>${escapeHtml(row.inviteCode)}</span>` : '<small>Código ainda não gerado</small>'}</td>
+      <td><input data-field="name" type="text" value="${escapeHtml(row.name)}" placeholder="Nome do convidado" /></td>
       <td><input data-field="guestCount" type="number" min="1" max="30" value="${Math.max(1, Number(row.guestCount || 1))}" /></td>
-      <td><input data-field="attendingCount" type="number" min="0" max="30" value="${Number(row.attendingCount ?? row.guestCount ?? 1)}" title="Quantidade confirmada" /></td>
-      <td><input data-field="guestLimit" type="number" min="0" max="30" value="${Number(row.guestLimit || 0)}" title="0 = ilimitado" /></td>
       <td><input data-field="contact" type="text" value="${escapeHtml(row.contact)}" placeholder="Telefone / contato" /></td>
       <td><input data-field="tableNumber" type="text" value="${escapeHtml(row.tableNumber || '')}" placeholder="Número da mesa" /></td>
-      <td>
-        <div class="registered-guest-block editable">
-          <input data-field="registeredBy" type="text" value="${escapeHtml(row.registeredBy || '')}" placeholder="Confirmado por" />
-          <textarea data-field="guestNames" rows="3" placeholder="Acompanhantes, um por linha">${escapeHtml((row.guestNames || []).join('\n'))}</textarea>
-        </div>
-      </td>
+      <td><div class="registered-guest-block"><strong>${escapeHtml(row.registeredBy || row.name || '—')}</strong><small>${escapeHtml(guestNamesSummary(row))}</small></div></td>
       <td>${renderPasswordsCell(row)}</td>
-      <td>${renderStatusSelect(row)}<div class="status-preview">${buildStatusPill(row.confirmation)}</div></td>
+      <td>${buildStatusPill(row.confirmation)}</td>
       <td>
         <div class="row-actions">
           <button class="icon-btn" type="button" data-action="regen-code" title="Regenerar código interno"><i class="fas fa-arrows-rotate"></i></button>
           <button class="icon-btn" type="button" data-action="regen-passwords" title="Regenerar senhas"><i class="fas fa-key"></i></button>
           <button class="icon-btn" type="button" data-action="view-card" title="Abrir convite"><i class="fas fa-id-card"></i></button>
-          <button class="icon-btn" type="button" data-action="send-whatsapp" title="Enviar convite por WhatsApp"><i class="fab fa-whatsapp"></i></button>
         </div>
       </td>
     </tr>`).join('');
@@ -1893,10 +1435,6 @@ function syncConfigFromInputs() {
   state.config.couple.igoBio = q('#cfgIgoBio').value.trim();
   state.config.payment.pixKey = q('#cfgPixKey').value.trim();
   state.config.adminPassword = q('#cfgAdminPassword').value.trim();
-  state.config.uiTexts = state.config.uiTexts || {};
-  qa('[data-fixed-text-key]').forEach(input => {
-    state.config.uiTexts[input.dataset.fixedTextKey] = input.value.trim();
-  });
 }
 
 async function loadAdminState() {
@@ -1952,23 +1490,6 @@ function wireAdminActions() {
   });
 
   q('#cfgMonogramInitials')?.addEventListener('input', updateTemplatePreviews);
-  q('#fixedTextsAdminList')?.addEventListener('input', event => {
-    const input = event.target.closest('[data-fixed-text-key]');
-    if (!input) return;
-    state.config.uiTexts = state.config.uiTexts || {};
-    state.config.uiTexts[input.dataset.fixedTextKey] = input.value.trim();
-    applyFixedTexts();
-  });
-  qa('.color-grid input[type="color"], #cfgLogoPrimaryColor, #cfgLogoAccentColor, #cfgLogoBackgroundColor').forEach(input => {
-    input.addEventListener('input', refreshColorValues);
-  });
-  qa('#cfgLogoUrl, #cfgHeroBackgroundUrl, #cfgFernandaImageUrl, #cfgIgoImageUrl').forEach(input => {
-    input.addEventListener('input', () => {
-      syncConfigFromInputs();
-      renderAssetOverviewPanel();
-      renderCouple();
-    });
-  });
   qa('input[name="logoTemplate"]').forEach(input => {
     input.addEventListener('change', () => {
       qa('[data-template-card]').forEach(card => card.classList.toggle('active', card.dataset.templateCard === input.value));
@@ -2040,7 +1561,6 @@ function wireAdminActions() {
       state.gallery = [...result.items, ...state.gallery];
       filesInput.value = '';
       renderGalleryAdminPreview();
-      renderAssetOverviewPanel();
       renderGallery();
       showToast(result.message || 'Fotos enviadas com sucesso.', 'confirmed');
     } catch (error) {
@@ -2131,7 +1651,6 @@ function wireAdminActions() {
       });
       state.gallery = state.gallery.filter(item => item.id !== id);
       renderGalleryAdminPreview();
-      renderAssetOverviewPanel();
       renderGallery();
       if (state.adminLoaded) {
         await loadPublicData();
@@ -2148,15 +1667,11 @@ function wireAdminActions() {
       if (!isRowActive(row)) return;
       if (!row.inviteCode) row.inviteCode = createInviteCode(row.id);
       row.passwords = createPasswords(row.guestCount);
-      normalizePasswordLabels(row);
       processed += 1;
     });
     renderInviteTable();
     showToast(processed ? `Painel gerado para ${processed} convite(s).` : 'Preencha ao menos uma linha para gerar convites.');
   });
-
-  q('#downloadPasswordsExcelBtn')?.addEventListener('click', exportPasswordsExcel);
-  q('#printPasswordsListBtn')?.addEventListener('click', printPasswordsList);
 
   q('#addRowsBtn')?.addEventListener('click', () => {
     const start = state.invites.length + 1;
@@ -2210,16 +1725,6 @@ function wireAdminActions() {
       });
       const directTarget = input.dataset.uploadTarget;
       if (directTarget) setValue(`#${directTarget}`, result.url);
-      if (input.dataset.assetFieldPath) {
-        setConfigPath(input.dataset.assetFieldPath, result.url);
-        const targetId = {
-          'branding.logoUrl': 'cfgLogoUrl',
-          'branding.heroBackgroundUrl': 'cfgHeroBackgroundUrl',
-          'couple.fernandaImageUrl': 'cfgFernandaImageUrl',
-          'couple.igoImageUrl': 'cfgIgoImageUrl',
-        }[input.dataset.assetFieldPath];
-        if (targetId) setValue(`#${targetId}`, result.url);
-      }
       if (input.dataset.uploadTargetStory) {
         const item = state.config.story.items[Number(input.dataset.uploadTargetStory)];
         if (item) item.imageUrl = result.url;
@@ -2230,10 +1735,6 @@ function wireAdminActions() {
         if (gift) gift.imageUrl = result.url;
         renderGiftAdminList();
       }
-      renderAssetOverviewPanel();
-      renderCouple();
-      renderTimeline();
-      renderGiftOptions(state.config.gifts || []);
       showToast('Arquivo enviado e aplicado no campo.', 'confirmed');
     } catch (error) {
       showToast(error.message, 'declined');
@@ -2247,7 +1748,6 @@ function wireAdminActions() {
     const field = event.target.dataset.storyField;
     if (!itemEl || !field) return;
     state.config.story.items[Number(itemEl.dataset.storyIndex)][field] = event.target.value;
-    renderAssetOverviewPanel();
   });
 
   q('#storyAdminList')?.addEventListener('click', event => {
@@ -2264,47 +1764,12 @@ function wireAdminActions() {
     }
   });
 
-  q('#assetOverviewPanel')?.addEventListener('click', event => {
-    const clearBtn = event.target.closest('[data-asset-action="clear"]');
-    if (!clearBtn) return;
-    if (!confirm('Remover esta imagem deste item?')) return;
-    const fieldPath = clearBtn.dataset.assetFieldPath;
-    const storyIndex = clearBtn.dataset.assetStoryIndex;
-    const giftIndex = clearBtn.dataset.assetGiftIndex;
-    if (fieldPath) {
-      setConfigPath(fieldPath, '');
-      const targetId = {
-        'branding.logoUrl': 'cfgLogoUrl',
-        'branding.heroBackgroundUrl': 'cfgHeroBackgroundUrl',
-        'couple.fernandaImageUrl': 'cfgFernandaImageUrl',
-        'couple.igoImageUrl': 'cfgIgoImageUrl',
-      }[fieldPath];
-      if (targetId) setValue(`#${targetId}`, '');
-    }
-    if (storyIndex !== '') {
-      const item = state.config.story.items[Number(storyIndex)];
-      if (item) item.imageUrl = '';
-      renderStoryAdminList();
-    }
-    if (giftIndex !== '') {
-      const gift = state.config.gifts[Number(giftIndex)];
-      if (gift) gift.imageUrl = '';
-      renderGiftAdminList();
-    }
-    renderAssetOverviewPanel();
-    renderCouple();
-    renderTimeline();
-    renderGiftOptions(state.config.gifts || []);
-    showToast('Imagem removida do item. Clique em Salvar alterações para gravar.', 'confirmed');
-  });
-
   q('#giftAdminList')?.addEventListener('input', event => {
     const itemEl = event.target.closest('[data-gift-index]');
     const field = event.target.dataset.giftField;
     if (!itemEl || !field) return;
     const gift = state.config.gifts[Number(itemEl.dataset.giftIndex)];
     gift[field] = field === 'price' ? Number(event.target.value || 0) : event.target.value;
-    renderAssetOverviewPanel();
   });
 
   q('#giftAdminList')?.addEventListener('click', event => {
@@ -2341,28 +1806,11 @@ function wireAdminActions() {
     const field = event.target.dataset.field;
     if (field === 'guestCount') {
       row.guestCount = Math.max(1, Math.min(30, Number(event.target.value || 1)));
-    } else if (field === 'attendingCount') {
-      row.attendingCount = Math.max(0, Math.min(30, Number(event.target.value || 0)));
-    } else if (field === 'guestLimit') {
-      row.guestLimit = Math.max(0, Math.min(30, Number(event.target.value || 0)));
-    } else if (field === 'guestNames') {
-      row.guestNames = normalizeGuestNamesInput(event.target.value);
-    } else if (field === 'confirmation') {
-      row.confirmation = event.target.value;
-      if (row.confirmation === 'confirmado' && !row.confirmationAt) row.confirmationAt = new Date().toISOString();
-      if (row.confirmation === 'recusado' && !row.declinedAt) row.declinedAt = new Date().toISOString();
-      renderInviteTable();
-      return;
-    } else if (field === 'name' || field === 'contact' || field === 'tableNumber' || field === 'inviteCode' || field === 'registeredBy') {
+    } else if (field === 'name' || field === 'contact' || field === 'tableNumber') {
       row[field] = event.target.value;
       if (field === 'name' && !row.registeredBy) row.registeredBy = event.target.value;
     }
     renderAdminStats();
-  });
-
-  q('#inviteTableBody')?.addEventListener('change', event => {
-    if (!event.target.matches('select[data-field]')) return;
-    event.target.dispatchEvent(new Event('input', { bubbles: true }));
   });
 
   q('#inviteTableBody')?.addEventListener('click', async event => {
@@ -2393,22 +1841,11 @@ function wireAdminActions() {
       openTicket(row);
       return;
     }
-    if (action === 'send-whatsapp') {
-      if (!row.inviteCode) row.inviteCode = createInviteCode(row.id);
-      if (!row.passwords?.length) row.passwords = createPasswords(row.guestCount);
-      row.confirmation = row.confirmation === 'pendente' ? 'confirmado' : row.confirmation;
-      if (!row.registeredBy) row.registeredBy = row.name;
-      renderInviteTable();
-      offerWhatsAppInvite(row);
-      return;
-    }
-    // 'Adicionar senha' foi removido do painel; não permitir adição via botão
     if (passAction === 'delete') {
       const idx = Number(actionButton.dataset.passIndex);
       if (!Number.isFinite(idx)) return;
       if (!confirm('Excluir esta senha do convite?')) return;
       row.passwords = (row.passwords || []).filter((_, i) => i !== idx);
-      normalizePasswordLabels(row);
       renderInviteTable();
       return;
     }
@@ -2422,7 +1859,26 @@ function wireAdminActions() {
 }
 
 async function loadPublicData() {
-  const data = await fetchJson('/api/site-data');
+  let data = null;
+  try {
+    data = await fetchJson('/api/site-data');
+  } catch (err) {
+    console.warn('Falha em /api/site-data, carregando _data estático como fallback:', err);
+    async function loadJson(path) {
+      try {
+        const resp = await fetch(path);
+        if (!resp.ok) return null;
+        return await resp.json();
+      } catch (e) {
+        return null;
+      }
+    }
+    const cfg = await loadJson('/_data/config.json') || {};
+    const msgs = await loadJson('/_data/messages.json') || [];
+    const gal = await loadJson('/_data/gallery.json') || [];
+    // invites não são necessários para a maior parte do público; manter estado local
+    data = { config: cfg, messages: msgs, gallery: gal, invites: [] };
+  }
   state.config = clone(data.config);
   state.gallery = clone(data.gallery || []);
   state.messages = clone(data.messages || []);

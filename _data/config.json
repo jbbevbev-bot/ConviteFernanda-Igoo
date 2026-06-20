@@ -1,0 +1,214 @@
+{
+  "adminPassword": "igofernanda2026",
+  "theme": {
+    "bg": "#f5f3ec",
+    "bgSoft": "#fbfaf6",
+    "paper": "rgba(255,255,255,.86)",
+    "paperStrong": "rgba(255,255,255,.95)",
+    "text": "#31402c",
+    "textSoft": "#63725a",
+    "accent": "#7d8f59",
+    "accentDark": "#51613b",
+    "accentDeep": "#40502d",
+    "accentSoft": "#dde5cf",
+    "goldSoft": "#d7c59f",
+    "heroGradientStart": "#31402c",
+    "heroGradientMiddle": "#4f5f3d",
+    "heroGradientEnd": "#77885a",
+    "sectionDarkStart": "#465337",
+    "sectionDarkMiddle": "#59684a",
+    "sectionDarkEnd": "#3e4b32"
+  },
+  "branding": {
+    "logoMode": "image",
+    "logoUrl": "images/logo-festa.png",
+    "monogramInitials": "F&I",
+    "monogramTemplate": "luxury-script",
+    "logoPrimaryColor": "#111111",
+    "logoAccentColor": "#3f8a17",
+    "logoBackgroundColor": "#ffffff",
+    "logoSubtitle": "01 . 08 . 2026",
+    "heroBackgroundUrl": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1800&q=80",
+    "siteTextureUrl": ""
+  },
+  "animation": {
+    "enabled": true,
+    "symbol": "❦",
+    "density": 24
+  },
+  "media": {
+    "enabled": true,
+    "mode": "file",
+    "preset": "instrumental-romantico",
+    "audioUrl": "/uploads/assets/site-music-012355c4-Edd_Sheeran_-_Perfect_-mp3-pm.mp3",
+    "title": "Trilha do casal",
+    "subtitle": "Instrumental romântico",
+    "volume": 0.37,
+    "autoplay": true
+  },
+  "event": {
+    "heroPre": "Convidamos você para nossa renovação de votos em comemoração aos nossos 10 anos de casamento",
+    "heroNote": "F & I",
+    "coupleNames": "Fernanda & Igo",
+    "eventDateIso": "2026-08-01T17:45",
+    "dateDisplay": "01 de Agosto de 2026 às 17h",
+    "locationName": "Salão de Festas - Condomínio Residencial Tapajós",
+    "locationAddress": "Av. Torquato Tapajós - 6437 - Tarumã - Manaus/AM",
+    "mapsUrl": "https://maps.app.goo.gl/hVNNUPjzZ5iNvbLW6",
+    "mapEmbedUrl": "https://www.google.com/maps?q=Condom%C3%ADnio%20Residencial%20Tapaj%C3%B3s%20Manaus&output=embed",
+    "dressCode": "Elegante / social",
+    "dressCodeHint": "Cores sugeridas: tons suaves, verdes e neutros",
+    "footerText": "Apresente este convite na portaria de entrada.",
+    "footerQuote": "Vocês fazem parte da nossa história.",
+    "storyPre": "Um amor para toda a vida",
+    "storyTitle": "Nossa História",
+    "storyIntro": "Uma linha do tempo para contar um pouco da nossa jornada.",
+    "ceremonyPre": "Detalhes do grande dia",
+    "ceremonyTitle": "Cerimônia & Festa",
+    "locationPre": "Como chegar",
+    "locationTitle": "Localização",
+    "giftsPre": "Sua presença é nosso maior presente",
+    "giftsTitle": "Lista de Presentes",
+    "giftsDescription": "Criamos uma lista especial para a nossa 2ª lua de mel. Escolha um item para presentear via Mercado Pago ou Pix.",
+    "galleryPre": "Momentos especiais",
+    "galleryTitle": "Galeria da Festa",
+    "galleryDescription": "Depois da festa, os convidados podem compartilhar fotos e vídeos diretamente pelo site.",
+    "messagesPre": "Deixe um recado",
+    "messagesTitle": "Mensagens Especiais",
+    "messagesDescription": "Escreva uma mensagem carinhosa para Igo & Fernanda. Cada recado ficará guardado com muito amor."
+  },
+  "couple": {
+    "fernandaName": "Fernanda",
+    "fernandaRole": "Esposa",
+    "fernandaBio": "Mãe amorosa, apaixonada pela família, por viagens e pelo cheiro de café pela manhã.",
+    "fernandaImageUrl": "images/fernanda.jpg",
+    "igoName": "Igo",
+    "igoRole": "Marido",
+    "igoBio": "Grande pai, parceiro dedicado e aventureiro. Encontrou em Fernanda a companheira ideal para compartilhar sonhos e conquistas.",
+    "igoImageUrl": "images/igo.jpeg"
+  },
+  "story": {
+    "items": [
+      {
+        "year": "2014",
+        "title": "O início do namoro",
+        "description": "Decidimos caminhar juntos. Entre sonhos, descobertas e planos para o futuro, nasceu um relacionamento fundamentado no respeito e na parceria.",
+        "imageUrl": "/uploads/assets/story-1-67cd04d5-WhatsApp-Image-2026-06-14-at-21-54-38.jpeg"
+      },
+      {
+        "year": "2015",
+        "title": "Descobrindo o mundo a dois",
+        "description": "Cada passeio e cada sonho reforçaram a certeza de que queríamos seguir de mãos dadas pela vida.",
+        "imageUrl": "/uploads/assets/story-2-7c66e784-2016-01-03-20-52-53-1.jpg"
+      },
+      {
+        "year": "2016",
+        "title": "Nosso Sim",
+        "description": "Prometemos amor, cuidado e fidelidade. Desde então, renovamos esse compromisso todos os dias.",
+        "imageUrl": "/uploads/assets/story-3-81f8134c-WhatsApp-Image-2018-07-06-at-23-04-22.jpeg"
+      },
+      {
+        "year": "2017",
+        "title": "Nascimento da Isabela ",
+        "description": "Nosso maior presente. Com sua chegada, nosso amor ganhou um novo significado e nossa família ficou completa.",
+        "imageUrl": "/uploads/assets/story-4-a53710e1-IMG_20170727_114043.jpg"
+      },
+      {
+        "year": "2026 ",
+        "title": "Renovação dos Votos",
+        "description": "Após 10 anos de casamento e 11 anos de história, renovamos nosso compromisso diante de Deus. Hoje celebramos não apenas o tempo que passou, mas cada oração respondida, cada batalha vencida e cada bênção recebida.",
+        "imageUrl": "/uploads/assets/story-6-489ce649-if.png"
+      }
+    ]
+  },
+  "payment": {
+    "mercadoPagoLink": "https://mpago.la/13ELMGR",
+    "pixKey": "fernanda@riosf5.com.br",
+    "pixInstructions": "Após o pagamento, envie o comprovante aos noivos.",
+    "pixRecipient": "Igo e Fernanda",
+    "pixPayload": ""
+  },
+  "gifts": [
+    {
+      "title": "Jantar romântico da 2ª lua de mel",
+      "price": 380,
+      "description": "Um jantar especial para celebrar o amor em grande estilo.",
+      "imageUrl": "/uploads/assets/gift-1-94da9272-images.jpg",
+      "imageQuery": "jantar romântico casal lua de mel",
+      "icon": "fa-utensils",
+      "mercadoPagoLink": "https://mpago.la/13ELMGR"
+    },
+    {
+      "title": "Café da manhã especial",
+      "price": 95,
+      "description": "Mesa posta com delícias para começar o dia com carinho.",
+      "imageUrl": "/uploads/assets/gift-2-3dfe5f4c-download.jpg",
+      "imageQuery": "café da manhã romântico hotel",
+      "icon": "fa-mug-hot",
+      "mercadoPagoLink": "https://mpago.la/2a5gdAL"
+    },
+    {
+      "title": "Massagem relaxante para o casal",
+      "price": 320,
+      "description": "Momento de descanso e cuidado para os dois.",
+      "imageUrl": "",
+      "imageQuery": "spa casal massagem relaxante",
+      "icon": "fa-spa",
+      "mercadoPagoLink": "https://mpago.li/16HFcSc"
+    },
+    {
+      "title": "Passeio ao pôr do sol",
+      "price": 210,
+      "description": "Experiência romântica para guardar na memória.",
+      "imageUrl": "/uploads/assets/gift-4-000aa205-images-1.jpg",
+      "imageQuery": "passeio pôr do sol casal viagem",
+      "icon": "fa-sun",
+      "mercadoPagoLink": "https://mpago.li/2UTTr8m"
+    },
+    {
+      "title": "Surpresa especial para Fernanda",
+      "price": 350,
+      "description": "Um mimo preparado com muito amor durante a viagem.",
+      "imageUrl": "/uploads/assets/gift-5-3edec0fc-images-2.jpg",
+      "imageQuery": "surpresa romântica presente casal",
+      "icon": "fa-gift",
+      "mercadoPagoLink": "https://mpago.li/2XYFkdR"
+    },
+    {
+      "title": "Brinde com vinho",
+      "price": 160,
+      "description": "Um brinde elegante para uma noite inesquecível.",
+      "imageUrl": "/uploads/assets/gift-6-e68b164e-images-3.jpg",
+      "imageQuery": "vinho jantar romântico casal",
+      "icon": "fa-wine-glass",
+      "mercadoPagoLink": "https://mpago.la/2SdMwMt"
+    },
+    {
+      "title": "Carregador novo (porque alguém sempre pega o do outro)",
+      "price": 150,
+      "description": "",
+      "imageUrl": "/uploads/assets/gift-7-008009bf-D_NQ_NP_2X_865248-MLB112277844021_052026-F.jpg",
+      "imageQuery": "",
+      "icon": "fa-gift",
+      "mercadoPagoLink": "https://mpago.li/1g9UPFy"
+    },
+    {
+      "title": "Milhas para fugir... digo... viajar juntos!",
+      "price": 500,
+      "description": "Colabore com sua cota",
+      "imageUrl": "/uploads/assets/gift-8-e93a0b5e-download-2.jpg",
+      "imageQuery": "",
+      "icon": "fa-gift",
+      "mercadoPagoLink": "https://mpago.li/2ombzdQ"
+    },
+    {
+      "title": "💍 Renovação por mais 10 anos ",
+      "price": 1100,
+      "description": "com garantia estendida",
+      "imageUrl": "/uploads/assets/gift-9-3712ad0c-logo-garantia-estendida.jpg",
+      "imageQuery": "",
+      "icon": "fa-gift",
+      "mercadoPagoLink": "https://mpago.li/1doDCmJ"
+    }
+  ]
+}
