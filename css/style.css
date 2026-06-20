@@ -291,6 +291,8 @@ textarea { resize: vertical; }
 .countdown {
   display: flex;
   justify-content: center;
+  flex-direction: column;
+  align-items: center;
   gap: .9rem;
   margin-top: 1.8rem;
 }
@@ -317,9 +319,10 @@ textarea { resize: vertical; }
 }
 
 /* combined countdown style: stack segments inside single cell */
-.countdown-item.combined { display:flex; flex-direction:column; align-items:center; gap:8px; padding:12px 18px; }
-.count-segment { text-align:center; line-height:1; }
-.count-segment small { display:block; text-transform:none; font-size:0.85rem; color: rgba(255,255,255,0.82); margin-top:2px }
+.countdown-item.combined { display:flex; flex-direction:column; align-items:center; gap:6px; padding:10px 14px; }
+.count-segment { text-align:center; line-height:1; display:block; }
+.count-segment span { display:block; font-size:2.6rem; font-weight:800; }
+.count-segment small { display:block; text-transform:none; font-size:0.95rem; color: rgba(255,255,255,0.92); margin-top:4px }
 
 .btn {
   display: inline-flex;
