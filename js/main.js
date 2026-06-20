@@ -438,10 +438,13 @@ function applyConfig() {
 function renderGiftHighlights(gifts) {
   const host = q('#giftHighlights');
   if (!host) return;
-  host.innerHTML = gifts.slice(0, 5).map((gift, index) => `
+  host.innerHTML = gifts.slice(0, 8).map((gift, index) => `
     <div class="gift-mini-item" data-gift-index="${index}">
-      <strong>${escapeHtml(gift.title)}</strong>
-      <span>${currency(gift.price)}</span>
+      ${gift.imageUrl ? `<img class="gift-mini-thumb" src="${escapeHtml(gift.imageUrl)}" alt="${escapeHtml(gift.title)}" loading="lazy" />` : `<span class="gift-mini-icon"><i class="fas ${escapeHtml(gift.icon || 'fa-gift')}"></i></span>`}
+      <div class="gift-mini-info">
+        <strong>${escapeHtml(gift.title)}</strong>
+        <span class="gift-mini-price">${currency(gift.price)}</span>
+      </div>
     </div>
   `).join('');
 
@@ -451,7 +454,7 @@ function renderGiftHighlights(gifts) {
     el.addEventListener('click', () => {
       const idx = Number(el.dataset.giftIndex || 0);
       state.selectedGiftIndex = idx;
-      // garantir que o modal mostre o presente selecionado
+      state.giftModalIsolated = true; // abrir modal apenas com o presente selecionado
       renderGiftOptions(state.config.gifts);
       renderGiftPayment();
       openModal('giftModal');
@@ -463,18 +466,42 @@ function renderGiftHighlights(gifts) {
 function renderGiftOptions(gifts) {
   const host = q('#giftOptions');
   if (!host) return;
-  host.innerHTML = gifts.map((gift, index) => `
-    <button class="gift-option ${state.selectedGiftIndex === index ? 'active' : ''}" type="button" data-gift-index="${index}">
-      ${gift.imageUrl ? `<img class="gift-option-thumb" src="${escapeHtml(gift.imageUrl)}" alt="" loading="lazy" />` : `<span class="gift-option-icon"><i class="fas ${escapeHtml(gift.icon || 'fa-gift')}"></i></span>`}
-      <div class="gift-option-header">
-        <div>
-          <h4>${escapeHtml(gift.title)}</h4>
-          <p>${escapeHtml(gift.description)}</p>
+  // se estiver em modo isolado (abrir a partir da lista principal), renderizar apenas o presente selecionado
+  if (state.giftModalIsolated && Number.isFinite(state.selectedGiftIndex) && gifts[state.selectedGiftIndex]) {
+    const gift = gifts[state.selectedGiftIndex];
+    host.innerHTML = `
+      <div class="gift-single-view">
+        <button class="btn btn-soft" type="button" id="giftBackBtn"><i class="fas fa-arrow-left"></i> Voltar</button>
+        <div class="gift-single-card">
+          ${gift.imageUrl ? `<img class="gift-single-thumb" src="${escapeHtml(gift.imageUrl)}" alt="${escapeHtml(gift.title)}" loading="lazy" />` : `<span class="gift-single-icon"><i class="fas ${escapeHtml(gift.icon || 'fa-gift')} fa-2x"></i></span>`}
+          <div class="gift-single-body">
+            <h3>${escapeHtml(gift.title)}</h3>
+            <p>${escapeHtml(gift.description)}</p>
+            <div class="gift-price">${currency(gift.price)}</div>
+          </div>
         </div>
-        <span class="gift-price">${currency(gift.price)}</span>
       </div>
-    </button>
-  `).join('');
+    `;
+    const back = q('#giftBackBtn');
+    if (back) back.addEventListener('click', () => {
+      state.giftModalIsolated = false;
+      renderGiftOptions(state.config.gifts);
+      renderGiftPayment();
+    });
+  } else {
+    host.innerHTML = gifts.map((gift, index) => `
+      <button class="gift-option ${state.selectedGiftIndex === index ? 'active' : ''}" type="button" data-gift-index="${index}">
+        ${gift.imageUrl ? `<img class="gift-option-thumb" src="${escapeHtml(gift.imageUrl)}" alt="" loading="lazy" />` : `<span class="gift-option-icon"><i class="fas ${escapeHtml(gift.icon || 'fa-gift')}'></i></span>`}
+        <div class="gift-option-header">
+          <div>
+            <h4>${escapeHtml(gift.title)}</h4>
+            <p>${escapeHtml(gift.description)}</p>
+          </div>
+          <span class="gift-price">${currency(gift.price)}</span>
+        </div>
+      </button>
+    `).join('');
+  }
 
   qa('.gift-option').forEach(button => {
     button.addEventListener('click', () => {

@@ -1575,3 +1575,17 @@ textarea { resize: vertical; }
   .detail-row { flex-direction: column; align-items: start; }
   .payment-actions { grid-template-columns: 1fr; }
 }
+
+/* Gift mini thumbnails and single-view styles */
+.gift-mini-list { display:flex; flex-direction:column; gap:8px; margin-top:8px; max-height:18rem; overflow:auto; }
+.gift-mini-item { padding:8px 10px; background: rgba(255,255,255,0.06); border-radius:8px; display:flex; align-items:center; gap:10px; }
+.gift-mini-thumb { width:48px; height:48px; object-fit:cover; border-radius:6px; flex:0 0 48px; }
+.gift-mini-icon { width:48px; height:48px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.04); border-radius:6px; }
+.gift-mini-info { display:flex; flex-direction:column; gap:4px; }
+.gift-mini-price { color: var(--text-soft); font-size:0.9rem; }
+
+.gift-single-card { display:flex; gap:12px; align-items:center; padding:12px 0; }
+.gift-single-thumb { width:160px; height:120px; object-fit:cover; border-radius:8px; }
+.gift-single-body { flex:1; }
+.gift-single-view #giftBackBtn { margin-bottom:10px; }
+
