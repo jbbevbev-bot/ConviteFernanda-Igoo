@@ -2347,7 +2347,13 @@ function wireAdminActions() {
     const action = actionButton.dataset.action;
     const passAction = actionButton.dataset.passwordAction;
     if (action === 'regen-code') {
-      row.inviteCode = createInviteCode(row.id);
+      // Reverter convite ao estado inicial: remover código interno, senhas e marcar como pendente
+      row.inviteCode = '';
+      row.passwords = [];
+      row.confirmation = 'pendente';
+      row.registeredBy = '';
+      // limpar contadores associados
+      delete row.attendingCount;
       renderInviteTable();
       return;
     }
