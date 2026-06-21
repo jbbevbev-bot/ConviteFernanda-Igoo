@@ -88,7 +88,7 @@
     <div class="hero-frame bottom-right"></div>
   </section>
 
-  <audio id="siteMusic" loop preload="metadata"></audio>
+  <audio id="siteMusic" loop preload="metadata" playsinline webkit-playsinline></audio>
 
   <div class="floral-divider" aria-hidden="true">
     <svg viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
@@ -872,6 +872,8 @@
                 <button class="btn btn-soft" id="generateInvitesBtn" type="button"><i class="fas fa-wand-magic-sparkles"></i> Gerar painel</button>
                 <button class="btn btn-soft" id="addRowsBtn" type="button"><i class="fas fa-plus"></i> Adicionar 20 linhas</button>
                 <button class="btn btn-soft danger" id="resetDataBtn" type="button"><i class="fas fa-trash"></i> Limpar painel</button>
+                <button class="btn btn-primary" id="downloadPasswordsCsvBtn" type="button"><i class="fas fa-file-csv"></i> Baixar senhas (CSV)</button>
+                <button class="btn btn-primary" id="downloadPasswordsPdfBtn" type="button"><i class="fas fa-file-pdf"></i> Baixar senhas (PDF)</button>
               </div>
             </div>
 

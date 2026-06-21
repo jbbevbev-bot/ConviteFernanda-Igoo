@@ -381,6 +381,13 @@ async function playSiteMusic() {
   if (media.mode === 'file' && media.audioUrl && audio) {
     audio.src = media.audioUrl;
     audio.volume = Math.max(0, Math.min(1, Number(media.volume || 0.6)));
+    try {
+      // hint for mobile inline playback
+      try { audio.playsInline = true; } catch (e) {}
+      audio.setAttribute && audio.setAttribute('playsinline', '');
+    } catch (e) {}
+    // resume suspended AudioContext if present (some mobile browsers suspend it)
+    try { if (state.audioContext && state.audioContext.state === 'suspended') await state.audioContext.resume(); } catch (e) {}
     await audio.play();
     q('#musicToggleBtn i')?.classList.replace('fa-play', 'fa-pause');
     return;
@@ -410,6 +417,8 @@ function applyMedia() {
       const startAfterInteraction = async () => {
         document.removeEventListener('pointerdown', startAfterInteraction);
         document.removeEventListener('keydown', startAfterInteraction);
+        document.removeEventListener('touchstart', startAfterInteraction);
+        document.removeEventListener('touchend', startAfterInteraction);
         try {
           await playSiteMusic();
         } catch (error) {
@@ -418,6 +427,8 @@ function applyMedia() {
       };
       document.addEventListener('pointerdown', startAfterInteraction, { once: true });
       document.addEventListener('keydown', startAfterInteraction, { once: true });
+      document.addEventListener('touchstart', startAfterInteraction, { once: true });
+      document.addEventListener('touchend', startAfterInteraction, { once: true });
     });
   }
 }
@@ -1085,6 +1096,91 @@ async function downloadTicketPdf() {
   const height = canvas.height * ratio;
   pdf.addImage(imgData, 'PNG', 8, 8, width, height);
   pdf.save('convite-igo-fernanda.pdf');
+}
+
+// Exportar senhas como CSV (compatível com Excel) e como PDF
+function escapeCsv(value) {
+  if (value === null || value === undefined) return '';
+  const v = String(value);
+  if (/[";\n\r]/.test(v)) {
+    return '"' + v.replace(/"/g, '""') + '"';
+  }
+  return v;
+}
+
+function exportPasswordsCsv() {
+  const header = ['ID','Código interno','Nome','Quantidade','Limite','Contato','Mesa','Convidados','Senhas'];
+  const rows = (state.invites || []).map(row => {
+    return [
+      row.id ?? '',
+      row.inviteCode || '',
+      row.name || '',
+      row.guestCount ?? '',
+      row.guestLimit ?? '',
+      row.contact || '',
+      row.tableNumber || '',
+      Array.isArray(row.guestNames) ? row.guestNames.join('; ') : (row.guestNames || ''),
+      Array.isArray(row.passwords) ? row.passwords.map(p => p.code || p).join('; ') : ''
+    ];
+  });
+  const lines = [header.map(escapeCsv).join(';')].concat(rows.map(r => r.map(escapeCsv).join(';'))).join('\n');
+  const blob = new Blob([lines], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'senhas-convidados.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+async function exportPasswordsPdf() {
+  try {
+    const container = document.createElement('div');
+    container.style.position = 'fixed';
+    container.style.left = '-9999px';
+    container.style.top = '0';
+    const table = document.createElement('table');
+    table.style.borderCollapse = 'collapse';
+    table.style.width = '1200px';
+    const thead = document.createElement('thead');
+    thead.innerHTML = '<tr><th style="border:1px solid #ccc;padding:6px">ID</th><th style="border:1px solid #ccc;padding:6px">Código</th><th style="border:1px solid #ccc;padding:6px">Nome</th><th style="border:1px solid #ccc;padding:6px">Qtd</th><th style="border:1px solid #ccc;padding:6px">Limite</th><th style="border:1px solid #ccc;padding:6px">Contato</th><th style="border:1px solid #ccc;padding:6px">Mesa</th><th style="border:1px solid #ccc;padding:6px">Convidados</th><th style="border:1px solid #ccc;padding:6px">Senhas</th></tr>';
+    table.appendChild(thead);
+    const tbody = document.createElement('tbody');
+    (state.invites || []).forEach(row => {
+      const tr = document.createElement('tr');
+      const guests = Array.isArray(row.guestNames) ? row.guestNames.join(', ') : (row.guestNames || '');
+      const pw = Array.isArray(row.passwords) ? row.passwords.map(p => p.code || p).join(', ') : '';
+      const cells = [row.id ?? '', row.inviteCode || '', row.name || '', row.guestCount ?? '', row.guestLimit ?? '', row.contact || '', row.tableNumber || '', guests, pw];
+      cells.forEach(text => {
+        const td = document.createElement('td');
+        td.style.border = '1px solid #ddd';
+        td.style.padding = '6px';
+        td.style.fontSize = '10px';
+        td.textContent = text;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    table.appendChild(tbody);
+    container.appendChild(table);
+    document.body.appendChild(container);
+    const canvas = await html2canvas(table, { scale: 2, backgroundColor: '#ffffff' });
+    const imgData = canvas.toDataURL('image/png');
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const imgProps = pdf.getImageProperties(imgData);
+    const imgWidth = pageWidth - 16;
+    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+    pdf.addImage(imgData, 'PNG', 8, 8, imgWidth, Math.min(imgHeight, pageHeight - 16));
+    pdf.save('senhas-convidados.pdf');
+    container.remove();
+  } catch (error) {
+    showToast('Erro ao gerar PDF de senhas.', 'declined');
+  }
 }
 
 function wirePublicActions() {
@@ -1781,6 +1877,14 @@ function wireAdminActions() {
     }
   });
 
+  // exportar senhas (botões do painel admin)
+  q('#downloadPasswordsCsvBtn')?.addEventListener('click', () => {
+    try { exportPasswordsCsv(); } catch (e) { showToast('Erro ao exportar CSV.', 'declined'); }
+  });
+  q('#downloadPasswordsPdfBtn')?.addEventListener('click', async () => {
+    try { await exportPasswordsPdf(); } catch (e) { showToast('Erro ao exportar PDF.', 'declined'); }
+  });
+
   q('#cfgGalleryUploadBtn')?.addEventListener('click', async () => {
     const filesInput = q('#cfgGalleryFiles');
     const uploader = q('#cfgGalleryUploader')?.value.trim() || 'Administrador';
@@ -1932,6 +2036,16 @@ function wireAdminActions() {
     link.download = 'painel-igo-fernanda.json';
     link.click();
     URL.revokeObjectURL(url);
+  });
+
+  // botões de exportar senhas (CSV / PDF)
+  q('#downloadPasswordsCsvBtn')?.addEventListener('click', () => {
+    if (!state.adminLoaded) { showToast('Carregue o painel admin antes de exportar.', 'declined'); return; }
+    exportPasswordsCsv();
+  });
+  q('#downloadPasswordsPdfBtn')?.addEventListener('click', () => {
+    if (!state.adminLoaded) { showToast('Carregue o painel admin antes de exportar.', 'declined'); return; }
+    exportPasswordsPdf();
   });
 
   q('#adminImportInput')?.addEventListener('change', async event => {
