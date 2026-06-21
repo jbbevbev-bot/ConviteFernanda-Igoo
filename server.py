@@ -303,7 +303,6 @@ def default_gallery() -> list:
         {
             'id': str(uuid.uuid4()),
             'type': 'image',
-                        'cardEnabled': True,
             'uploader': 'Prévia do convite',
             'createdAt': utc_now_iso(),
             'filename': '',
@@ -314,7 +313,7 @@ def default_gallery() -> list:
             'url': 'https://images.unsplash.com/photo-1591604021695-0c69b7c05981?w=1200&q=80',
             'uploader': 'Prévia do convite',
             'createdAt': utc_now_iso(),
-                        'cardEnabled': True,
+            'filename': '',
         },
         {
             'id': str(uuid.uuid4()),
@@ -325,7 +324,6 @@ def default_gallery() -> list:
             'filename': '',
         },
     ]
-                        'cardEnabled': True,
 
 def default_config() -> dict:
     return {
@@ -336,7 +334,6 @@ def default_config() -> dict:
             'paper': 'rgba(255,255,255,.86)',
             'paperStrong': 'rgba(255,255,255,.95)',
             'text': '#31402c',
-                        'cardEnabled': True,
             'accent': '#7d8f59',
             'accentDark': '#51613b',
             'accentDeep': '#40502d',
@@ -347,7 +344,6 @@ def default_config() -> dict:
             'heroGradientEnd': '#77885a',
             'sectionDarkStart': '#465337',
             'sectionDarkMiddle': '#59684a',
-                        'cardEnabled': True,
         },
         'branding': {
             'logoMode': 'image',
@@ -357,7 +353,6 @@ def default_config() -> dict:
             'logoPrimaryColor': '#111111',
             'logoAccentColor': '#3f8a17',
             'logoBackgroundColor': '#ffffff',
-                        'cardEnabled': True,
             'heroBackgroundUrl': 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1800&q=80',
             'siteTextureUrl': '',
         },
