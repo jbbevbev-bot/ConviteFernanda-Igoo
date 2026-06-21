@@ -764,7 +764,17 @@ function renderGiftPayment() {
         const copyBtn = q('#pixInlineCopyBtn');
         if (copyBtn) copyBtn.onclick = async () => { try { await navigator.clipboard.writeText(paymentInfo.pixKey || ''); showToast('Chave PIX copiada com sucesso', 'confirmed'); } catch (err) { showToast('Não foi possível copiar a chave PIX.', 'declined'); } };
         const closeBtn = q('#pixInlineCloseBtn'); if (closeBtn) closeBtn.onclick = () => collapsePanel();
-        requestAnimationFrame(() => { panel.style.maxHeight = panel.scrollHeight + 'px'; panel.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+        requestAnimationFrame(() => {
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+          setTimeout(() => {
+            const closeBtnAfter = q('#pixInlineCloseBtn');
+            if (closeBtnAfter) {
+              try { closeBtnAfter.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+            } else {
+              try { panel.scrollIntoView({ behavior: 'smooth', block: 'end' }); } catch (e) {}
+            }
+          }, 340);
+        });
       };
       const collapsePanel = () => { if (!panel) return; panel.style.maxHeight = '0px'; };
       if (!panel || panel.style.maxHeight === '0px' || panel.style.maxHeight === '') openPanel(); else collapsePanel();

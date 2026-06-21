@@ -82,110 +82,110 @@ function mergeImportedInvites(rows) {
     Object.keys(r).forEach(k => {
       const nk = normalizeKey(k);
       let mapped = null;
-      for (const target in keyMap) {
-        if (keyMap[target].some(alias => nk === normalizeKey(alias))) { mapped = target; break; }
+      const payment = state.config.payment || {};
+      const cardLink = (gift.mercadoPagoLink?.trim() || payment?.mercadoPagoLink?.trim() || '');
+      const showCard = Boolean(cardLink) && (gift.cardEnabled !== false);
+      const showPix = Boolean(gift.pixEnabled);
+      panel.innerHTML = `
+        <div class="payment-card">
+          <div class="payment-gift-image-container">
+            ${gift.imageUrl ? `<img class="payment-gift-image" src="${escapeHtml(gift.imageUrl)}" alt="${escapeHtml(gift.title)}" />` : `<div class="payment-gift-image-fallback"><div class="brand-slot-large" id="paymentCardBrandSlot"></div></div>`}
+          </div>
+          <span class="gift-badge">Presente selecionado</span>
+          <div class="payment-header">
+            <h3 class="payment-title">${escapeHtml(gift.title)}</h3>
+            <button class="btn btn-ghost btn-sm" type="button" id="giftBackBtn"><i class="fas fa-arrow-left"></i> Voltar</button>
+          </div>
+          <p class="gift-description">${escapeHtml(gift.description)}</p>
+          <div class="gift-price-highlight">${currency(gift.price)}</div>
+          <div class="payment-actions">
+            ${showCard ? `<button class="btn btn-primary btn-full" type="button" id="payWithCardBtn"><i class="fas fa-credit-card"></i> Pagar com Cartão</button>` : ''}
+            ${showPix ? `<button class="btn btn-pix btn-full" type="button" id="payWithPixBtn"><i class="fas fa-barcode"></i> Pagar com PIX</button>` : ''}
+          </div>
+        </div>
+      `;
+      if (!gift.imageUrl) {
+        renderBrandSlot(q('#paymentCardBrandSlot'));
       }
-      if (!mapped) {
-        // try direct match
-        if (['id','invitecode','name','quantidade','limite','contato','mesa','convidados','senhas'].includes(nk)) mapped = nk;
+      if (showCard) {
+        q('#payWithCardBtn')?.addEventListener('click', () => {
+          window.open(cardLink, '_blank', 'noopener,noreferrer');
+        });
       }
-      if (mapped) out[mapped] = r[k];
-    });
-    return out;
-  };
-
-  let count = 0;
-  const maxId = () => (Array.isArray(state.invites) && state.invites.length) ? Math.max(...state.invites.map(i => Number(i.id || 0))) : 0;
-  rows.forEach(raw => {
-    const r = normalizeRow(raw);
-    // parse fields
-    const id = r.id ? Number(r.id) : null;
-    const inviteCode = r.inviteCode ? String(r.inviteCode).trim() : (r.codigo || '');
-    const name = r.name ? String(r.name).trim() : '';
-    const guestCount = r.guestCount ? Math.max(1, Math.min(30, Number(r.guestCount || 1))) : (r.quantidade ? Math.max(1, Math.min(30, Number(r.quantidade || 1))) : 1);
-    const guestLimit = r.guestLimit ? Math.max(0, Math.min(30, Number(r.guestLimit || 0))) : (r.limite ? Math.max(0, Math.min(30, Number(r.limite || 0))) : 0);
-    const contact = r.contact ? String(r.contact).trim() : '';
-    const tableNumber = r.tableNumber ? String(r.tableNumber).trim() : '';
-    const guestNames = (r.guestNames || r.convidados || '') ? String(r.guestNames || r.convidados || '').split(/[;,\n]+/).map(s => s.trim()).filter(Boolean) : [];
-    const passwords = (r.passwords || r.senhas || '') ? String(r.passwords || r.senhas || '').split(/[;,\n]+/).map(s => ({ code: String(s).trim() })).filter(p => p.code) : [];
-
-    // find existing row by id, inviteCode or name
-    let target = null;
-    if (id && Number.isFinite(id)) target = state.invites.find(it => Number(it.id) === Number(id));
-    if (!target && inviteCode) target = state.invites.find(it => String(it.inviteCode || '').trim() === String(inviteCode).trim());
-    if (!target && name) target = state.invites.find(it => String(it.name || '').trim().toLowerCase() === name.toLowerCase());
-
-    if (target) {
-      // update fields
-      if (inviteCode) target.inviteCode = inviteCode;
-      if (name) target.name = name;
-      target.guestCount = guestCount;
-      target.guestLimit = guestLimit;
-      if (contact) target.contact = contact;
-      if (tableNumber) target.tableNumber = tableNumber;
-      if (guestNames && guestNames.length) target.guestNames = guestNames;
-      if (passwords && passwords.length) target.passwords = passwords;
-    } else {
-      // create new row, append at end or to specific id
-      const newRow = {
-        id: id && Number.isFinite(id) ? id : (maxId() + 1),
-        inviteCode: inviteCode || '',
-        name: name || '',
-        guestCount: guestCount,
-        guestLimit: guestLimit,
-        contact: contact || '',
-        tableNumber: tableNumber || '',
-        passwords: passwords,
-        guestNames: guestNames,
-        registeredBy: name || '',
-        confirmation: 'pendente',
-      };
-      // ensure no duplicate id
-      if (state.invites.some(it => Number(it.id) === Number(newRow.id))) {
-        // push with next id
-        newRow.id = maxId() + 1;
+      if (showPix) {
+        q('#payWithPixBtn')?.addEventListener('click', () => {
+          // toggle an inline sliding panel (persiana) below the payment actions
+          const paymentActions = q('.payment-actions');
+          if (!paymentActions) return;
+          let panel = q('#pixInlinePanel');
+          const paymentInfo = state.config.payment || {};
+          const openPanel = async () => {
+            if (!panel) {
+              panel = document.createElement('div');
+              panel.id = 'pixInlinePanel';
+              panel.className = 'payment-pix-panel';
+              panel.style.overflow = 'hidden';
+              panel.style.maxHeight = '0px';
+              panel.style.transition = 'max-height 320ms ease';
+              panel.style.marginTop = '12px';
+              panel.innerHTML = \`
+                <div class="pix-inline-content" style="padding:16px;display:flex;flex-direction:column;align-items:center;gap:12px">
+                  <div class="pix-qr-holder" id="pixInlineQr" style="width:160px;height:160px"></div>
+                  <div class="pix-key-label" id="pixInlineKey">Pix: ${escapeHtml(paymentInfo.pixKey || '')}</div>
+                  <div style="display:flex;gap:8px">
+                    <button class="btn btn-primary" type="button" id="pixInlineCopyBtn"><i class="fas fa-copy"></i> Copiar chave PIX</button>
+                    <button class="btn btn-soft" type="button" id="pixInlineCloseBtn">Fechar</button>
+                  </div>
+                </div>\`;
+              paymentActions.insertAdjacentElement('afterend', panel);
+            }
+            // render QR into the inline holder
+            const qrHolder = q('#pixInlineQr');
+            try { renderPixQrTo && renderPixQrTo(qrHolder, gift); } catch (e) { renderPixQr(gift); }
+            const keyLabel = q('#pixInlineKey'); if (keyLabel) keyLabel.textContent = \`Pix: ${paymentInfo.pixKey || ''}\`;
+            const copyBtn = q('#pixInlineCopyBtn');
+            if (copyBtn) {
+              copyBtn.onclick = async () => {
+                try { await navigator.clipboard.writeText(paymentInfo.pixKey || ''); showToast('Chave PIX copiada com sucesso', 'confirmed'); }
+                catch (err) { showToast('Não foi possível copiar a chave PIX.', 'declined'); }
+              };
+            }
+            const closeBtn = q('#pixInlineCloseBtn');
+            if (closeBtn) closeBtn.onclick = () => collapsePanel();
+            // animate open and scroll into view so user sees QR + buttons
+            requestAnimationFrame(() => {
+              panel.style.maxHeight = panel.scrollHeight + 'px';
+              try { panel.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+            });
+          };
+          const collapsePanel = () => {
+            if (!panel) return;
+            panel.style.maxHeight = '0px';
+          };
+          // toggle
+          if (!panel || panel.style.maxHeight === '0px' || panel.style.maxHeight === '') {
+            openPanel();
+          } else {
+            collapsePanel();
+          }
+        });
       }
-      state.invites.push(newRow);
-    }
-    count += 1;
-  });
-
-  // normalize ids to sequential order starting from 1
-  state.invites = state.invites.map((row, idx) => ({ ...row, id: idx + 1 }));
-  return count;
-}
-
-async function fetchJson(url, options = {}) {
-  assertServerMode();
-  const response = await fetch(url, options);
-  const text = await response.text();
-  let data = {};
-  try {
-    data = text ? JSON.parse(text) : {};
-  } catch (error) {
-    data = { message: text || 'Resposta inválida do servidor.' };
-  }
-  if (!response.ok) {
-    throw new Error(data.message || 'Erro ao processar a requisição.');
-  }
-  return data;
-}
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
-}
-
-function currency(value) {
-  return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value || 0));
-}
-
-function formatDate(value) {
-  if (!value) return '';
+      // payment details removed — QR rendering skipped (buttons handle actions)
+  
+      // anexar listener do botão de voltar (fecha modal e retorna ao conteúdo principal)
+      const backBtn = q('#giftBackBtn');
+      if (backBtn) {
+        backBtn.addEventListener('click', () => {
+          closeModal('giftModal');
+          state.giftModalIsolated = false;
+          state.selectedGiftIndex = null;
+          const target = q('#presentes');
+          if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          try { history.replaceState(null, '', location.pathname + location.search + '#presentes'); } catch (e) {}
+          // remover marcação isolada do modal
+          const gm = q('#giftModal'); if (gm) gm.classList.remove('isolated');
+        });
+      }
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
   return new Intl.DateTimeFormat('pt-BR', {
@@ -763,10 +763,17 @@ function renderGiftPayment() {
         }
         const closeBtn = q('#pixInlineCloseBtn');
         if (closeBtn) closeBtn.onclick = () => collapsePanel();
-        // animate open and scroll into view so user sees QR + buttons
+        // animate open and then scroll so the close button is visible
         requestAnimationFrame(() => {
           panel.style.maxHeight = panel.scrollHeight + 'px';
-          try { panel.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+          setTimeout(() => {
+            const closeBtnAfter = q('#pixInlineCloseBtn');
+            if (closeBtnAfter) {
+              try { closeBtnAfter.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+            } else {
+              try { panel.scrollIntoView({ behavior: 'smooth', block: 'end' }); } catch (e) {}
+            }
+          }, 340);
         });
       };
       const collapsePanel = () => {
