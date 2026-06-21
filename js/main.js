@@ -155,6 +155,14 @@ function mergeImportedInvites(rows) {
   return count;
 }
 
+// garantir acesso global para handlers que podem ser ligados antes da execução
+try {
+  if (typeof window !== 'undefined') {
+    window.parseSpreadsheetFile = parseSpreadsheetFile;
+    window.mergeImportedInvites = mergeImportedInvites;
+  }
+} catch (e) {}
+
 async function fetchJson(url, options = {}) {
   assertServerMode();
   const response = await fetch(url, options);
