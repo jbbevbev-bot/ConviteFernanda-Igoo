@@ -34,6 +34,7 @@ function assertServerMode() {
   if (window.location.protocol === 'file:') {
     throw new Error('Este site precisa ser executado via servidor local. Rode `python server.py` e acesse http://localhost:8000.');
   }
+}
 // --- Import helpers for XLSX/CSV ---
 async function parseSpreadsheetFile(file) {
   return new Promise((resolve, reject) => {
@@ -152,7 +153,6 @@ function mergeImportedInvites(rows) {
   // normalize ids to sequential order starting from 1
   state.invites = state.invites.map((row, idx) => ({ ...row, id: idx + 1 }));
   return count;
-}
 }
 
 async function fetchJson(url, options = {}) {
