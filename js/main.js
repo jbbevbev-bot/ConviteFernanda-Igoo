@@ -614,7 +614,7 @@ function applyConfig() {
 function renderGiftHighlights(gifts) {
   const host = q('#giftHighlights');
   if (!host) return;
-  host.innerHTML = gifts.slice(0, 8).map((gift, index) => `
+  host.innerHTML = (gifts || []).map((gift, index) => `
     <div class="gift-mini-item" data-gift-index="${index}">
       ${gift.imageUrl ? `<img class="gift-mini-thumb" src="${escapeHtml(gift.imageUrl)}" alt="${escapeHtml(gift.title)}" loading="lazy" />` : `<span class="gift-mini-icon"><i class="fas ${escapeHtml(gift.icon || 'fa-gift')}"></i></span>`}
       <div class="gift-mini-info">
