@@ -1749,6 +1749,19 @@ function syncConfigFromInputs() {
   state.config.fixedTexts = fixed;
 }
 
+// Garantir que quaisquer edições inline nas inputs de senha sejam aplicadas ao estado
+function syncPasswordInputs() {
+  qa('[data-pass-input]').forEach(input => {
+    const rowId = Number(input.dataset.rowId || -1);
+    const idx = Number(input.dataset.passIndex || -1);
+    const row = state.invites.find(r => Number(r.id) === rowId);
+    if (!row) return;
+    row.passwords = row.passwords || [];
+    row.passwords[idx] = row.passwords[idx] || {};
+    row.passwords[idx].code = String(input.value || '').trim().slice(0, 10);
+  });
+}
+
 async function loadAdminState() {
   if (!state.adminPassword) {
     openModal('adminLoginModal');
@@ -1859,6 +1872,8 @@ function wireAdminActions() {
   q('#adminSaveBtn')?.addEventListener('click', async () => {
     try {
       syncConfigFromInputs();
+      // garantir que edições inline de senhas sejam aplicadas ao state antes de salvar
+      if (typeof syncPasswordInputs === 'function') syncPasswordInputs();
       const payload = { config: state.config, invites: state.invites, messages: state.messages };
       await fetchJson('/api/admin/save', {
         method: 'POST',
