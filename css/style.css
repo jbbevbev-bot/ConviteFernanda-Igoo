@@ -581,6 +581,10 @@ textarea { resize: vertical; }
   font-size: 1.4rem;
   margin-bottom: 1rem;
 }
+
+.two-rings { display: inline-block; position: relative; line-height: 0; }
+.two-rings i { font-size: 1.05rem; color: #fff; }
+.two-rings .ring-overlap { position: absolute; left: 10px; top: -4px; transform: rotate(-18deg); }
 .ceremony-card h3 {
   font-family: var(--font-serif);
   font-size: 1.9rem;

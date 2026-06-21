@@ -207,6 +207,7 @@ def default_gifts() -> list:
             'imageQuery': 'jantar romântico casal lua de mel',
             'icon': 'fa-utensils',
             'mercadoPagoLink': '',
+            'pixEnabled': True,
         },
         {
             'title': 'Café da manhã especial',
@@ -216,6 +217,7 @@ def default_gifts() -> list:
             'imageQuery': 'café da manhã romântico hotel',
             'icon': 'fa-mug-hot',
             'mercadoPagoLink': '',
+            'pixEnabled': True,
         },
         {
             'title': 'Massagem relaxante para o casal',
@@ -225,6 +227,7 @@ def default_gifts() -> list:
             'imageQuery': 'spa casal massagem relaxante',
             'icon': 'fa-spa',
             'mercadoPagoLink': '',
+            'pixEnabled': True,
         },
         {
             'title': 'Passeio ao pôr do sol',
@@ -234,6 +237,7 @@ def default_gifts() -> list:
             'imageQuery': 'passeio pôr do sol casal viagem',
             'icon': 'fa-sun',
             'mercadoPagoLink': '',
+            'pixEnabled': True,
         },
         {
             'title': 'Surpresa especial para Fernanda',
@@ -243,6 +247,7 @@ def default_gifts() -> list:
             'imageQuery': 'surpresa romântica presente casal',
             'icon': 'fa-gift',
             'mercadoPagoLink': '',
+            'pixEnabled': True,
         },
         {
             'title': 'Brinde com vinho',
@@ -251,6 +256,7 @@ def default_gifts() -> list:
             'imageUrl': '',
             'imageQuery': 'vinho jantar romântico casal',
             'icon': 'fa-wine-glass',
+            'pixEnabled': True,
         },
     ]
 
@@ -297,7 +303,7 @@ def default_gallery() -> list:
         {
             'id': str(uuid.uuid4()),
             'type': 'image',
-            'url': 'https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=1200&q=80',
+                        'cardEnabled': True,
             'uploader': 'Prévia do convite',
             'createdAt': utc_now_iso(),
             'filename': '',
@@ -308,7 +314,7 @@ def default_gallery() -> list:
             'url': 'https://images.unsplash.com/photo-1591604021695-0c69b7c05981?w=1200&q=80',
             'uploader': 'Prévia do convite',
             'createdAt': utc_now_iso(),
-            'filename': '',
+                        'cardEnabled': True,
         },
         {
             'id': str(uuid.uuid4()),
@@ -319,7 +325,7 @@ def default_gallery() -> list:
             'filename': '',
         },
     ]
-
+                        'cardEnabled': True,
 
 def default_config() -> dict:
     return {
@@ -330,7 +336,7 @@ def default_config() -> dict:
             'paper': 'rgba(255,255,255,.86)',
             'paperStrong': 'rgba(255,255,255,.95)',
             'text': '#31402c',
-            'textSoft': '#63725a',
+                        'cardEnabled': True,
             'accent': '#7d8f59',
             'accentDark': '#51613b',
             'accentDeep': '#40502d',
@@ -341,7 +347,7 @@ def default_config() -> dict:
             'heroGradientEnd': '#77885a',
             'sectionDarkStart': '#465337',
             'sectionDarkMiddle': '#59684a',
-            'sectionDarkEnd': '#3e4b32',
+                        'cardEnabled': True,
         },
         'branding': {
             'logoMode': 'image',
@@ -351,7 +357,7 @@ def default_config() -> dict:
             'logoPrimaryColor': '#111111',
             'logoAccentColor': '#3f8a17',
             'logoBackgroundColor': '#ffffff',
-            'logoSubtitle': '01 . 08 . 2026',
+                        'cardEnabled': True,
             'heroBackgroundUrl': 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1800&q=80',
             'siteTextureUrl': '',
         },

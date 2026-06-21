@@ -155,14 +155,6 @@ function mergeImportedInvites(rows) {
   return count;
 }
 
-// garantir acesso global para handlers que podem ser ligados antes da execução
-try {
-  if (typeof window !== 'undefined') {
-    window.parseSpreadsheetFile = parseSpreadsheetFile;
-    window.mergeImportedInvites = mergeImportedInvites;
-  }
-} catch (e) {}
-
 async function fetchJson(url, options = {}) {
   assertServerMode();
   const response = await fetch(url, options);
@@ -615,7 +607,7 @@ function applyConfig() {
 function renderGiftHighlights(gifts) {
   const host = q('#giftHighlights');
   if (!host) return;
-  host.innerHTML = (gifts || []).map((gift, index) => `
+  host.innerHTML = gifts.slice(0, 8).map((gift, index) => `
     <div class="gift-mini-item" data-gift-index="${index}">
       ${gift.imageUrl ? `<img class="gift-mini-thumb" src="${escapeHtml(gift.imageUrl)}" alt="${escapeHtml(gift.title)}" loading="lazy" />` : `<span class="gift-mini-icon"><i class="fas ${escapeHtml(gift.icon || 'fa-gift')}"></i></span>`}
       <div class="gift-mini-info">
@@ -657,7 +649,7 @@ function renderGiftOptions(gifts) {
     const gm = q('#giftModal'); if (gm) gm.classList.remove('isolated');
     host.innerHTML = gifts.map((gift, index) => `
       <button class="gift-option ${state.selectedGiftIndex === index ? 'active' : ''}" type="button" data-gift-index="${index}">
-        ${gift.imageUrl ? `<img class="gift-option-thumb" src="${escapeHtml(gift.imageUrl)}" alt="" loading="lazy" />` : `<span class="gift-option-icon"><i class="fas ${escapeHtml(gift.icon || 'fa-gift')}" ></i></span>`}
+        ${gift.imageUrl ? `<img class="gift-option-thumb" src="${escapeHtml(gift.imageUrl)}" alt="" loading="lazy" />` : `<span class="gift-option-icon"><i class="fas ${escapeHtml(gift.icon || 'fa-gift')}"></i></span>`}
         <div class="gift-option-header">
           <div>
             <h4>${escapeHtml(gift.title)}</h4>
@@ -715,7 +707,6 @@ function renderGiftPayment() {
         ${showCard ? `<button class="btn btn-primary btn-full" type="button" id="payWithCardBtn"><i class="fas fa-credit-card"></i> Pagar com Cartão</button>` : ''}
         ${showPix ? `<button class="btn btn-pix btn-full" type="button" id="payWithPixBtn"><i class="fas fa-barcode"></i> Pagar com PIX</button>` : ''}
       </div>
-      <!-- payment details removed: Pix key, card link and QR preview are intentionally hidden; buttons above handle actions -->
     </div>
   `;
   if (!gift.imageUrl) {
@@ -728,7 +719,7 @@ function renderGiftPayment() {
   }
   if (showPix) {
     q('#payWithPixBtn')?.addEventListener('click', () => {
-      // toggle inline sliding panel under the payment actions
+      // toggle an inline sliding panel (persiana) below the payment actions
       const paymentActions = q('.payment-actions');
       if (!paymentActions) return;
       let panel = q('#pixInlinePanel');
@@ -753,16 +744,34 @@ function renderGiftPayment() {
             </div>`;
           paymentActions.insertAdjacentElement('afterend', panel);
         }
+        // render QR into the inline holder
         const qrHolder = q('#pixInlineQr');
         try { renderPixQrTo && renderPixQrTo(qrHolder, gift); } catch (e) { renderPixQr(gift); }
         const keyLabel = q('#pixInlineKey'); if (keyLabel) keyLabel.textContent = `Pix: ${paymentInfo.pixKey || ''}`;
         const copyBtn = q('#pixInlineCopyBtn');
-        if (copyBtn) copyBtn.onclick = async () => { try { await navigator.clipboard.writeText(paymentInfo.pixKey || ''); showToast('Chave PIX copiada com sucesso', 'confirmed'); } catch (err) { showToast('Não foi possível copiar a chave PIX.', 'declined'); } };
-        const closeBtn = q('#pixInlineCloseBtn'); if (closeBtn) closeBtn.onclick = () => collapsePanel();
-        requestAnimationFrame(() => { panel.style.maxHeight = panel.scrollHeight + 'px'; });
+        if (copyBtn) {
+          copyBtn.onclick = async () => {
+            try { await navigator.clipboard.writeText(paymentInfo.pixKey || ''); showToast('Chave PIX copiada com sucesso', 'confirmed'); }
+            catch (err) { showToast('Não foi possível copiar a chave PIX.', 'declined'); }
+          };
+        }
+        const closeBtn = q('#pixInlineCloseBtn');
+        if (closeBtn) closeBtn.onclick = () => collapsePanel();
+        // animate open
+        requestAnimationFrame(() => {
+          panel.style.maxHeight = panel.scrollHeight + 'px';
+        });
       };
-      const collapsePanel = () => { if (!panel) return; panel.style.maxHeight = '0px'; };
-      if (!panel || panel.style.maxHeight === '0px' || panel.style.maxHeight === '') openPanel(); else collapsePanel();
+      const collapsePanel = () => {
+        if (!panel) return;
+        panel.style.maxHeight = '0px';
+      };
+      // toggle
+      if (!panel || panel.style.maxHeight === '0px' || panel.style.maxHeight === '') {
+        openPanel();
+      } else {
+        collapsePanel();
+      }
     });
   }
   // payment details removed — QR rendering skipped (buttons handle actions)
@@ -790,34 +799,42 @@ function renderPixQr(gift) {
   const payment = state.config.payment || {};
   const titleShort = String(gift.title || '').replace(/\s+/g, ' ').trim().slice(0, 60);
   let payload = (payment.pixPayload || '').trim() || `Chave Pix: ${payment.pixKey}\nValor: ${currency(gift.price)}\nPresente: ${titleShort}`;
-  // limitar comprimento para evitar overflow do gerador de QR
   const MAX_QR_LEN = 600;
   if (payload.length > MAX_QR_LEN) {
     console.warn('QR payload too long, showing fallback image instead');
     holder.innerHTML = `
       <div class="qr-fallback-wrap">
-        <img src="/uploads/assets/fallback-qr.jpeg" alt="QRCode fallback" class="pix-fallback" onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<div class=\"qr-error\">Não foi possível gerar o QRCode e a imagem de fallback não foi encontrada.</div>')" />
+        <a href="/uploads/assets/fallback-qr.jpeg" target="_blank" rel="noopener noreferrer">
+          <img src="/uploads/assets/fallback-qr.jpeg" alt="QRCode fallback" class="pix-fallback" />
+        </a>
         
       </div>`;
     return;
   }
   if (state.giftQrInstance) state.giftQrInstance = null;
   try {
+    // use a lower error-correction level to increase capacity
     state.giftQrInstance = new QRCode(holder, {
       text: payload,
       width: 180,
       height: 180,
       colorDark: '#31402c',
       colorLight: '#ffffff',
-      // usar nível de correção mais baixo para aumentar capacidade
       correctLevel: QRCode.CorrectLevel.L
     });
   } catch (err) {
-    holder.innerHTML = '<div class="qr-error">Não foi possível gerar o QRCode para este conteúdo. Copie a chave PIX.</div>';
     console.warn('QR generation failed:', err);
+    holder.innerHTML = `
+      <div class="qr-fallback-wrap">
+        <a href="/uploads/assets/fallback-qr.jpeg" target="_blank" rel="noopener noreferrer">
+          <img src="/uploads/assets/fallback-qr.jpeg" alt="QRCode fallback" class="pix-fallback" />
+        </a>
+        
+      </div>`;
   }
 }
 
+// helper: render QR to a specified holder element (safer than relying on single modal holder)
 function renderPixQrTo(holder, gift) {
   if (!holder || !state.config) return;
   holder.innerHTML = '';
@@ -847,14 +864,8 @@ function renderPixQrTo(holder, gift) {
       correctLevel: QRCode.CorrectLevel.L
     });
   } catch (err) {
+    holder.innerHTML = '<div class="qr-error">Não foi possível gerar o QRCode para este conteúdo.</div>';
     console.warn('QR generation failed:', err);
-    holder.innerHTML = `
-      <div class="qr-fallback-wrap">
-        <a href="/uploads/assets/fallback-qr.jpeg" target="_blank" rel="noopener noreferrer">
-          <img src="/uploads/assets/fallback-qr.jpeg" alt="QRCode fallback" class="pix-fallback" />
-        </a>
-        
-      </div>`;
   }
 }
 
@@ -2444,13 +2455,7 @@ function wireAdminActions() {
     const action = actionButton.dataset.action;
     const passAction = actionButton.dataset.passwordAction;
     if (action === 'regen-code') {
-      // Reverter convite ao estado inicial: remover código interno, senhas e marcar como pendente
-      row.inviteCode = '';
-      row.passwords = [];
-      row.confirmation = 'pendente';
-      row.registeredBy = '';
-      // limpar contadores associados
-      delete row.attendingCount;
+      row.inviteCode = createInviteCode(row.id);
       renderInviteTable();
       return;
     }

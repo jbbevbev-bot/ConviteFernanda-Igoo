@@ -1,2 +1,4 @@
 # Dependências do projeto
-# Deixe vazio se não houver pacotes externos.
+# Pacotes necessários para gerar QR Code no servidor
+qrcode
+Pillow
