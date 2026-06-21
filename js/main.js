@@ -34,6 +34,125 @@ function assertServerMode() {
   if (window.location.protocol === 'file:') {
     throw new Error('Este site precisa ser executado via servidor local. Rode `python server.py` e acesse http://localhost:8000.');
   }
+// --- Import helpers for XLSX/CSV ---
+async function parseSpreadsheetFile(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onerror = () => reject(new Error('Falha ao ler o arquivo'));
+    reader.onload = (e) => {
+      try {
+        const data = e.target.result;
+        // usar SheetJS (XLSX) para ler o arquivo; suporta CSV e XLSX
+        const workbook = XLSX.read(data, { type: 'array' });
+        const firstSheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[firstSheetName];
+        const json = XLSX.utils.sheet_to_json(sheet, { defval: '' });
+        resolve(json);
+      } catch (err) {
+        reject(err);
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  });
+}
+
+function normalizeKey(k) {
+  if (!k && k !== 0) return '';
+  const s = String(k).normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+  return s.replace(/[^a-z0-9]+/g, '');
+}
+
+function mergeImportedInvites(rows) {
+  if (!Array.isArray(rows)) return 0;
+  const keyMap = {
+    id: ['id','codigo','identificador'],
+    inviteCode: ['codigointerno','codigo','invitecode','codigointerno','code'],
+    name: ['nome','name'],
+    guestCount: ['quantidade','qtd','guestcount','guests','amount'],
+    guestLimit: ['limite','limit'],
+    contact: ['contato','contact','telefone','phone'],
+    tableNumber: ['mesa','tablenumber','table'],
+    guestNames: ['convidados','convidadoscadastrados','guests','guestnames'],
+    passwords: ['senhas','passwords','codes']
+  };
+
+  const normalizeRow = (r) => {
+    const out = {};
+    Object.keys(r).forEach(k => {
+      const nk = normalizeKey(k);
+      let mapped = null;
+      for (const target in keyMap) {
+        if (keyMap[target].some(alias => nk === normalizeKey(alias))) { mapped = target; break; }
+      }
+      if (!mapped) {
+        // try direct match
+        if (['id','invitecode','name','quantidade','limite','contato','mesa','convidados','senhas'].includes(nk)) mapped = nk;
+      }
+      if (mapped) out[mapped] = r[k];
+    });
+    return out;
+  };
+
+  let count = 0;
+  const maxId = () => (Array.isArray(state.invites) && state.invites.length) ? Math.max(...state.invites.map(i => Number(i.id || 0))) : 0;
+  rows.forEach(raw => {
+    const r = normalizeRow(raw);
+    // parse fields
+    const id = r.id ? Number(r.id) : null;
+    const inviteCode = r.inviteCode ? String(r.inviteCode).trim() : (r.codigo || '');
+    const name = r.name ? String(r.name).trim() : '';
+    const guestCount = r.guestCount ? Math.max(1, Math.min(30, Number(r.guestCount || 1))) : (r.quantidade ? Math.max(1, Math.min(30, Number(r.quantidade || 1))) : 1);
+    const guestLimit = r.guestLimit ? Math.max(0, Math.min(30, Number(r.guestLimit || 0))) : (r.limite ? Math.max(0, Math.min(30, Number(r.limite || 0))) : 0);
+    const contact = r.contact ? String(r.contact).trim() : '';
+    const tableNumber = r.tableNumber ? String(r.tableNumber).trim() : '';
+    const guestNames = (r.guestNames || r.convidados || '') ? String(r.guestNames || r.convidados || '').split(/[;,\n]+/).map(s => s.trim()).filter(Boolean) : [];
+    const passwords = (r.passwords || r.senhas || '') ? String(r.passwords || r.senhas || '').split(/[;,\n]+/).map(s => ({ code: String(s).trim() })).filter(p => p.code) : [];
+
+    // find existing row by id, inviteCode or name
+    let target = null;
+    if (id && Number.isFinite(id)) target = state.invites.find(it => Number(it.id) === Number(id));
+    if (!target && inviteCode) target = state.invites.find(it => String(it.inviteCode || '').trim() === String(inviteCode).trim());
+    if (!target && name) target = state.invites.find(it => String(it.name || '').trim().toLowerCase() === name.toLowerCase());
+
+    if (target) {
+      // update fields
+      if (inviteCode) target.inviteCode = inviteCode;
+      if (name) target.name = name;
+      target.guestCount = guestCount;
+      target.guestLimit = guestLimit;
+      if (contact) target.contact = contact;
+      if (tableNumber) target.tableNumber = tableNumber;
+      if (guestNames && guestNames.length) target.guestNames = guestNames;
+      if (passwords && passwords.length) target.passwords = passwords;
+    } else {
+      // create new row, append at end or to specific id
+      const newRow = {
+        id: id && Number.isFinite(id) ? id : (maxId() + 1),
+        inviteCode: inviteCode || '',
+        name: name || '',
+        guestCount: guestCount,
+        guestLimit: guestLimit,
+        contact: contact || '',
+        tableNumber: tableNumber || '',
+        passwords: passwords,
+        guestNames: guestNames,
+        registeredBy: name || '',
+        confirmation: 'pendente',
+      };
+      // ensure no duplicate id
+      if (state.invites.some(it => Number(it.id) === Number(newRow.id))) {
+        // push with next id
+        newRow.id = maxId() + 1;
+      }
+      state.invites.push(newRow);
+    }
+    count += 1;
+  });
+
+  // normalize ids to sequential order starting from 1
+  state.invites = state.invites.map((row, idx) => ({ ...row, id: idx + 1 }));
+  return count;
+}
 }
 
 async function fetchJson(url, options = {}) {
@@ -2058,6 +2177,42 @@ function wireAdminActions() {
     renderAdminConfig();
     renderInviteTable();
     showToast('Backup importado para o painel.');
+  });
+
+  // Importar planilha (XLSX / CSV) para atualizar a tabela de senhas no painel admin
+  q('#importInvitesBtn')?.addEventListener('click', () => q('#cfgImportInvitesFile')?.click());
+  q('#cfgImportInvitesFile')?.addEventListener('change', async event => {
+    const [file] = event.target.files || [];
+    if (!file) return;
+    if (!state.adminLoaded) { showToast('Carregue o painel admin antes de importar.', 'declined'); return; }
+    try {
+      const imported = await parseSpreadsheetFile(file);
+      const count = mergeImportedInvites(imported);
+      renderInviteTable();
+      showToast(`Importadas ${count} linha(s). Revise e salve para persistir.`, 'confirmed');
+    } catch (err) {
+      console.error(err);
+      showToast('Erro ao importar planilha. Use um arquivo CSV ou XLSX válido.', 'declined');
+    } finally {
+      event.target.value = '';
+    }
+  });
+  q('#importAndSaveInvitesBtn')?.addEventListener('click', async () => {
+    const input = q('#cfgImportInvitesFile');
+    const [file] = input ? input.files || [] : [];
+    if (!file) { showToast('Selecione uma planilha antes de usar Importar e salvar.', 'declined'); return; }
+    if (!state.adminLoaded) { showToast('Carregue o painel admin antes de importar.', 'declined'); return; }
+    try {
+      const imported = await parseSpreadsheetFile(file);
+      const count = mergeImportedInvites(imported);
+      renderInviteTable();
+      showToast(`Importadas ${count} linha(s). Salvando...`);
+      // acionar o fluxo de salvar do admin
+      q('#adminSaveBtn')?.click();
+    } catch (err) {
+      console.error(err);
+      showToast('Erro ao importar e salvar a planilha.', 'declined');
+    }
   });
 
   document.addEventListener('change', async event => {

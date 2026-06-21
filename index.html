@@ -874,6 +874,12 @@
                 <button class="btn btn-soft danger" id="resetDataBtn" type="button"><i class="fas fa-trash"></i> Limpar painel</button>
                 <button class="btn btn-primary" id="downloadPasswordsCsvBtn" type="button"><i class="fas fa-file-csv"></i> Baixar senhas (CSV)</button>
                 <button class="btn btn-primary" id="downloadPasswordsPdfBtn" type="button"><i class="fas fa-file-pdf"></i> Baixar senhas (PDF)</button>
+                <label class="mini-upload-btn" style="margin-left:8px">
+                  <i class="fas fa-file-import"></i>
+                  <input type="file" id="cfgImportInvitesFile" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" hidden />
+                </label>
+                <button class="btn btn-soft" id="importInvitesBtn" type="button"><i class="fas fa-file-import"></i> Importar planilha</button>
+                <button class="btn btn-primary" id="importAndSaveInvitesBtn" type="button"><i class="fas fa-file-arrow-up"></i> Importar e salvar</button>
               </div>
             </div>
 
@@ -907,6 +913,8 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <!-- SheetJS for client-side Excel/CSV parsing -->
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
   <script src="js/main.js"></script>
   <script>
     (function(){
