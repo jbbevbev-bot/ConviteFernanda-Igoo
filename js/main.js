@@ -34,6 +34,8 @@ function assertServerMode() {
   if (window.location.protocol === 'file:') {
     throw new Error('Este site precisa ser executado via servidor local. Rode `python server.py` e acesse http://localhost:8000.');
   }
+}
+
 // --- Import helpers for XLSX/CSV ---
 async function parseSpreadsheetFile(file) {
   return new Promise((resolve, reject) => {
@@ -360,7 +362,14 @@ function setText(selector, value) {
 
 function setValue(selector, value) {
   const el = q(selector);
-  if (el) el.value = value ?? '';
+  if (!el) return;
+  // avoid assigning empty string to color inputs (invalid format); leave as-is when value missing
+  if (el.type === 'color') {
+    if (value === null || value === undefined || value === '') return;
+    el.value = value;
+    return;
+  }
+  el.value = value ?? '';
 }
 
 function setChecked(selector, value) {
