@@ -542,21 +542,26 @@ function applyMedia() {
     playSiteMusic().then(() => {
       // played successfully
     }).catch(() => {
-      const startAfterInteraction = async () => {
+      const startAfterInteraction = async (ev) => {
         document.removeEventListener('pointerdown', startAfterInteraction);
         document.removeEventListener('keydown', startAfterInteraction);
         document.removeEventListener('touchstart', startAfterInteraction);
         document.removeEventListener('touchend', startAfterInteraction);
+        document.removeEventListener('scroll', startAfterInteraction);
+        document.removeEventListener('visibilitychange', startAfterInteraction);
         try {
           await playSiteMusic();
         } catch (error) {
           q('#musicToggleBtn i')?.classList.replace('fa-pause', 'fa-play');
         }
       };
+      // try common user gestures and also scroll/visibilitychange as fallback
       document.addEventListener('pointerdown', startAfterInteraction, { once: true });
       document.addEventListener('keydown', startAfterInteraction, { once: true });
       document.addEventListener('touchstart', startAfterInteraction, { once: true });
       document.addEventListener('touchend', startAfterInteraction, { once: true });
+      document.addEventListener('scroll', startAfterInteraction, { passive: true });
+      document.addEventListener('visibilitychange', startAfterInteraction);
     });
   }
 }

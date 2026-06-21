@@ -458,22 +458,27 @@ function stopGeneratedMusic() {
   }
 }
 
-function stopSiteMusic() {
-  const audio = q('#siteMusic');
-  if (audio) audio.pause();
-  stopGeneratedMusic();
-  q('#musicToggleBtn i')?.classList.replace('fa-pause', 'fa-play');
-}
-
-function playGeneratedPreset() {
-  const media = state.config?.media || {};
-  const preset = MUSIC_PRESETS[media.preset] || MUSIC_PRESETS['instrumental-romantico'];
-  state.audioContext = state.audioContext || new (window.AudioContext || window.webkitAudioContext)();
-  const ctx = state.audioContext;
-  stopGeneratedMusic();
-  const gain = ctx.createGain();
-  gain.gain.value = Math.max(0.3, Math.min(1.0, Number(media.volume || 0.6))) * 6.0;
-  gain.connect(ctx.destination);
+      }).catch(() => {
+        const startAfterInteraction = async (ev) => {
+          document.removeEventListener('pointerdown', startAfterInteraction);
+          document.removeEventListener('keydown', startAfterInteraction);
+          document.removeEventListener('touchstart', startAfterInteraction);
+          document.removeEventListener('touchend', startAfterInteraction);
+          document.removeEventListener('scroll', startAfterInteraction);
+          document.removeEventListener('visibilitychange', startAfterInteraction);
+          try {
+            await playSiteMusic();
+          } catch (error) {
+            q('#musicToggleBtn i')?.classList.replace('fa-pause', 'fa-play');
+          }
+        };
+        document.addEventListener('pointerdown', startAfterInteraction, { once: true });
+        document.addEventListener('keydown', startAfterInteraction, { once: true });
+        document.addEventListener('touchstart', startAfterInteraction, { once: true });
+        document.addEventListener('touchend', startAfterInteraction, { once: true });
+        document.addEventListener('scroll', startAfterInteraction, { passive: true });
+        document.addEventListener('visibilitychange', startAfterInteraction);
+      });
   state.generatedMusicGain = gain;
   let index = 0;
   const playNote = () => {
@@ -758,9 +763,10 @@ function renderGiftPayment() {
         }
         const closeBtn = q('#pixInlineCloseBtn');
         if (closeBtn) closeBtn.onclick = () => collapsePanel();
-        // animate open
+        // animate open and scroll into view so user sees QR + buttons
         requestAnimationFrame(() => {
           panel.style.maxHeight = panel.scrollHeight + 'px';
+          try { panel.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
         });
       };
       const collapsePanel = () => {

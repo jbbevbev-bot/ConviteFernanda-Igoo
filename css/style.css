@@ -262,18 +262,20 @@ textarea { resize: vertical; }
   gap: 1rem;
   margin-top: 2rem;
 }
-.hero-note {
-  margin: 1.4rem auto 0;
-  display: inline-flex;
-  align-items: center;
-  gap: .7rem;
-  padding: .85rem 1.2rem;
-  border-radius: 999px;
-  background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.18);
-  color: rgba(255,255,255,.88);
-  backdrop-filter: blur(8px);
-}
+  .hero-note {
+    margin: 1.4rem auto 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .7rem;
+    padding: .85rem 1.2rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.18);
+    color: rgba(255,255,255,.88);
+    backdrop-filter: blur(8px);
+    text-align: center;
+  }
 .hero-frame {
   position: absolute;
   width: 130px;
@@ -1608,7 +1610,7 @@ textarea { resize: vertical; }
   .section { padding: 4.5rem 1rem; }
   .hero { padding-inline: 1rem; }
   .hero-logo { width: 92px; height: 92px; }
-  .hero-note { display: flex; align-items: start; text-align: left; }
+  .hero-note { display: flex; align-items: center; justify-content: center; text-align: center; }
   .countdown,
   .gallery-grid,
   .messages-layout,
