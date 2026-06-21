@@ -399,7 +399,8 @@ function applyTheme() {
 function renderBrandSlot(slot, compact = false) {
   if (!slot || !state.config) return;
   const branding = state.config.branding || {};
-  const initials = escapeHtml((branding.monogramInitials || 'IF').toUpperCase());
+    holder.innerHTML = '';
+    panel.style.maxHeight = panel.scrollHeight + 'px';
   const subtitle = escapeHtml(branding.logoSubtitle || '');
   if (branding.logoMode === 'image' && branding.logoUrl) {
     slot.innerHTML = `<img class="brand-logo ${compact ? 'compact-logo' : ''}" src="${escapeHtml(branding.logoUrl)}" alt="Logo do evento" />`;
@@ -1445,9 +1446,21 @@ function wirePublicActions() {
     }
   });
 
-  q('#audioStopBtn')?.addEventListener('click', () => {
-    stopSiteMusic();
-    showToast('Áudio parado.', 'confirmed');
+  q('#audioStopBtn')?.addEventListener('click', async () => {
+    const audio = q('#siteMusic');
+    const isGeneratedPlaying = Boolean(state.generatedMusicTimer);
+    const isFilePlaying = audio && !audio.paused;
+    if (isGeneratedPlaying || isFilePlaying) {
+      stopSiteMusic();
+      showToast('Áudio parado.', 'confirmed');
+      return;
+    }
+    try {
+      await playSiteMusic();
+      showToast('Áudio reproduzido.', 'confirmed');
+    } catch (err) {
+      showToast('Não foi possível tocar o áudio.', 'declined');
+    }
   });
 
   q('#lookupForm')?.addEventListener('submit', async event => {

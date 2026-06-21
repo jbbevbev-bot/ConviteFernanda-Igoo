@@ -759,7 +759,7 @@ function renderGiftPayment() {
         const copyBtn = q('#pixInlineCopyBtn');
         if (copyBtn) copyBtn.onclick = async () => { try { await navigator.clipboard.writeText(paymentInfo.pixKey || ''); showToast('Chave PIX copiada com sucesso', 'confirmed'); } catch (err) { showToast('Não foi possível copiar a chave PIX.', 'declined'); } };
         const closeBtn = q('#pixInlineCloseBtn'); if (closeBtn) closeBtn.onclick = () => collapsePanel();
-        requestAnimationFrame(() => { panel.style.maxHeight = panel.scrollHeight + 'px'; });
+        requestAnimationFrame(() => { panel.style.maxHeight = panel.scrollHeight + 'px'; panel.scrollIntoView({ behavior: 'smooth', block: 'center' }); });
       };
       const collapsePanel = () => { if (!panel) return; panel.style.maxHeight = '0px'; };
       if (!panel || panel.style.maxHeight === '0px' || panel.style.maxHeight === '') openPanel(); else collapsePanel();
@@ -1435,8 +1435,22 @@ function wirePublicActions() {
   });
 
   q('#audioStopBtn')?.addEventListener('click', () => {
-    stopSiteMusic();
-    showToast('Áudio parado.', 'confirmed');
+    const audio = q('#siteMusic');
+    const isGeneratedPlaying = Boolean(state.generatedMusicTimer);
+    const isFilePlaying = audio && !audio.paused;
+    if (isGeneratedPlaying || isFilePlaying) {
+      stopSiteMusic();
+      showToast('Áudio parado.', 'confirmed');
+      return;
+    }
+    (async () => {
+      try {
+        await playSiteMusic();
+        showToast('Áudio reproduzido.', 'confirmed');
+      } catch (err) {
+        showToast('Não foi possível tocar o áudio.', 'declined');
+      }
+    })();
   });
 
   q('#lookupForm')?.addEventListener('submit', async event => {
