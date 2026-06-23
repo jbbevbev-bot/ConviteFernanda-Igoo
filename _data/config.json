@@ -6,7 +6,6 @@
     "paper": "rgba(255,255,255,.86)",
     "paperStrong": "rgba(255,255,255,.95)",
     "text": "#31402c",
-    "textSoft": "#63725a",
     "accent": "#7d8f59",
     "accentDark": "#51613b",
     "accentDeep": "#40502d",
@@ -17,6 +16,7 @@
     "heroGradientEnd": "#77885a",
     "sectionDarkStart": "#465337",
     "sectionDarkMiddle": "#59684a",
+    "textSoft": "#63725a",
     "sectionDarkEnd": "#3e4b32"
   },
   "branding": {
@@ -27,9 +27,9 @@
     "logoPrimaryColor": "#111111",
     "logoAccentColor": "#3f8a17",
     "logoBackgroundColor": "#ffffff",
-    "logoSubtitle": "01 . 08 . 2026",
     "heroBackgroundUrl": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1800&q=80",
-    "siteTextureUrl": ""
+    "siteTextureUrl": "",
+    "logoSubtitle": "01 . 08 . 2026"
   },
   "animation": {
     "enabled": true,
@@ -56,7 +56,7 @@
     "locationAddress": "Av. Torquato Tapajós - 6437 - Tarumã - Manaus/AM",
     "mapsUrl": "https://maps.app.goo.gl/hVNNUPjzZ5iNvbLW6",
     "mapEmbedUrl": "https://www.google.com/maps?q=Condom%C3%ADnio%20Residencial%20Tapaj%C3%B3s%20Manaus&output=embed",
-    "dressCode": "Esporte Fino",
+    "dressCode": "Passeio Completo (Terno🤵‍♂️-Vestido💃)",
     "dressCodeHint": "Pedimos gentilmente que evitem trajes nas cores branca e verde, que terão um significado especial neste dia.",
     "footerText": "Apresente este convite na portaria de entrada.",
     "footerQuote": "Vocês fazem parte da nossa história.",
@@ -116,14 +116,14 @@
       {
         "year": "2026 ",
         "title": "Renovação dos Votos",
-        "description": "Após 10 anos de casamento e 11 anos de história, renovamos nosso compromisso diante de Deus. Hoje celebramos não apenas o tempo que passou, mas cada oração respondida, cada batalha vencida e cada bênção recebida.",
+        "description": "Após 10 anos de casamento e 12 anos de história, renovamos nosso compromisso diante de Deus. Hoje celebramos não apenas o tempo que passou, mas cada oração respondida, cada batalha vencida e cada bênção recebida.",
         "imageUrl": "/uploads/assets/story-6-489ce649-if.png"
       }
     ]
   },
   "payment": {
     "mercadoPagoLink": "https://mpago.la/13ELMGR",
-    "pixKey": "fernanda@riosf5.com.br",
+    "pixKey": "feferios@icloud.com",
     "pixInstructions": "Após o pagamento, envie o comprovante aos noivos.",
     "pixRecipient": "Igo e Fernanda",
     "pixPayload": ""
@@ -253,7 +253,7 @@
       "font": ""
     },
     "dressCode": {
-      "text": "Esporte Fino",
+      "text": "Passeio Completo (Terno🤵‍♂️-Vestido💃)",
       "color": "#000000",
       "font": ""
     },
