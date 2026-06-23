@@ -1274,14 +1274,8 @@ function openTicket(row) {
   q('#cardPasswords').innerHTML = (row.passwords || []).map(item => `<span>${escapeHtml(item.label)} - ${escapeHtml(item.code)}</span>`).join('');
   const qrContainer = q('#ticketQrCode');
   qrContainer.innerHTML = '';
-  // reduzir payload do QR: usar chaves curtas e somente campos essenciais
-  const payload = JSON.stringify({
-    c: row.inviteCode || '',
-    id: row.id || '',
-    a: Array.isArray(row.guestNames) ? row.guestNames.length : 0,
-    p: totalCount,
-    s: row.confirmation || ''
-  });
+  // payload mínimo para evitar qualquer overflow: apenas o id
+  const payload = String(row.id || row.inviteCode || '');
   state.qrInstance = new QRCode(qrContainer, {
     text: payload,
     width: 180,
