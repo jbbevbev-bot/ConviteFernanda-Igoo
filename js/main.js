@@ -1274,14 +1274,14 @@ function openTicket(row) {
   q('#cardPasswords').innerHTML = (row.passwords || []).map(item => `<span>${escapeHtml(item.label)} - ${escapeHtml(item.code)}</span>`).join('');
   const qrContainer = q('#ticketQrCode');
   qrContainer.innerHTML = '';
+  // reduzir payload do QR para evitar overflow (remover listas longas como senhas e nomes)
   const payload = JSON.stringify({
     casal: state.config.event.coupleNames,
     codigoInterno: row.inviteCode,
     convidado: row.registeredBy || row.name,
-    acompanhantes: Array.isArray(row.guestNames) ? row.guestNames : [],
+    acompanhantesCount: Array.isArray(row.guestNames) ? row.guestNames.length : 0,
     totalPessoas: totalCount,
-    status: row.confirmation,
-    senhas: (row.passwords || []).map(item => item.code)
+    status: row.confirmation
   });
   state.qrInstance = new QRCode(qrContainer, {
     text: payload,
