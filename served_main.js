@@ -694,26 +694,26 @@ function renderGiftPayment() {
     return;
   }
   const payment = state.config.payment || {};
-  const cardLink = (gift.mercadoPagoLink?.trim() || payment?.mercadoPagoLink?.trim() || '');
-  const showCard = Boolean(cardLink) && (gift.cardEnabled !== false);
-  const showPix = Boolean(gift.pixEnabled);
-  panel.innerHTML = `
-    <div class="payment-card">
-      <div class="payment-gift-image-container">
-        ${gift.imageUrl ? `<img class="payment-gift-image" src="${escapeHtml(gift.imageUrl)}" alt="${escapeHtml(gift.title)}" />` : `<div class="payment-gift-image-fallback"><div class="brand-slot-large" id="paymentCardBrandSlot"></div></div>`}
+    const cardLink = (gift.mercadoPagoLink?.trim() || payment?.mercadoPagoLink?.trim() || '');
+    const showCard = Boolean(cardLink) && (gift.cardEnabled !== false);
+    const showPix = Boolean(gift.pixEnabled);
+    panel.innerHTML = `
+      <div class="payment-card">
+        <div class="payment-gift-image-container">
+          ${gift.imageUrl ? `<img class="payment-gift-image" src="${escapeHtml(gift.imageUrl)}" alt="${escapeHtml(gift.title)}" />` : `<div class="payment-gift-image-fallback"><div class="brand-slot-large" id="paymentCardBrandSlot"></div></div>`}
+        </div>
+        <span class="gift-badge">Presente selecionado</span>
+        <div class="payment-header">
+          <h3 class="payment-title">${escapeHtml(gift.title)}</h3>
+          <button class="btn btn-ghost btn-sm" type="button" id="giftBackBtn"><i class="fas fa-arrow-left"></i> Voltar</button>
+        </div>
+        <p class="gift-description">${escapeHtml(gift.description)}</p>
+        <div class="gift-price-highlight">${currency(gift.price)}</div>
+        <div class="payment-actions">
+          ${showCard ? `<button class="btn btn-primary btn-full" type="button" id="payWithCardBtn"><i class="fas fa-credit-card"></i> Pagar com Cartão</button>` : ''}
+          ${showPix ? `<button class="btn btn-pix btn-full" type="button" id="payWithPixBtn"><i class="fas fa-barcode"></i> Pagar com PIX</button>` : ''}
+        </div>
       </div>
-      <span class="gift-badge">Presente selecionado</span>
-      <div class="payment-header">
-        <h3 class="payment-title">${escapeHtml(gift.title)}</h3>
-        <button class="btn btn-ghost btn-sm" type="button" id="giftBackBtn"><i class="fas fa-arrow-left"></i> Voltar</button>
-      </div>
-      <p class="gift-description">${escapeHtml(gift.description)}</p>
-      <div class="gift-price-highlight">${currency(gift.price)}</div>
-      <div class="payment-actions">
-        ${showCard ? `<button class="btn btn-primary btn-full" type="button" id="payWithCardBtn"><i class="fas fa-credit-card"></i> Pagar com Cartão</button>` : ''}
-        ${showPix ? `<button class="btn btn-pix btn-full" type="button" id="payWithPixBtn"><i class="fas fa-barcode"></i> Pagar com PIX</button>` : ''}
-      </div>
-    </div>
   `;
   if (!gift.imageUrl) {
     renderBrandSlot(q('#paymentCardBrandSlot'));
@@ -1284,14 +1284,13 @@ function openTicket(row) {
   q('#cardPasswords').innerHTML = (row.passwords || []).map(item => `<span>${escapeHtml(item.label)} - ${escapeHtml(item.code)}</span>`).join('');
   const qrContainer = q('#ticketQrCode');
   qrContainer.innerHTML = '';
-  // reduzir payload do QR para evitar overflow (omitir listas longas como senhas e acompanhantes)
+  // reduzir payload do QR: usar chaves curtas e somente campos essenciais
   const payload = JSON.stringify({
-    casal: state.config.event.coupleNames,
-    codigoInterno: row.inviteCode,
-    convidado: row.registeredBy || row.name,
-    acompanhantesCount: Array.isArray(row.guestNames) ? row.guestNames.length : 0,
-    totalPessoas: totalCount,
-    status: row.confirmation
+    c: row.inviteCode || '',
+    id: row.id || '',
+    a: Array.isArray(row.guestNames) ? row.guestNames.length : 0,
+    p: totalCount,
+    s: row.confirmation || ''
   });
   state.qrInstance = new QRCode(qrContainer, {
     text: payload,
