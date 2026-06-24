@@ -1187,6 +1187,9 @@ async function respondRsvp(code, response, card) {
     guestNames = normalizeGuestNamesInput(card?.querySelector('[data-guest-names]')?.value || '');
   }
   const attendingCount = Number(card?.querySelector('[data-attending-count]')?.value || (guestNames.length + 1));
+  // garantir que o cliente não envie um valor além do limite exibido (proteção adicional)
+  const inputMax = Number(card?.querySelector('[data-attending-count]')?.getAttribute('max') || 30);
+  const attendingCountClamped = Math.max(1, Math.min(inputMax, attendingCount));
   const result = await fetchJson('/api/rsvp', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -1194,7 +1197,7 @@ async function respondRsvp(code, response, card) {
       inviteCode: code,
       response,
       guestNames,
-      attendingCount,
+      attendingCount: attendingCountClamped,
       registeredBy: state.lastGuestLookup || card?.querySelector('h3')?.textContent || '',
       contact: card?.querySelector('[data-contact-input]')?.value?.trim() || (card?.querySelector('h3')?.textContent ? '' : '')
     })
