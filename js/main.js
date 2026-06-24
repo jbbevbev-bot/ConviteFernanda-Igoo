@@ -1054,6 +1054,8 @@ function buildLookupResult(row) {
   const isConfirmed = row.confirmation === 'confirmado';
   const canOpen = isConfirmed;
   const guestNamesValue = Array.isArray(row.guestNames) ? row.guestNames.join('\n') : '';
+  const maxForInput = row.guestLimit && Number(row.guestLimit) > 0 ? Math.max(1, Math.min(30, Number(row.guestLimit || 0))) : 30;
+  const displayCount = Math.max(1, Math.min(maxForInput, Number(row.attendingCount ?? totalPeopleOnInvite(row))));
   // codificar JSON do convite em base64 para evitar problemas de parsing/escape no HTML
   let encoded = '';
   try {
@@ -1073,7 +1075,7 @@ function buildLookupResult(row) {
         <div class="meta-box"><span>Quantidade de Convidados</span>
           <div class="qty-control">
             <button type="button" class="qty-btn qty-decrease" ${isConfirmed ? 'disabled' : ''}>−</button>
-            <input type="number" class="lookup-count-input" data-attending-count min="1" max="${escapeHtml(String(row.guestLimit && row.guestLimit > 0 ? row.guestLimit : 30))}" value="${escapeHtml(String(row.attendingCount || totalPeopleOnInvite(row)))}" ${isConfirmed ? 'disabled' : ''} />
+            <input type="number" class="lookup-count-input" data-attending-count min="1" max="${escapeHtml(String(maxForInput))}" value="${escapeHtml(String(displayCount))}" ${isConfirmed ? 'disabled' : ''} />
             <button type="button" class="qty-btn qty-increase" ${isConfirmed ? 'disabled' : ''}>+</button>
           </div>
         </div>
