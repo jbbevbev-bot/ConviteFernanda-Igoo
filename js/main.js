@@ -1063,7 +1063,7 @@ function buildLookupResult(row) {
   }
 
   return `
-    <div class="result-card" data-invite-code="${escapeHtml(row.inviteCode)}" data-registered-by="${escapeHtml(row.registeredBy || row.name || '')}" data-confirmed="${isConfirmed ? '1' : '0'}">
+    <div class="result-card" data-invite-code="${escapeHtml(row.inviteCode)}" data-registered-by="${escapeHtml(row.registeredBy || row.name || '')}" data-confirmed="${isConfirmed ? '1' : '0'}" data-guest-limit="${escapeHtml(String(row.guestLimit || 0))}">
       <div>
         <h3>${escapeHtml(row.registeredBy || row.name || 'Convidado')}</h3>
         <p>Encontramos o convite. Informe os nomes dos acompanhantes para salvar e gerar o convite.</p>
@@ -1073,7 +1073,7 @@ function buildLookupResult(row) {
         <div class="meta-box"><span>Quantidade de Convidados</span>
           <div class="qty-control">
             <button type="button" class="qty-btn qty-decrease" ${isConfirmed ? 'disabled' : ''}>−</button>
-            <input type="number" class="lookup-count-input" data-attending-count min="1" max="30" value="${escapeHtml(String(row.attendingCount || totalPeopleOnInvite(row)))}" ${isConfirmed ? 'disabled' : ''} />
+            <input type="number" class="lookup-count-input" data-attending-count min="1" max="${escapeHtml(String(row.guestLimit && row.guestLimit > 0 ? row.guestLimit : 30))}" value="${escapeHtml(String(row.attendingCount || totalPeopleOnInvite(row)))}" ${isConfirmed ? 'disabled' : ''} />
             <button type="button" class="qty-btn qty-increase" ${isConfirmed ? 'disabled' : ''}>+</button>
           </div>
         </div>
@@ -1102,7 +1102,8 @@ function setupGuestNameInputs(card) {
   const namesContainer = card.querySelector('[data-guest-names-list]');
   const textarea = card.querySelector('[data-guest-names]');
   if (!countInput || !namesContainer) return;
-  const count = Math.max(1, Math.min(30, Number(countInput.value || 1)));
+  const limit = Math.max(1, Number(countInput.getAttribute('max') || 30));
+  const count = Math.max(1, Math.min(limit, Number(countInput.value || 1)));
   const existing = Array.from(card.querySelectorAll('[data-guest-name-input]')).map(el => el.value.trim()).filter(Boolean);
   let html = '';
   for (let i = 0; i < count; i += 1) {
@@ -1130,7 +1131,7 @@ function setupGuestNameInputs(card) {
   if (incBtn) {
     incBtn.onclick = () => {
       if (countInput.disabled) return;
-      const v = Math.min(30, Number(countInput.value || 1) + 1);
+      const v = Math.min(limit, Number(countInput.value || 1) + 1);
       countInput.value = v;
       countInput.oninput && countInput.oninput();
     };
