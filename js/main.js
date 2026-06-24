@@ -2486,13 +2486,18 @@ function wireAdminActions() {
       return;
     }
     if (action === 'regen-passwords') {
-      row.passwords = createPasswords(row.guestCount);
+        const maxAllowed = row.guestLimit && Number(row.guestLimit) > 0 ? Math.min(Number(row.guestCount || 1), Number(row.guestLimit)) : Number(row.guestCount || 1);
+        row.passwords = createPasswords(maxAllowed);
       renderInviteTable();
       return;
     }
     if (action === 'view-card') {
       if (!row.inviteCode) row.inviteCode = createInviteCode(row.id);
       if (!row.passwords?.length) row.passwords = createPasswords(row.guestCount);
+      if (!row.passwords?.length) {
+        const maxAllowed = row.guestLimit && Number(row.guestLimit) > 0 ? Math.min(Number(row.guestCount || 1), Number(row.guestLimit)) : Number(row.guestCount || 1);
+        row.passwords = createPasswords(maxAllowed);
+      }
       row.confirmation = row.confirmation === 'pendente' ? 'confirmado' : row.confirmation;
       if (!row.registeredBy) row.registeredBy = row.name;
       openTicket(row);

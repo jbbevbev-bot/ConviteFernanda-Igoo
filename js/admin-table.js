@@ -279,7 +279,16 @@
       if (action === 'edit-invite') return openEditModal(row);
       if (action === 'view-card') return openTicketSafe(row);
       if (action === 'regen-code') { if (typeof createInviteCode === 'function') row.inviteCode = createInviteCode(state.invites, row.id); renderTable(); if (typeof renderInviteTable === 'function') try { renderInviteTable(); } catch(e) {} if (typeof renderAdminStats === 'function') try { renderAdminStats(); } catch(e) {} return; }
-      if (action === 'regen-passwords') { if (typeof createPasswords === 'function') row.passwords = createPasswords(row.guestCount||1); renderTable(); if (typeof renderInviteTable === 'function') try { renderInviteTable(); } catch(e) {} if (typeof renderAdminStats === 'function') try { renderAdminStats(); } catch(e) {} return; }
+      if (action === 'regen-passwords') {
+        if (typeof createPasswords === 'function') {
+          const maxAllowed = row.guestLimit && Number(row.guestLimit) > 0 ? Math.min(Number(row.guestCount || 1), Number(row.guestLimit)) : Number(row.guestCount || 1);
+          row.passwords = createPasswords(maxAllowed);
+        }
+        renderTable();
+        if (typeof renderInviteTable === 'function') try { renderInviteTable(); } catch(e) {}
+        if (typeof renderAdminStats === 'function') try { renderAdminStats(); } catch(e) {}
+        return;
+      }
     });
 
     // initial render
