@@ -33,6 +33,55 @@
     return toolbar;
   }
 
+  // filtros por coluna no cabeçalho
+  const columnFilters = {
+    inviteCode: '',
+    name: '',
+    guestCount: '',
+    contact: '',
+    guestLimit: '',
+    tableNumber: '',
+    guestNames: '',
+    passwords: '',
+    confirmation: ''
+  };
+
+  function createHeaderFilters(table) {
+    if (!table) return;
+    const thead = table.querySelector('thead');
+    if (!thead) return;
+    // remove existente row de filtros se houver
+    const existing = thead.querySelector('tr.admin-filter-row');
+    if (existing) existing.remove();
+    const filterRow = document.createElement('tr');
+    filterRow.className = 'admin-filter-row';
+    // columns: #, codigo, nome, quantidade, contato, limite, mesa, convidados, senhas, confirmacao, acoes
+    const makeEmpty = () => { const th = document.createElement('th'); filterRow.appendChild(th); };
+    // #
+    makeEmpty();
+    // codigo
+    (function(){ const th = document.createElement('th'); const inp = document.createElement('input'); inp.placeholder='Código'; inp.style.width='100%'; inp.addEventListener('input', e=>{ columnFilters.inviteCode = e.target.value.trim().toLowerCase(); renderTable(); }); th.appendChild(inp); filterRow.appendChild(th); })();
+    // nome
+    (function(){ const th = document.createElement('th'); const inp = document.createElement('input'); inp.placeholder='Nome'; inp.style.width='100%'; inp.addEventListener('input', e=>{ columnFilters.name = e.target.value.trim().toLowerCase(); renderTable(); }); th.appendChild(inp); filterRow.appendChild(th); })();
+    // quantidade
+    (function(){ const th = document.createElement('th'); const inp = document.createElement('input'); inp.placeholder='Qtd'; inp.type='number'; inp.min='1'; inp.style.width='100%'; inp.addEventListener('input', e=>{ columnFilters.guestCount = String(e.target.value||''); renderTable(); }); th.appendChild(inp); filterRow.appendChild(th); })();
+    // contato
+    (function(){ const th = document.createElement('th'); const inp = document.createElement('input'); inp.placeholder='Contato'; inp.style.width='100%'; inp.addEventListener('input', e=>{ columnFilters.contact = e.target.value.trim().toLowerCase(); renderTable(); }); th.appendChild(inp); filterRow.appendChild(th); })();
+    // limite
+    (function(){ const th = document.createElement('th'); const inp = document.createElement('input'); inp.placeholder='Limite'; inp.type='number'; inp.min='0'; inp.style.width='100%'; inp.addEventListener('input', e=>{ columnFilters.guestLimit = String(e.target.value||''); renderTable(); }); th.appendChild(inp); filterRow.appendChild(th); })();
+    // mesa
+    (function(){ const th = document.createElement('th'); const inp = document.createElement('input'); inp.placeholder='Mesa'; inp.style.width='100%'; inp.addEventListener('input', e=>{ columnFilters.tableNumber = e.target.value.trim().toLowerCase(); renderTable(); }); th.appendChild(inp); filterRow.appendChild(th); })();
+    // convidados cadastrados
+    (function(){ const th = document.createElement('th'); const inp = document.createElement('input'); inp.placeholder='Convidados'; inp.style.width='100%'; inp.addEventListener('input', e=>{ columnFilters.guestNames = e.target.value.trim().toLowerCase(); renderTable(); }); th.appendChild(inp); filterRow.appendChild(th); })();
+    // senhas
+    (function(){ const th = document.createElement('th'); const inp = document.createElement('input'); inp.placeholder='Senha'; inp.style.width='100%'; inp.addEventListener('input', e=>{ columnFilters.passwords = e.target.value.trim().toLowerCase(); renderTable(); }); th.appendChild(inp); filterRow.appendChild(th); })();
+    // confirmacao
+    (function(){ const th = document.createElement('th'); const sel = document.createElement('select'); sel.style.width='100%'; sel.innerHTML = '<option value="">Todos</option><option value="pendente">Pendente</option><option value="confirmado">Confirmado</option><option value="recusado">Recusado</option>'; sel.addEventListener('change', e=>{ columnFilters.confirmation = e.target.value; renderTable(); }); th.appendChild(sel); filterRow.appendChild(th); })();
+    // ações
+    makeEmpty();
+    thead.appendChild(filterRow);
+  }
+
   function renderRowHtml(row) {
     const passwords = Array.isArray(row.passwords) ? row.passwords.map(p => escapeHtml(p.code || '')).join('<br/>') : '';
     const guestNames = Array.isArray(row.guestNames) ? escapeHtml(row.guestNames.join(', ')) : escapeHtml(row.guestNames || '');
@@ -102,6 +151,8 @@
         row.inviteCode = String(document.getElementById('enhEditInviteCode').value||'').trim();
         row.name = String(document.getElementById('enhEditInviteName').value||'').trim();
         row.guestCount = Math.max(1, Math.min(30, Number(document.getElementById('enhEditInviteGuestCount').value||1)));
+        // garantir que, se admin alterou guestCount, qualquer attendingCount deixará de prevalecer
+        if ('attendingCount' in row) delete row.attendingCount;
         row.guestLimit = Math.max(0, Math.min(30, Number(document.getElementById('enhEditInviteGuestLimit').value||0)));
         row.contact = String(document.getElementById('enhEditInviteContact').value||'').trim();
         row.tableNumber = String(document.getElementById('enhEditInviteTable').value||'').trim();
@@ -109,6 +160,8 @@
         const passLines = String(document.getElementById('enhEditInvitePasswords').value||'').split(/\r?\n/).map(s=>s.trim()).filter(Boolean);
         row.passwords = passLines.map(p=>({ code: p }));
         renderTable();
+        if (typeof renderInviteTable === 'function') try { renderInviteTable(); } catch(e) {}
+        if (typeof renderAdminStats === 'function') try { renderAdminStats(); } catch(e) {}
         showToast('Convite atualizado localmente.', 'confirmed');
         modal.classList.remove('show');
       });
@@ -123,6 +176,24 @@
     document.getElementById('enhEditInviteTable').value = row.tableNumber || '';
     document.getElementById('enhEditInviteGuestNames').value = Array.isArray(row.guestNames)? row.guestNames.join('\n') : (row.guestNames||'');
     document.getElementById('enhEditInvitePasswords').value = Array.isArray(row.passwords)? row.passwords.map(p=>p.code||'').join('\n') : '';
+    // ensure guest names textarea has lines matching guestCount-1 (companions)
+    const guestCountInput = document.getElementById('enhEditInviteGuestCount');
+    const guestNamesArea = document.getElementById('enhEditInviteGuestNames');
+    function syncGuestNamesLines() {
+      const count = Math.max(1, Math.min(30, Number(guestCountInput.value || 1)));
+      const desired = Math.max(0, count - 1);
+      const lines = String(guestNamesArea.value || '').split(/\r?\n/).map(s => s.trim());
+      while (lines.length < desired) lines.push('');
+      while (lines.length > desired) lines.pop();
+      guestNamesArea.value = lines.join('\n');
+    }
+    // attach listener (avoid duplicates)
+    if (!guestCountInput._syncAttached) {
+      guestCountInput.addEventListener('input', syncGuestNamesLines);
+      guestCountInput._syncAttached = true;
+    }
+    // call once to align textarea
+    syncGuestNamesLines();
     modal.classList.add('show');
   }
 
@@ -155,10 +226,24 @@
     if (!tbody) return;
     const rows = Array.isArray(state.invites)? state.invites.slice() : [];
     const filtered = rows.filter(r => {
+      // status filter from toolbar
       if (currentStatus !== 'all' && String(r.confirmation||'pendente') !== currentStatus) return false;
-      if (!currentFilter) return true;
-      const f = currentFilter.toLowerCase();
-      return String(r.name||'').toLowerCase().includes(f) || String(r.inviteCode||'').toLowerCase().includes(f) || String(r.tableNumber||'').toLowerCase().includes(f) || String(r.contact||'').toLowerCase().includes(f);
+      // toolbar-wide filter
+      if (currentFilter) {
+        const f = currentFilter.toLowerCase();
+        if (!(String(r.name||'').toLowerCase().includes(f) || String(r.inviteCode||'').toLowerCase().includes(f) || String(r.tableNumber||'').toLowerCase().includes(f) || String(r.contact||'').toLowerCase().includes(f))) return false;
+      }
+      // per-column filters
+      if (columnFilters.inviteCode && !String(r.inviteCode||'').toLowerCase().includes(columnFilters.inviteCode)) return false;
+      if (columnFilters.name && !String(r.name||'').toLowerCase().includes(columnFilters.name)) return false;
+      if (columnFilters.guestCount) { try { if (Number(r.guestCount||0) !== Number(columnFilters.guestCount)) return false; } catch(e) {} }
+      if (columnFilters.contact && !String(r.contact||'').toLowerCase().includes(columnFilters.contact)) return false;
+      if (columnFilters.guestLimit) { try { if (Number(r.guestLimit||0) !== Number(columnFilters.guestLimit)) return false; } catch(e) {} }
+      if (columnFilters.tableNumber && !String(r.tableNumber||'').toLowerCase().includes(columnFilters.tableNumber)) return false;
+      if (columnFilters.guestNames) { const names = Array.isArray(r.guestNames)? r.guestNames.join(' ').toLowerCase() : String(r.guestNames||'').toLowerCase(); if (!names.includes(columnFilters.guestNames)) return false; }
+      if (columnFilters.passwords) { const pw = Array.isArray(r.passwords)? r.passwords.map(p=>p.code||'').join(' ').toLowerCase() : ''; if (!pw.includes(columnFilters.passwords)) return false; }
+      if (columnFilters.confirmation && String(r.confirmation||'pendente') !== columnFilters.confirmation) return false;
+      return true;
     });
     tbody.innerHTML = filtered.map(renderRowHtml).join('\n');
   }
@@ -169,6 +254,8 @@
     } catch (e) { return; }
     const tableWrap = document.querySelector('.table-wrap');
     if (!tableWrap) return;
+    const table = tableWrap.querySelector('table.invite-table');
+    createHeaderFilters(table);
     const toolbar = createToolbar(tableWrap);
     const filterInput = toolbar.querySelector('#adminFilterInput');
     const statusSelect = toolbar.querySelector('#adminStatusFilter');
@@ -191,8 +278,8 @@
       const action = btn.dataset.action;
       if (action === 'edit-invite') return openEditModal(row);
       if (action === 'view-card') return openTicketSafe(row);
-      if (action === 'regen-code') { if (typeof createInviteCode === 'function') row.inviteCode = createInviteCode(state.invites, row.id); renderTable(); return; }
-      if (action === 'regen-passwords') { if (typeof createPasswords === 'function') row.passwords = createPasswords(row.guestCount||1); renderTable(); return; }
+      if (action === 'regen-code') { if (typeof createInviteCode === 'function') row.inviteCode = createInviteCode(state.invites, row.id); renderTable(); if (typeof renderInviteTable === 'function') try { renderInviteTable(); } catch(e) {} if (typeof renderAdminStats === 'function') try { renderAdminStats(); } catch(e) {} return; }
+      if (action === 'regen-passwords') { if (typeof createPasswords === 'function') row.passwords = createPasswords(row.guestCount||1); renderTable(); if (typeof renderInviteTable === 'function') try { renderInviteTable(); } catch(e) {} if (typeof renderAdminStats === 'function') try { renderAdminStats(); } catch(e) {} return; }
     });
 
     // initial render

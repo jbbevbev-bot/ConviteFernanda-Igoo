@@ -1,0 +1,2401 @@
+{
+  "config": {
+    "adminPassword": "igofernanda2026",
+    "theme": {
+      "bg": "#f5f3ec",
+      "bgSoft": "#fbfaf6",
+      "paper": "rgba(255,255,255,.86)",
+      "paperStrong": "rgba(255,255,255,.95)",
+      "text": "#31402c",
+      "accent": "#7d8f59",
+      "accentDark": "#51613b",
+      "accentDeep": "#40502d",
+      "accentSoft": "#dde5cf",
+      "goldSoft": "#d7c59f",
+      "heroGradientStart": "#31402c",
+      "heroGradientMiddle": "#4f5f3d",
+      "heroGradientEnd": "#77885a",
+      "sectionDarkStart": "#465337",
+      "sectionDarkMiddle": "#59684a",
+      "textSoft": "#63725a",
+      "sectionDarkEnd": "#3e4b32"
+    },
+    "branding": {
+      "logoMode": "image",
+      "logoUrl": "images/logo-festa.png",
+      "monogramInitials": "F&I",
+      "monogramTemplate": "luxury-script",
+      "logoPrimaryColor": "#111111",
+      "logoAccentColor": "#3f8a17",
+      "logoBackgroundColor": "#ffffff",
+      "heroBackgroundUrl": "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1800&q=80",
+      "siteTextureUrl": "",
+      "logoSubtitle": "01 . 08 . 2026"
+    },
+    "animation": {
+      "enabled": true,
+      "symbol": "❦",
+      "density": 24
+    },
+    "media": {
+      "enabled": true,
+      "mode": "file",
+      "preset": "instrumental-romantico",
+      "audioUrl": "/uploads/assets/site-music-012355c4-Edd_Sheeran_-_Perfect_-mp3-pm.mp3",
+      "title": "Trilha do casal",
+      "subtitle": "Instrumental romântico",
+      "volume": 0.37,
+      "autoplay": true
+    },
+    "event": {
+      "heroPre": "Convidamos você para nossa renovação de votos em comemoração aos nossos 10 anos de casamento",
+      "heroNote": "F & I",
+      "coupleNames": "Fernanda & Igo",
+      "eventDateIso": "2026-08-01T16:45",
+      "dateDisplay": "01 de Agosto de 2026 às 16:45h",
+      "locationName": "Salão de Festas - Condomínio Residencial Tapajós",
+      "locationAddress": "Av. Torquato Tapajós - 6437 - Tarumã - Manaus/AM",
+      "mapsUrl": "https://maps.app.goo.gl/hVNNUPjzZ5iNvbLW6",
+      "mapEmbedUrl": "https://www.google.com/maps?q=Condom%C3%ADnio%20Residencial%20Tapaj%C3%B3s%20Manaus&output=embed",
+      "dressCode": "Passeio Completo (Terno🤵‍♂️-Vestido💃)",
+      "dressCodeHint": "Pedimos gentilmente que evitem trajes nas cores branca e verde, que terão um significado especial neste dia.",
+      "footerText": "Apresente este convite na portaria de entrada.",
+      "footerQuote": "Vocês fazem parte da nossa história.",
+      "storyPre": "Um amor para toda a vida",
+      "storyTitle": "Nossa História",
+      "storyIntro": "Uma linha do tempo para contar um pouco da nossa jornada.",
+      "ceremonyPre": "Detalhes do grande dia",
+      "ceremonyTitle": "Cerimônia & Festa",
+      "locationPre": "Como chegar",
+      "locationTitle": "Localização",
+      "giftsPre": "Sua presença é nosso maior presente",
+      "giftsTitle": "Lista de Presentes",
+      "giftsDescription": "Criamos uma lista especial para a nossa 2ª lua de mel. Escolha um item para presentear via Mercado Pago ou Pix.",
+      "galleryPre": "Momentos especiais",
+      "galleryTitle": "Galeria da Festa",
+      "galleryDescription": "Depois da festa, os convidados podem compartilhar fotos e vídeos diretamente pelo site.",
+      "messagesPre": "Deixe um recado",
+      "messagesTitle": "Mensagens Especiais",
+      "messagesDescription": "Escreva uma mensagem carinhosa para Igo & Fernanda. Cada recado ficará guardado com muito amor."
+    },
+    "couple": {
+      "fernandaName": "Fernanda",
+      "fernandaRole": "Esposa",
+      "fernandaBio": "Mãe amorosa, apaixonada pela família, por viagens e pelo cheiro de café pela manhã.",
+      "fernandaImageUrl": "images/fernanda.jpg",
+      "igoName": "Igo",
+      "igoRole": "Marido",
+      "igoBio": "Grande pai, parceiro dedicado e aventureiro. Encontrou em Fernanda a companheira ideal para compartilhar sonhos e conquistas.",
+      "igoImageUrl": "images/igo.jpeg"
+    },
+    "story": {
+      "items": [
+        {
+          "year": "2014",
+          "title": "O início do namoro",
+          "description": "Decidimos caminhar juntos. Entre sonhos, descobertas e planos para o futuro, nasceu um relacionamento fundamentado no respeito e na parceria.",
+          "imageUrl": "/uploads/assets/story-1-67cd04d5-WhatsApp-Image-2026-06-14-at-21-54-38.jpeg"
+        },
+        {
+          "year": "2015",
+          "title": "Descobrindo o mundo a dois",
+          "description": "Cada passeio e cada sonho reforçaram a certeza de que queríamos seguir de mãos dadas pela vida.",
+          "imageUrl": "/uploads/assets/story-2-7c66e784-2016-01-03-20-52-53-1.jpg"
+        },
+        {
+          "year": "2016",
+          "title": "Nosso Sim",
+          "description": "Prometemos amor, cuidado e fidelidade. Desde então, renovamos esse compromisso todos os dias.",
+          "imageUrl": "/uploads/assets/story-3-81f8134c-WhatsApp-Image-2018-07-06-at-23-04-22.jpeg"
+        },
+        {
+          "year": "2017",
+          "title": "Nascimento da Isabela ",
+          "description": "Nosso maior presente. Com sua chegada, nosso amor ganhou um novo significado e nossa família ficou completa.",
+          "imageUrl": "/uploads/assets/story-4-a53710e1-IMG_20170727_114043.jpg"
+        },
+        {
+          "year": "2026 ",
+          "title": "Renovação dos Votos",
+          "description": "Após 10 anos de casamento e 12 anos de história, renovamos nosso compromisso diante de Deus. Hoje celebramos não apenas o tempo que passou, mas cada oração respondida, cada batalha vencida e cada bênção recebida.",
+          "imageUrl": "/uploads/assets/story-6-489ce649-if.png"
+        }
+      ]
+    },
+    "payment": {
+      "mercadoPagoLink": "https://mpago.la/13ELMGR",
+      "pixKey": "feferios@icloud.com",
+      "pixInstructions": "Após o pagamento, envie o comprovante aos noivos.",
+      "pixRecipient": "Igo e Fernanda",
+      "pixPayload": ""
+    },
+    "gifts": [
+      {
+        "title": "PIX",
+        "price": 0,
+        "description": "Você pode contribuir qualquer valor através do PIX, será recebida com muito carinho.",
+        "imageUrl": "/uploads/assets/gift-1-f54d561f-transfeera-blog-pix.jpg",
+        "imageQuery": "PIX",
+        "icon": "fa-gift",
+        "mercadoPagoLink": "",
+        "pixEnabled": true,
+        "cardEnabled": false
+      },
+      {
+        "title": "Café da manhã especial",
+        "price": 95,
+        "description": "Mesa posta com delícias para começar o dia com carinho.",
+        "imageUrl": "/uploads/assets/gift-2-3dfe5f4c-download.jpg",
+        "imageQuery": "café da manhã romântico hotel",
+        "icon": "fa-mug-hot",
+        "mercadoPagoLink": "https://mpago.la/2a5gdAL",
+        "pixEnabled": true
+      },
+      {
+        "title": "Jantar romântico da 2ª lua de mel",
+        "price": 380,
+        "description": "Um jantar especial para celebrar o amor em grande estilo.",
+        "imageUrl": "/uploads/assets/gift-1-94da9272-images.jpg",
+        "imageQuery": "spa casal massagem relaxante",
+        "icon": "fa-gift",
+        "mercadoPagoLink": "https://mpago.la/13ELMGR",
+        "pixEnabled": true
+      },
+      {
+        "title": "Passeio ao pôr do sol",
+        "price": 210,
+        "description": "Experiência romântica para guardar na memória.",
+        "imageUrl": "/uploads/assets/gift-4-000aa205-images-1.jpg",
+        "imageQuery": "passeio pôr do sol casal viagem",
+        "icon": "fa-sun",
+        "mercadoPagoLink": "https://mpago.li/2UTTr8m",
+        "pixEnabled": true
+      },
+      {
+        "title": "Surpresa especial para Fernanda",
+        "price": 350,
+        "description": "Um mimo preparado com muito amor durante a viagem.",
+        "imageUrl": "/uploads/assets/gift-5-3edec0fc-images-2.jpg",
+        "imageQuery": "surpresa romântica presente casal",
+        "icon": "fa-gift",
+        "mercadoPagoLink": "https://mpago.li/2XYFkdR",
+        "pixEnabled": true
+      },
+      {
+        "title": "Brinde com vinho",
+        "price": 160,
+        "description": "Um brinde elegante para uma noite inesquecível.",
+        "imageUrl": "/uploads/assets/gift-6-e68b164e-images-3.jpg",
+        "imageQuery": "vinho jantar romântico casal",
+        "icon": "fa-wine-glass",
+        "mercadoPagoLink": "https://mpago.la/2SdMwMt",
+        "pixEnabled": true
+      },
+      {
+        "title": "Carregador novo (porque alguém sempre pega o do outro)",
+        "price": 150,
+        "description": "",
+        "imageUrl": "/uploads/assets/gift-7-008009bf-D_NQ_NP_2X_865248-MLB112277844021_052026-F.jpg",
+        "imageQuery": "",
+        "icon": "fa-gift",
+        "mercadoPagoLink": "https://mpago.li/1g9UPFy",
+        "pixEnabled": true
+      },
+      {
+        "title": "Milhas para fugir... digo... viajar juntos!",
+        "price": 500,
+        "description": "Colabore com sua cota",
+        "imageUrl": "/uploads/assets/gift-8-e93a0b5e-download-2.jpg",
+        "imageQuery": "",
+        "icon": "fa-gift",
+        "mercadoPagoLink": "https://mpago.li/2ombzdQ",
+        "pixEnabled": true
+      },
+      {
+        "title": "💍 Renovação por mais 10 anos ",
+        "price": 1100,
+        "description": "com garantia estendida",
+        "imageUrl": "/uploads/assets/gift-9-3712ad0c-logo-garantia-estendida.jpg",
+        "imageQuery": "",
+        "icon": "fa-gift",
+        "mercadoPagoLink": "https://mpago.li/1doDCmJ",
+        "pixEnabled": true
+      },
+      {
+        "title": "Massagem relaxante para o casal",
+        "price": 320,
+        "description": "spa casal massagem relaxante\n\n",
+        "imageUrl": "/uploads/assets/gift-10-d94bfab5-istock-1175433234-1024x683.jpg",
+        "imageQuery": "Massagem relaxante para o casal",
+        "icon": "fa-gift",
+        "mercadoPagoLink": "https://mpago.li/16HFcSc",
+        "pixEnabled": true
+      }
+    ],
+    "fixedTexts": {
+      "ceremonyPre": {
+        "text": "Detalhes do grande dia",
+        "color": "#fafafa",
+        "font": ""
+      },
+      "ceremonyTitle": {
+        "text": "Cerimônia & Festa",
+        "color": "#f9f5f5",
+        "font": ""
+      },
+      "coupleNames": {
+        "text": "Fernanda & Igo",
+        "color": "#000000",
+        "font": ""
+      },
+      "dateDisplay": {
+        "text": "01 de Agosto de 2026 às 16:45h",
+        "color": "#000000",
+        "font": ""
+      },
+      "dressCode": {
+        "text": "Passeio Completo (Terno🤵‍♂️-Vestido💃)",
+        "color": "#000000",
+        "font": ""
+      },
+      "dressCodeHint": {
+        "text": "Pedimos gentilmente que evitem trajes nas cores branca e verde, que terão um significado especial neste dia.",
+        "color": "#000000",
+        "font": ""
+      },
+      "eventDateIso": {
+        "text": "2026-08-01T16:45",
+        "color": "#000000",
+        "font": ""
+      },
+      "fernandaBio": {
+        "text": "",
+        "color": "#000000",
+        "font": ""
+      },
+      "fernandaImageUrl": {
+        "text": "",
+        "color": "#000000",
+        "font": ""
+      },
+      "fernandaName": {
+        "text": "",
+        "color": "#000000",
+        "font": ""
+      },
+      "fernandaRole": {
+        "text": "",
+        "color": "#000000",
+        "font": ""
+      },
+      "footerQuote": {
+        "text": "Vocês fazem parte da nossa história.",
+        "color": "#000000",
+        "font": ""
+      },
+      "footerText": {
+        "text": "Apresente este convite na portaria de entrada.",
+        "color": "#000000",
+        "font": ""
+      },
+      "galleryDescription": {
+        "text": "Depois da festa, os convidados podem compartilhar fotos e vídeos diretamente pelo site.",
+        "color": "#f8f6f6",
+        "font": ""
+      },
+      "galleryPre": {
+        "text": "Momentos especiais",
+        "color": "#f6f4f4",
+        "font": ""
+      },
+      "galleryTitle": {
+        "text": "Galeria da Festa",
+        "color": "#f6f4f4",
+        "font": ""
+      },
+      "giftsDescription": {
+        "text": "Criamos uma lista especial para a nossa 2ª lua de mel. Escolha um item para presentear via Mercado Pago ou Pix.",
+        "color": "#000000",
+        "font": ""
+      },
+      "giftsPre": {
+        "text": "Sua presença é nosso maior presente",
+        "color": "#000000",
+        "font": ""
+      },
+      "giftsTitle": {
+        "text": "Lista de Presentes",
+        "color": "#000000",
+        "font": ""
+      },
+      "heroNote": {
+        "text": "F & I",
+        "color": "#000000",
+        "font": ""
+      },
+      "heroPre": {
+        "text": "Convidamos você para nossa renovação de votos em comemoração aos nossos 10 anos de casamento",
+        "color": "#f5f5f5",
+        "font": ""
+      },
+      "igoBio": {
+        "text": "",
+        "color": "#000000",
+        "font": ""
+      },
+      "igoImageUrl": {
+        "text": "",
+        "color": "#000000",
+        "font": ""
+      },
+      "igoName": {
+        "text": "",
+        "color": "#000000",
+        "font": ""
+      },
+      "igoRole": {
+        "text": "",
+        "color": "#000000",
+        "font": ""
+      },
+      "locationAddress": {
+        "text": "Av. Torquato Tapajós - 6437 - Tarumã - Manaus/AM",
+        "color": "#000000",
+        "font": ""
+      },
+      "locationName": {
+        "text": "Salão de Festas - Condomínio Residencial Tapajós",
+        "color": "#000000",
+        "font": ""
+      },
+      "locationPre": {
+        "text": "Como chegar",
+        "color": "#000000",
+        "font": ""
+      },
+      "locationTitle": {
+        "text": "Localização",
+        "color": "#000000",
+        "font": ""
+      },
+      "mapEmbedUrl": {
+        "text": "https://www.google.com/maps?q=Condom%C3%ADnio%20Residencial%20Tapaj%C3%B3s%20Manaus&output=embed",
+        "color": "#000000",
+        "font": ""
+      },
+      "mapsUrl": {
+        "text": "https://maps.app.goo.gl/hVNNUPjzZ5iNvbLW6",
+        "color": "#000000",
+        "font": ""
+      },
+      "messagesDescription": {
+        "text": "Escreva uma mensagem carinhosa para Igo & Fernanda. Cada recado ficará guardado com muito amor.",
+        "color": "#000000",
+        "font": ""
+      },
+      "messagesPre": {
+        "text": "Deixe um recado",
+        "color": "#000000",
+        "font": ""
+      },
+      "messagesTitle": {
+        "text": "Mensagens Especiais",
+        "color": "#000000",
+        "font": ""
+      },
+      "storyIntro": {
+        "text": "Uma linha do tempo para contar um pouco da nossa jornada.",
+        "color": "#000000",
+        "font": ""
+      },
+      "storyPre": {
+        "text": "Um amor para toda a vida",
+        "color": "#000000",
+        "font": ""
+      },
+      "storyTitle": {
+        "text": "Nossa História",
+        "color": "#000000",
+        "font": ""
+      }
+    }
+  },
+  "invites": [
+    {
+      "id": 1,
+      "inviteCode": "17003444",
+      "name": "Juracy Vilma",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "89191"
+        }
+      ],
+      "guestNames": [
+        "Juracy Vilma"
+      ],
+      "registeredBy": "Juracy Fernandes Soares",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T08:53:31.111404-04:00",
+      "declinedAt": null,
+      "attendingCount": 1
+    },
+    {
+      "id": 2,
+      "inviteCode": "41280318",
+      "name": "Bruno Danyela",
+      "guestCount": 3,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "73925"
+        }
+      ],
+      "guestNames": [
+        "Bruno Danyela",
+        "Pedro",
+        "Benjamim"
+      ],
+      "registeredBy": "Dany e Bruno",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T17:41:41.582252-04:00",
+      "declinedAt": null,
+      "attendingCount": 3
+    },
+    {
+      "id": 3,
+      "inviteCode": "57316265",
+      "name": "Pedro Irla",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "27080"
+        }
+      ],
+      "guestNames": [
+        "socorro"
+      ],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": "2026-06-15T12:19:17.614666-04:00"
+    },
+    {
+      "id": 4,
+      "inviteCode": "53040246",
+      "name": "Ivo Fernanda",
+      "guestCount": 2,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "85930"
+        },
+        {
+          "label": "Senha 02",
+          "code": "08029"
+        }
+      ],
+      "guestNames": [
+        "Ivo"
+      ],
+      "registeredBy": "Ivo",
+      "confirmation": "recusado",
+      "confirmationAt": "2026-06-22T10:19:03.355465-04:00",
+      "declinedAt": "2026-06-22T11:32:17.140627-04:00",
+      "attendingCount": 2
+    },
+    {
+      "id": 5,
+      "inviteCode": "68831368",
+      "name": "Jeniffer",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "21346"
+        }
+      ],
+      "guestNames": [
+        "Jeniffer"
+      ],
+      "registeredBy": "Jeniffer",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T11:30:48.907461-04:00",
+      "declinedAt": null,
+      "attendingCount": 1
+    },
+    {
+      "id": 6,
+      "inviteCode": "33988941",
+      "name": "Iracema Maria José",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "89407"
+        }
+      ],
+      "guestNames": [
+        "Iracema Maria José"
+      ],
+      "registeredBy": "Iracema",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T10:19:02.539778-04:00",
+      "declinedAt": null,
+      "attendingCount": 1
+    },
+    {
+      "id": 7,
+      "inviteCode": "72901221",
+      "name": "Johnny Junior Roberta",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "79188"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 8,
+      "inviteCode": "22411462",
+      "name": "Alan Yarla",
+      "guestCount": 1,
+      "guestLimit": 2,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "23552"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 9,
+      "inviteCode": "52200519",
+      "name": "Fabricio",
+      "guestCount": 4,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "48662"
+        },
+        {
+          "label": "Senha 02",
+          "code": "05571"
+        },
+        {
+          "label": "Senha 03",
+          "code": "26098"
+        },
+        {
+          "label": "Senha 04",
+          "code": "43380"
+        }
+      ],
+      "guestNames": [
+        "Fabricio",
+        "Julia",
+        "Natan",
+        "Maria Elvira"
+      ],
+      "registeredBy": "Fabricio",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T10:57:04.58131-04:00",
+      "declinedAt": null,
+      "attendingCount": 4
+    },
+    {
+      "id": 10,
+      "inviteCode": "08433197",
+      "name": "Fabian",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "12121"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 11,
+      "inviteCode": "55992212",
+      "name": "Julia",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "34177"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 12,
+      "inviteCode": "73619404",
+      "name": "Anderson Elizabeth",
+      "guestCount": 1,
+      "guestLimit": 4,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "23303"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 13,
+      "inviteCode": "93193388",
+      "name": "Francisco Chico Markol",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "36819"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 14,
+      "inviteCode": "25080483",
+      "name": "Lilian Yasmin",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "01120"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 15,
+      "inviteCode": "33387206",
+      "name": "Thiago Thome Nayanne",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "09850"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 16,
+      "inviteCode": "01051040",
+      "name": "Rebecah Alexandre",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "79920"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 17,
+      "inviteCode": "25469433",
+      "name": "Alimir Daniela",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "16076"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "Almir Daniela",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 18,
+      "inviteCode": "48131233",
+      "name": "Jorge Nova Francisca",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "02054"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 19,
+      "inviteCode": "09568269",
+      "name": "Efren Rita",
+      "guestCount": 2,
+      "guestLimit": 2,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "09887"
+        },
+        {
+          "label": "Senha 02",
+          "code": "39663"
+        }
+      ],
+      "guestNames": [
+        "Efren Rita",
+        "Maria Rita"
+      ],
+      "registeredBy": "Rita",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T09:51:35.133692-04:00",
+      "declinedAt": null,
+      "attendingCount": 2
+    },
+    {
+      "id": 20,
+      "inviteCode": "42852251",
+      "name": "Kleberdan Silvia",
+      "guestCount": 1,
+      "guestLimit": 3,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "20537"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 21,
+      "inviteCode": "96379266",
+      "name": "Caio Cassandra",
+      "guestCount": 1,
+      "guestLimit": 3,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "38711"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 22,
+      "inviteCode": "54614943",
+      "name": "Souto Kaliana",
+      "guestCount": 2,
+      "guestLimit": 2,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "52284"
+        },
+        {
+          "label": "Senha 02",
+          "code": "37872"
+        }
+      ],
+      "guestNames": [
+        "Thiago Souto",
+        "Kailany Rocha"
+      ],
+      "registeredBy": "Thiago Souto e Kailany Rocha",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T11:28:04.041733-04:00",
+      "declinedAt": null,
+      "attendingCount": 2
+    },
+    {
+      "id": 23,
+      "inviteCode": "53087094",
+      "name": "Valdizeth",
+      "guestCount": 1,
+      "guestLimit": 1,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "37154"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 24,
+      "inviteCode": "71325022",
+      "name": "Hector Giovana",
+      "guestCount": 3,
+      "guestLimit": 3,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "03257"
+        },
+        {
+          "label": "Senha 02",
+          "code": "23850"
+        },
+        {
+          "label": "Senha 03",
+          "code": "08331"
+        }
+      ],
+      "guestNames": [
+        "Hector Henrique Ferreira Koolen",
+        "Giovana Anceski Bataglion",
+        "Ângela Sofia Anceski Koolen"
+      ],
+      "registeredBy": "Hector Henrique Ferreira Koolen e Giovana Anceski Bataglion",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T10:11:47.463361-04:00",
+      "declinedAt": null,
+      "attendingCount": 3
+    },
+    {
+      "id": 25,
+      "inviteCode": "80938813",
+      "name": "Davi Vanessa",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "67841"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 26,
+      "inviteCode": "15280354",
+      "name": "Rafael Rocha Carol",
+      "guestCount": 2,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "56208"
+        },
+        {
+          "label": "Senha 02",
+          "code": "50320"
+        }
+      ],
+      "guestNames": [
+        "Rafael Rocha",
+        "Carolina Rocha"
+      ],
+      "registeredBy": "Rafael Rocha",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T09:23:53.64586-04:00",
+      "declinedAt": null,
+      "attendingCount": 2
+    },
+    {
+      "id": 27,
+      "inviteCode": "56338235",
+      "name": "Andre Karine",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "61237"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 28,
+      "inviteCode": "73336299",
+      "name": "Claudia Freitas",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "87275"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 29,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 4,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [
+        "Luiz Peixoto",
+        "Rafaela Santos",
+        "Daniela Peixoto"
+      ],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": "2026-06-22T11:09:22.27851-04:00",
+      "declinedAt": null
+    },
+    {
+      "id": 30,
+      "inviteCode": "64277480",
+      "name": "Thiago Naranjo Kamile",
+      "guestCount": 1,
+      "guestLimit": 2,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "84637"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 31,
+      "inviteCode": "78177454",
+      "name": "Layla",
+      "guestCount": 1,
+      "guestLimit": 1,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "53041"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 32,
+      "inviteCode": "91787082",
+      "name": "Tuza",
+      "guestCount": 1,
+      "guestLimit": 2,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "65854"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 33,
+      "inviteCode": "90039460",
+      "name": "Mirella",
+      "guestCount": 1,
+      "guestLimit": 1,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "44756"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 34,
+      "inviteCode": "11191825",
+      "name": "Waltinho Jackeline",
+      "guestCount": 1,
+      "guestLimit": 2,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "93301"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 35,
+      "inviteCode": "77697135",
+      "name": "Cristiane Nagay",
+      "guestCount": 1,
+      "guestLimit": 2,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "10997"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 36,
+      "inviteCode": "70970889",
+      "name": "Andrea de Paula",
+      "guestCount": 2,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "67658"
+        }
+      ],
+      "guestNames": [
+        "Andrea de Paula",
+        "Maria Lúcia de Paula Maia"
+      ],
+      "registeredBy": "Andréa Oliveira de Paula",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T12:55:43.869846-04:00",
+      "declinedAt": null,
+      "attendingCount": 2
+    },
+    {
+      "id": 37,
+      "inviteCode": "99523737",
+      "name": "Neto Lorena",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "42476"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 38,
+      "inviteCode": "05247971",
+      "name": "Cleuton Luciola",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "32610"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 39,
+      "inviteCode": "54015078",
+      "name": "Luciano Michele",
+      "guestCount": 2,
+      "guestLimit": 2,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "43911"
+        },
+        {
+          "label": "Senha 02",
+          "code": "53748"
+        }
+      ],
+      "guestNames": [
+        "Luciano Mariano",
+        "Michelle Mariano"
+      ],
+      "registeredBy": "Michele",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T09:22:05.697921-04:00",
+      "declinedAt": null,
+      "attendingCount": 2
+    },
+    {
+      "id": 40,
+      "inviteCode": "67800551",
+      "name": "Emerson Juliana",
+      "guestCount": 2,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "58189"
+        }
+      ],
+      "guestNames": [
+        "Emerson",
+        "Juliana"
+      ],
+      "registeredBy": "Juliana",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T13:15:09.195166-04:00",
+      "declinedAt": null,
+      "attendingCount": 2
+    },
+    {
+      "id": 41,
+      "inviteCode": "16871397",
+      "name": "Jeff Regia",
+      "guestCount": 2,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "03474"
+        }
+      ],
+      "guestNames": [
+        "Jefferson Pereira Guilherme",
+        "Regia Moreira Leite"
+      ],
+      "registeredBy": "RÉGIA",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T12:50:11.561657-04:00",
+      "declinedAt": null,
+      "attendingCount": 2
+    },
+    {
+      "id": 42,
+      "inviteCode": "60633807",
+      "name": "Deyvid Wivian",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "52683"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 43,
+      "inviteCode": "08689833",
+      "name": "Fagner Debora",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "00305"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 44,
+      "inviteCode": "11424471",
+      "name": "Karina Ivan",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "56554"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 45,
+      "inviteCode": "94534499",
+      "name": "Karine Bruno",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "22739"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 46,
+      "inviteCode": "56490306",
+      "name": "Daniela Campos Rafael",
+      "guestCount": 1,
+      "guestLimit": 2,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "43004"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "Daniela Pontes Rafael",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 47,
+      "inviteCode": "89669029",
+      "name": "Rafael Debora",
+      "guestCount": 1,
+      "guestLimit": 2,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "43773"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "Rafael Matos",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 48,
+      "inviteCode": "34869587",
+      "name": "Josinei",
+      "guestCount": 1,
+      "guestLimit": 1,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "48861"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 49,
+      "inviteCode": "46981985",
+      "name": "Kennedy",
+      "guestCount": 1,
+      "guestLimit": 3,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "76944"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 50,
+      "inviteCode": "18744762",
+      "name": "Giomara",
+      "guestCount": 1,
+      "guestLimit": 2,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "46605"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 51,
+      "inviteCode": "61428526",
+      "name": "Maria das Dores Dorinha",
+      "guestCount": 2,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "38053"
+        }
+      ],
+      "guestNames": [
+        "Maria das Dores Dorinha",
+        "Severino"
+      ],
+      "registeredBy": "Dorinha",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T12:19:02.667125-04:00",
+      "declinedAt": null,
+      "attendingCount": 2
+    },
+    {
+      "id": 52,
+      "inviteCode": "12926135",
+      "name": "Sintia",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "93824"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 53,
+      "inviteCode": "71348810",
+      "name": "Eliza Atila Matheus",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "68474"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 54,
+      "inviteCode": "54614544",
+      "name": "Maria Jose",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "48823"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "M",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 55,
+      "inviteCode": "28239170",
+      "name": "Camila Coelho",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "27139"
+        }
+      ],
+      "guestNames": [],
+      "registeredBy": "c",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 56,
+      "inviteCode": "25439689",
+      "name": "Luiz Dadai Rafaela",
+      "guestCount": 3,
+      "guestLimit": 3,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [
+        {
+          "label": "Senha 01",
+          "code": "23368"
+        },
+        {
+          "label": "Senha 02",
+          "code": "40231"
+        },
+        {
+          "label": "Senha 03",
+          "code": "23635"
+        }
+      ],
+      "guestNames": [
+        "Luiz Peixoto",
+        "Rafaela Santos",
+        "Daniela Peixoto"
+      ],
+      "registeredBy": "rafaela",
+      "confirmation": "confirmado",
+      "confirmationAt": "2026-06-22T11:35:57.509508-04:00",
+      "declinedAt": null,
+      "attendingCount": 3
+    },
+    {
+      "id": 57,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 58,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 59,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 60,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 61,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 62,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 63,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 64,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 65,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 66,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 67,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 68,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 69,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 70,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 71,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 72,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 73,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 74,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 75,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 76,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 77,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 78,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 79,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 80,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 81,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 82,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 83,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 84,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 85,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 86,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 87,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 88,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 89,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 90,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 91,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 92,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 93,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 94,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 95,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 96,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 97,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 98,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 99,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    },
+    {
+      "id": 100,
+      "inviteCode": "",
+      "name": "",
+      "guestCount": 1,
+      "guestLimit": 0,
+      "contact": "",
+      "tableNumber": "",
+      "passwords": [],
+      "guestNames": [],
+      "registeredBy": "",
+      "confirmation": "pendente",
+      "confirmationAt": null,
+      "declinedAt": null
+    }
+  ],
+  "gallery": [
+    {
+      "id": "90fdfb3c-c9b8-4445-9e13-732566923e7d",
+      "type": "image",
+      "url": "/uploads/2027895a-restored_1540846524814263.jpg",
+      "uploader": "Igo",
+      "createdAt": "2026-06-21T18:50:59.350051-04:00",
+      "filename": "2027895a-restored_1540846524814263.jpg"
+    },
+    {
+      "id": "759bb906-3fe6-4357-b904-e6509bd17d4a",
+      "type": "image",
+      "url": "/uploads/a32aaa3e-IMG-20140810-WA0007.jpg",
+      "uploader": "Administrador",
+      "createdAt": "2026-05-31T21:12:15.642628-04:00",
+      "filename": "a32aaa3e-IMG-20140810-WA0007.jpg"
+    },
+    {
+      "id": "dba59870-cbbe-4dfe-8207-a018df3f361c",
+      "type": "image",
+      "url": "/uploads/c5f6a631-Imagem-do-WhatsApp-de-2024-05-21-s-10-42-54_d231fbe8.jpg",
+      "uploader": "Administrador",
+      "createdAt": "2026-05-31T21:12:15.640082-04:00",
+      "filename": "c5f6a631-Imagem-do-WhatsApp-de-2024-05-21-s-10-42-54_d231fbe8.jpg"
+    },
+    {
+      "id": "31243af1-8b48-4aae-8e9e-96e0c98af716",
+      "type": "image",
+      "url": "/uploads/58df26ee-20150412_151844.jpg",
+      "uploader": "Administrador",
+      "createdAt": "2026-05-31T21:12:15.634131-04:00",
+      "filename": "58df26ee-20150412_151844.jpg"
+    },
+    {
+      "id": "0796d997-7992-4c8d-8067-9288b84005c7",
+      "type": "image",
+      "url": "/uploads/7163240a-2017-06-05-13-35-13.jpg",
+      "uploader": "Administrador",
+      "createdAt": "2026-05-31T21:12:15.631218-04:00",
+      "filename": "7163240a-2017-06-05-13-35-13.jpg"
+    },
+    {
+      "id": "28a10965-4028-4eb6-a507-585c1d01f16e",
+      "type": "image",
+      "url": "/uploads/ffddbfad-2016-06-04-00-41-12.png",
+      "uploader": "Administrador",
+      "createdAt": "2026-05-31T21:12:15.626987-04:00",
+      "filename": "ffddbfad-2016-06-04-00-41-12.png"
+    },
+    {
+      "id": "a0a29012-dc95-4f1f-a9be-7629dab4934d",
+      "type": "image",
+      "url": "/uploads/9c495d51-2015-10-31-22-38-55.jpg",
+      "uploader": "Administrador",
+      "createdAt": "2026-05-31T21:12:15.621747-04:00",
+      "filename": "9c495d51-2015-10-31-22-38-55.jpg"
+    },
+    {
+      "id": "6feb52df-8513-405d-b484-2adda22abf8b",
+      "type": "image",
+      "url": "/uploads/c10dc752-2015-06-04-21-56-09.jpg",
+      "uploader": "Administrador",
+      "createdAt": "2026-05-31T21:12:15.616063-04:00",
+      "filename": "c10dc752-2015-06-04-21-56-09.jpg"
+    },
+    {
+      "id": "6a47c426-f559-473c-a069-f1920410498d",
+      "type": "image",
+      "url": "/uploads/2e667b14-2014-07-19-22-37-51.jpg",
+      "uploader": "Administrador",
+      "createdAt": "2026-05-31T21:12:15.609421-04:00",
+      "filename": "2e667b14-2014-07-19-22-37-51.jpg"
+    }
+  ],
+  "messages": [
+    {
+      "id": "53e9511c-3223-43fb-a0c9-34e7810b1812",
+      "name": "Fernanda Aranha",
+      "message": "Igo e Fernanda, celebrar 10 anos de casamento e renovar os votos é muito mais do que recordar o dia em que disseram “sim”. É reafirmar uma história construída com amor, parceria, respeito, cumplicidade e tantas conquistas compartilhadas ao longo dessa caminhada.\nIgo, meu cunhado, sua felicidade também faz parte da nossa história. E Fernanda, minha xará lindona, você é uma peça fundamental nessa linda família que vocês construíram juntos.\nParabéns pela renovação dos votos! \nAmamos vocês ❤️✨",
+      "createdAt": "2026-06-22T10:39:03.397373-04:00"
+    }
+  ]
+}

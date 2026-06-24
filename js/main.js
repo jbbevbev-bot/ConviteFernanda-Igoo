@@ -1266,7 +1266,7 @@ function openTicket(row) {
   // colocar nomes um por linha no convite
   const names = Array.isArray(row.guestNames) && row.guestNames.length ? row.guestNames : [];
   q('#cardInviteCode').innerHTML = names.length ? names.map(n => escapeHtml(n)).join('<br/>') : guestNamesSummary(row);
-  const totalCount = Number(row.attendingCount || totalPeopleOnInvite(row));
+  const totalCount = Number(row.attendingCount ?? row.guestCount ?? totalPeopleOnInvite(row));
   q('#cardGuestCount').textContent = String(totalCount);
   const tableNumber = (row.tableNumber || '').trim();
   q('#cardTableNumber').textContent = tableNumber || '—';
@@ -2100,7 +2100,13 @@ function wireAdminActions() {
   q('#adminSaveBtn')?.addEventListener('click', async () => {
     try {
       syncConfigFromInputs();
-      const payload = { config: state.config, invites: state.invites, messages: state.messages };
+      // remover `attendingCount` de invites quando o admin salva o painel
+      const cleanedInvites = (Array.isArray(state.invites) ? state.invites : []).map(r => {
+        const copy = { ...r };
+        if ('attendingCount' in copy) delete copy.attendingCount;
+        return copy;
+      });
+      const payload = { config: state.config, invites: cleanedInvites, messages: state.messages };
       await fetchJson('/api/admin/save', {
         method: 'POST',
         headers: {
@@ -2440,6 +2446,9 @@ function wireAdminActions() {
     const field = event.target.dataset.field;
     if (field === 'guestCount') {
       row.guestCount = Math.max(1, Math.min(30, Number(event.target.value || 1)));
+      // se o administrador ajustou manualmente a quantidade, remover qualquer
+      // `attendingCount` previamente registrado por RSVP para refletir a alteração
+      if ('attendingCount' in row) delete row.attendingCount;
     } else if (field === 'guestLimit') {
       row.guestLimit = Math.max(0, Math.min(30, Number(event.target.value || 0)));
       // opcional: garantir que guestCount não exceda o limite visível

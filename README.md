@@ -72,3 +72,19 @@ Próximos passos que posso fazer por você
 - Ajudar a configurar o serviço no painel do Render (posso gerar comandos e instruções passo a passo).
 
 Diga qual próximo passo prefere: configurar Postgres, eu configuro o deploy no Render, ou só quer que eu finalize o README e eu commito as mudanças.
+
+Sincronização do estado online para local
+---------------------------------------
+
+Se você quer que o seu ambiente local receba todas as alterações feitas no site online (Render) sem perder nada, use o script `sync_from_render.py` incluído neste repositório. O script faz backup dos diretórios locais (`_data` e `uploads`) antes de aplicar as alterações vindas do servidor.
+
+Exemplo de uso:
+
+```powershell
+python sync_from_render.py --url https://<seu-app-no-render>.onrender.com --admin-password SUA_SENHA
+```
+
+Notas importantes:
+- O script acessa a rota `/api/admin/state` e `/api/admin/gallery/download` do servidor remoto e exige a senha administrativa (cabeçalho `X-Admin-Password`).
+- Sempre serão criados backups em `backups/` antes de qualquer sobrescrita.
+- Confirmar que a senha usada é a mesma configurada no servidor remoto (ou a senha padrão se não tiver sido alterada).
