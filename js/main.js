@@ -1199,11 +1199,7 @@ async function respondRsvp(code, response, card) {
     })
   });
   showToast(result.message || 'Resposta registrada com sucesso.', response === 'confirmado' ? 'confirmed' : 'pending');
-  try {
-    result.invite.attendingCount = attendingCount;
-    // também refletir a quantidade informada no campo visível para o admin / preview
-    result.invite.guestCount = attendingCount;
-  } catch (e) {}
+  // Não sobrescrever os valores retornados pelo servidor — ele aplica limites se necessário
   // se confirmado, guardar o inviteCode para permitir reabrir o convite posteriormente
   try {
     if (result.invite && result.invite.confirmation === 'confirmado' && result.invite.inviteCode) {
